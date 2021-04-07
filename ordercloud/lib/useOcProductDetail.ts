@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { setProductId } from "../redux/ocProductDetail";
-import { OcDispatch, OcRootState } from "../redux/ocStore";
+import { useOcDispatch, OcRootState } from "../redux/ocStore";
 
 const useOcProductDetail = (productId: string) => {
-  const dispatch = useDispatch<OcDispatch>();
+  const dispatch = useOcDispatch();
 
   const { product, specs, variants, isAuthenticated } = useSelector(
     (state: OcRootState) => ({
@@ -16,9 +16,11 @@ const useOcProductDetail = (productId: string) => {
   );
 
   useEffect(() => {
+    let promise;
     if (productId && isAuthenticated) {
-      dispatch(setProductId(productId));
+      promise = dispatch(setProductId(productId));
     }
+    return () => promise && promise.abort();
   }, [productId, isAuthenticated]);
 
   const result = useMemo(

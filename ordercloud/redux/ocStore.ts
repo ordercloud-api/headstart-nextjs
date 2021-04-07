@@ -4,6 +4,7 @@ import ocAuth from "./ocAuth";
 import ocUser from "./ocUser";
 import ocProductList from "./ocProductList";
 import ocProductDetail from "./ocProductDetail";
+import { useDispatch, useSelector } from "react-redux";
 
 const store = configureStore({
   reducer: {
@@ -21,5 +22,9 @@ export type OcThunkApi = {
   dispatch: OcDispatch;
   state: OcRootState;
 };
+
+export type OcSelectorCallback = (state: OcRootState) => unknown;
+
+export const useOcDispatch = () => useDispatch<OcDispatch>();
 
 export default store;

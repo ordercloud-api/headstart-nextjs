@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { FunctionComponent } from "react";
-import OcLoginForm from "../components/OcLoginForm";
+import OcLoginForm from "../ordercloud/components/OcLoginForm";
 
 const LoginPage:FunctionComponent = () => {
     const {push} = useRouter();

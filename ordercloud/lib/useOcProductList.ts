@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { OcProductListOptions, setListOptions } from "../redux/ocProductList";
-import { OcDispatch, OcRootState } from "../redux/ocStore";
+import { useOcDispatch, OcRootState } from "../redux/ocStore";
 
 const useOcProductList = (options: OcProductListOptions) => {
-  const dispatch = useDispatch<OcDispatch>();
+  const dispatch = useOcDispatch();
 
   const { products, isAuthenticated } = useSelector((state: OcRootState) => ({
     isAuthenticated: state.ocAuth.isAuthenticated,
@@ -12,9 +12,11 @@ const useOcProductList = (options: OcProductListOptions) => {
   }));
 
   useEffect(() => {
+    let promise;
     if (isAuthenticated) {
-      dispatch(setListOptions(options));
+      promise = dispatch(setListOptions(options));
     }
+    return () => promise && promise.abort();
   }, [options, isAuthenticated]);
 
   return products;

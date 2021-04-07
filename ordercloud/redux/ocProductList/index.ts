@@ -1,8 +1,4 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  SerializedError,
-} from "@reduxjs/toolkit";
+import { createSlice, SerializedError } from "@reduxjs/toolkit";
 import {
   BuyerProduct,
   Filters,
@@ -10,7 +6,7 @@ import {
   Me,
   MetaWithFacets,
 } from "ordercloud-javascript-sdk";
-import { OcThunkApi } from "../ocStore";
+import { createOcAsyncThunk } from "../ocReduxHelpers";
 
 export interface OcProductListOptions {
   catalogID?: string;
@@ -33,7 +29,7 @@ interface OcProductListState {
 }
 
 const initialState: OcProductListState = {
-  loading: true,
+  loading: false,
   options: {},
 };
 
@@ -42,11 +38,10 @@ interface SetListOptionsResult {
   options: OcProductListOptions;
 }
 
-export const setListOptions = createAsyncThunk<
+export const setListOptions = createOcAsyncThunk<
   SetListOptionsResult,
-  OcProductListOptions,
-  OcThunkApi
->("ocProducts/setOptions", async (options, ThunkAPI) => {
+  OcProductListOptions
+>("ocProducts/setOptions", async (options) => {
   const response = await Me.ListProducts(options);
   return {
     response,
@@ -57,7 +52,14 @@ export const setListOptions = createAsyncThunk<
 const ocProductListSlice = createSlice({
   name: "ocProductList",
   initialState,
-  reducers: {},
+  reducers: {
+    clearProducts: (state) => {
+      state.loading = false;
+      state.error = undefined;
+      state.items = undefined;
+      state.meta = undefined;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(setListOptions.pending, (state) => {
       state.loading = true;
@@ -75,5 +77,7 @@ const ocProductListSlice = createSlice({
     });
   },
 });
+
+export const { clearProducts } = ocProductListSlice.actions;
 
 export default ocProductListSlice.reducer;

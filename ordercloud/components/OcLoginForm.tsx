@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, FunctionComponent, useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import login from "../redux/ocAuth/login";
-import { OcDispatch, OcRootState } from "../redux/ocStore";
+import { useOcDispatch, OcRootState } from "../redux/ocStore";
 
 interface OcLoginFormProps {
     title?: string;
@@ -9,7 +9,9 @@ interface OcLoginFormProps {
 }
 
 const OcLoginForm:FunctionComponent<OcLoginFormProps> = ({title = "Sign into your account", onLoggedIn}) => {
-    const dispatch = useDispatch<OcDispatch>();
+
+    const dispatch = useOcDispatch();
+    
     const { loading, error, isAnonymous } = useSelector((state:OcRootState) => ({
         isAnonymous: state.ocAuth.isAnonymous,
         error: state.ocAuth.error,

@@ -1,5 +1,5 @@
 import { createSlice, SerializedError } from "@reduxjs/toolkit";
-import { OrderCloudError, Tokens } from "ordercloud-javascript-sdk";
+import { Tokens } from "ordercloud-javascript-sdk";
 import login from "./login";
 import logout from "./logout";
 
@@ -51,7 +51,7 @@ const ocAuthSlice = createSlice({
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.isAnonymous = false;
-      state.isAuthenticated = !!action.payload.access_token;
+      state.isAuthenticated = true;
       state.loading = false;
     });
     builder.addCase(login.rejected, (state, action) => {
@@ -62,11 +62,13 @@ const ocAuthSlice = createSlice({
     //LOGOUT CASES
     builder.addCase(logout.pending, (state) => {
       state.loading = true;
+      state.isAuthenticated = false;
+      state.isAnonymous = true;
       state.error = undefined;
     });
     builder.addCase(logout.fulfilled, (state, action) => {
       state.isAnonymous = true;
-      state.isAuthenticated = !!action.payload;
+      state.isAuthenticated = true;
       state.loading = false;
     });
     builder.addCase(logout.rejected, (state, action) => {

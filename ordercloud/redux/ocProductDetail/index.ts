@@ -3,13 +3,8 @@ import {
   createSlice,
   SerializedError,
 } from "@reduxjs/toolkit";
-import {
-  BuyerProduct,
-  Me,
-  Products,
-  Spec,
-  Variant,
-} from "ordercloud-javascript-sdk";
+import { BuyerProduct, Me, Spec, Variant } from "ordercloud-javascript-sdk";
+import { createOcAsyncThunk } from "../ocReduxHelpers";
 import { OcThunkApi } from "../ocStore";
 
 interface OcProductDetailState {
@@ -46,17 +41,17 @@ export const setProductId = createAsyncThunk<BuyerProduct, string, OcThunkApi>(
   }
 );
 
-const getProductSpecs = createAsyncThunk<Spec[], string, OcThunkApi>(
+const getProductSpecs = createOcAsyncThunk<Spec[], string>(
   "ocProductDetail/getSpecs",
-  async (productId, ThunkAPI) => {
+  async (productId) => {
     const response = await Me.ListSpecs(productId, { pageSize: 100 });
     return response.Items;
   }
 );
 
-const getProductVariants = createAsyncThunk<Variant[], string, OcThunkApi>(
+const getProductVariants = createOcAsyncThunk<Variant[], string>(
   "ocProductDetail/getVariants",
-  async (productId, ThunkAPI) => {
+  async (productId) => {
     const response = await Me.ListVariants(productId, { pageSize: 100 });
     return response.Items;
   }

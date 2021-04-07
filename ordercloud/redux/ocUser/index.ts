@@ -1,10 +1,6 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  SerializedError,
-} from "@reduxjs/toolkit";
+import { createSlice, SerializedError } from "@reduxjs/toolkit";
 import { Me, MeUser, RequiredDeep } from "ordercloud-javascript-sdk";
-import { OcThunkApi } from "../ocStore";
+import { createOcAsyncThunk, OcThrottle } from "../ocReduxHelpers";
 
 interface ocUserState {
   user?: MeUser;
@@ -13,29 +9,37 @@ interface ocUserState {
 }
 
 const initialState: ocUserState = {
-  loading: true,
+  loading: false,
 };
 
-export const getUser = createAsyncThunk<
-  RequiredDeep<MeUser>,
-  undefined,
-  OcThunkApi
->("ocUser/get", async (_, thunkAPI) => {
-  return Me.Get();
-});
+const userThrottle: OcThrottle = {
+  location: "ocUser",
+  property: "loading",
+};
 
-export const updateUser = createAsyncThunk<
+export const getUser = createOcAsyncThunk<RequiredDeep<MeUser>, undefined>(
+  "ocUser/get",
+  async () => {
+    return Me.Get();
+  },
+  userThrottle
+);
+
+export const updateUser = createOcAsyncThunk<
   Partial<MeUser>,
-  RequiredDeep<MeUser>,
-  OcThunkApi
->("ocUser/update", async (data, thunkAPI) => {
+  RequiredDeep<MeUser>
+>("ocUser/update", async (data) => {
   return Me.Patch(data);
 });
 
 const ocUserSlice = createSlice({
   name: "ocUser",
   initialState,
-  reducers: {},
+  reducers: {
+    clearUser: (state) => {
+      state.user = undefined;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getUser.pending, (state) => {
       state.loading = true;
@@ -64,5 +68,7 @@ const ocUserSlice = createSlice({
     });
   },
 });
+
+export const { clearUser } = ocUserSlice.actions;
 
 export default ocUserSlice.reducer;

@@ -1,6 +1,7 @@
 import { AppProps } from 'next/app'
 import { ApiRole } from 'ordercloud-javascript-sdk';
-import OcProvider from '../redux/ocProvider';
+import Layout from '../components/Layout';
+import OcProvider from '../ordercloud/redux/ocProvider';
 import '../styles/globals.css'
 
 const clientId = process.env.NEXT_PUBLIC_OC_CLIENT_ID || '';
@@ -16,7 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       baseApiUrl,
       allowAnonymous,
     }}>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </OcProvider>
   )
 }

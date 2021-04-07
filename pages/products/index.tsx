@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import OcProductList from "../../components/OcProductList";
+import OcProductList from "../../ordercloud/components/OcProductList";
 
 const ProductListPage:FunctionComponent = () => {
 
