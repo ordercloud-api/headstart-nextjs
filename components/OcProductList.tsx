@@ -1,8 +1,6 @@
-import { FunctionComponent, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FunctionComponent } from "react";
 import useOcProductList from "../lib/useOcProductList";
-import { OcProductListOptions, setListOptions } from "../redux/ocProductList"
-import { OcDispatch, OcRootState } from "../redux/ocStore";
+import { OcProductListOptions } from "../redux/ocProductList";
 import OcProductCard from "./OcProductCard";
 
 interface OcProductListProps {

@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, FunctionComponent, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ProductListPage from "../pages/products";
-import login, { LoginActionRequest } from "../redux/ocAuth/login";
+import login from "../redux/ocAuth/login";
 import { OcDispatch, OcRootState } from "../redux/ocStore";
 
 interface OcLoginFormProps {
