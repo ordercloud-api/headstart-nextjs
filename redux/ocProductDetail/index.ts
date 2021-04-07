@@ -1,0 +1,91 @@
+import {
+  createAsyncThunk,
+  createSlice,
+  SerializedError,
+} from "@reduxjs/toolkit";
+import {
+  BuyerProduct,
+  Me,
+  Products,
+  Spec,
+  Variant,
+} from "ordercloud-javascript-sdk";
+import { OcThunkApi } from "../ocStore";
+
+interface OcProductDetailState {
+  error?: SerializedError;
+  product?: BuyerProduct;
+  specs?: Spec[];
+  variants?: Variant[];
+}
+
+const initialState: OcProductDetailState = {};
+
+export const setProductId = createAsyncThunk<BuyerProduct, string, OcThunkApi>(
+  "ocProductDetail/setProductId",
+  async (productId, ThunkAPI) => {
+    const { ocProductList } = ThunkAPI.getState();
+
+    let product = ocProductList.items
+      ? ocProductList.items.find((p) => p.ID == productId)
+      : undefined;
+
+    if (!product) {
+      product = await Me.GetProduct(productId);
+    }
+
+    if (product.SpecCount > 0) {
+      ThunkAPI.dispatch(getProductSpecs(product.ID));
+    }
+
+    if (product.VariantCount > 0) {
+      ThunkAPI.dispatch(getProductVariants(product.ID));
+    }
+
+    return product;
+  }
+);
+
+const getProductSpecs = createAsyncThunk<Spec[], string, OcThunkApi>(
+  "ocProductDetail/getSpecs",
+  async (productId, ThunkAPI) => {
+    const response = await Me.ListSpecs(productId, { pageSize: 100 });
+    return response.Items;
+  }
+);
+
+const getProductVariants = createAsyncThunk<Variant[], string, OcThunkApi>(
+  "ocProductDetail/getVariants",
+  async (productId, ThunkAPI) => {
+    const response = await Me.ListVariants(productId, { pageSize: 100 });
+    return response.Items;
+  }
+);
+
+const ocProductDetailSlice = createSlice({
+  name: "ocProductDetail",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(setProductId.pending, (state) => {
+      state.error = undefined;
+      state.specs = undefined;
+      state.variants = undefined;
+      state.product = undefined;
+    });
+    builder.addCase(setProductId.fulfilled, (state, action) => {
+      state.product = action.payload;
+    });
+    builder.addCase(setProductId.rejected, (state, action) => {
+      state.error = action.error;
+    });
+    builder.addCase(getProductSpecs.fulfilled, (state, action) => {
+      state.specs = action.payload;
+    });
+    builder.addCase(getProductVariants.fulfilled, (state, action) => {
+      state.variants = action.payload;
+    });
+  },
+});
+
+export default ocProductDetailSlice.reducer;
