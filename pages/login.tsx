@@ -1,17 +1,19 @@
-import { useRouter } from "next/router";
-import { FunctionComponent } from "react";
-import OcLoginForm from "../ordercloud/components/OcLoginForm";
+import { useRouter } from 'next/router'
+import React, { FunctionComponent } from 'react'
+import OcLoginForm from '../ordercloud/components/OcLoginForm'
 
-const LoginPage:FunctionComponent = () => {
-    const {push} = useRouter();
+const LoginPage: FunctionComponent = () => {
+  const { push } = useRouter()
 
-    const handleOnLoggedIn = () => {
-        push('/products')
-    }
+  const handleOnLoggedIn = () => {
+    push('/products')
+  }
 
-    return <div>
-        <OcLoginForm onLoggedIn={handleOnLoggedIn}/>
+  return (
+    <div>
+      <OcLoginForm onLoggedIn={handleOnLoggedIn} />
     </div>
+  )
 }
 
-export default LoginPage;
+export default LoginPage
