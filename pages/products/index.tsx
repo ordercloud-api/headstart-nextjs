@@ -1,14 +1,15 @@
-import { FunctionComponent } from "react";
-import OcProductList from "../../ordercloud/components/OcProductList";
+import { FunctionComponent } from 'react'
+import OcProductList from '../../ordercloud/components/OcProductList'
 
-const ProductListPage:FunctionComponent = () => {
+const ProductListPage: FunctionComponent = () => {
+  // This would normally be tied into the NextJS router to update OcProductList options
 
-    //This would normally be tied into the NextJS router to update OcProductList options
-
-    return <div>
-        <h1>Products </h1>
-            <OcProductList />
+  return (
+    <div>
+      <h1>Products </h1>
+      <OcProductList />
     </div>
+  )
 }
 
-export default ProductListPage;
+export default ProductListPage
