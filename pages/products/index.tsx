@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 import OcProductList from '../../ordercloud/components/OcProductList'
 
 const ProductListPage: FunctionComponent = () => {

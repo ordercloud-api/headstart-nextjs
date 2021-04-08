@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import ocConfig from './ocConfig'
 import ocAuth from './ocAuth'
 import ocUser from './ocUser'
