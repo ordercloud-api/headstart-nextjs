@@ -26,20 +26,9 @@ module.exports = {
     'eslint-config-prettier',
   ],
   rules: {
-    'react/jsx-filename-extension': [1, { extensions: ['.ts', '.tsx'] }],
-    'import/extensions': 'off',
-    'react/prop-types': 'off',
-    'jsx-a11y/anchor-is-valid': 'off',
-    'react/jsx-props-no-spreading': ['error', { custom: 'ignore' }],
-    'react/no-unescaped-entities': 'off',
-    'import/no-cycle': [0, { ignoreExternal: true }],
-    'prefer-const': 'off',
-    // needed because of https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-use-before-define.md#how-to-use & https://stackoverflow.com/questions/63818415/react-was-used-before-it-was-defined
-    'no-use-before-define': 'off',
-    '@typescript-eslint/no-use-before-define': [
-      'error',
-      { functions: false, classes: false, variables: true },
-    ],
+    // rules here override any rules defined by plugins in the "extends" array
+    // those rules are generally considered best practices so consider carefully and
+    // discuss with (and record) why a certain rule has been disabled or altered
   },
   settings: {
     'import/resolver': {
