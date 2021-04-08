@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { BuyerProduct } from 'ordercloud-javascript-sdk'
-import React, { FunctionComponent } from 'react'
+import { FunctionComponent } from 'react'
 
 interface OcProductCardProps {
   product: BuyerProduct

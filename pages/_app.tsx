@@ -1,6 +1,5 @@
 import { AppProps } from 'next/app'
 import { ApiRole } from 'ordercloud-javascript-sdk'
-import React from 'react'
 import Layout from '../components/Layout'
 import OcProvider from '../ordercloud/redux/ocProvider'
 import '../styles/globals.css'
@@ -12,7 +11,7 @@ const scope = process.env.NEXT_PUBLIC_OC_SCOPE
 const baseApiUrl = process.env.NEXT_PUBLIC_OC_BASE_API_URL
 const allowAnonymous = Boolean(process.env.NEXT_PUBLIC_OC_ALLOW_ANONYMOUS)
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <OcProvider
       config={{

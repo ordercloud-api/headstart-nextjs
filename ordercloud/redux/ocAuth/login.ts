@@ -17,6 +17,7 @@ const login = createOcAsyncThunk<RequiredDeep<AccessToken>, LoginActionRequest>(
     }
 
     thunkAPI.dispatch(clearUser())
+    
 
     const response = await Auth.Login(
       credentials.username,

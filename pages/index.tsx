@@ -1,14 +1,9 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import { useSelector } from 'react-redux'
-import React from 'react'
-import logout from '../ordercloud/redux/ocAuth/logout'
-import { useOcDispatch, OcRootState } from '../ordercloud/redux/ocStore'
+import { FunctionComponent } from 'react'
+import { useOcSelector } from '../ordercloud/redux/ocStore'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
-  const dispatch = useOcDispatch()
-  const user = useSelector((state: OcRootState) => state.ocUser.user)
+const Home: FunctionComponent = () => {
+  const user = useOcSelector((s) => s.ocUser.user)
 
   return (
     <div className={styles.container}>
@@ -26,3 +21,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Home

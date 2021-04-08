@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { useDispatch } from 'react-redux'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import ocConfig from './ocConfig'
 import ocAuth from './ocAuth'
 import ocUser from './ocUser'
@@ -23,8 +23,7 @@ export type OcThunkApi = {
   state: OcRootState
 }
 
-export type OcSelectorCallback = (state: OcRootState) => unknown
-
 export const useOcDispatch = () => useDispatch<OcDispatch>()
+export const useOcSelector: TypedUseSelectorHook<OcRootState> = useSelector
 
 export default store

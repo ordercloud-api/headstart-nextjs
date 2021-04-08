@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { FunctionComponent } from 'react'
+import { FunctionComponent } from 'react'
 import OcLoginForm from '../ordercloud/components/OcLoginForm'
 
 const LoginPage: FunctionComponent = () => {

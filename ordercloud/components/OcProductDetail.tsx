@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from 'react'
-import useOcProductDetail from '../lib/useOcProductDetail'
+import { FunctionComponent } from 'react'
+import useOcProductDetail from '../hooks/useOcProductDetail'
 
 interface OcProductDetailProps {
   productId: string

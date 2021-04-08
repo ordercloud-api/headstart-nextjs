@@ -1,11 +1,14 @@
-import { AsyncThunkPayloadCreator, createAsyncThunk } from '@reduxjs/toolkit'
+import { AsyncThunk, AsyncThunkPayloadCreator, createAsyncThunk } from '@reduxjs/toolkit'
 import logout from './ocAuth/logout'
 import { OcRootState, OcThunkApi } from './ocStore'
 
 function getDescendantProp(obj: any, desc: string) {
-  let arr = desc.split('.')
-  while (arr.length && (obj = obj[arr.shift()]));
-  return obj
+  const arr = desc.split('.')
+  let result = obj
+  while (arr.length) {
+    result = result[arr.shift()]
+  }
+  return result
 }
 
 export interface OcThrottle {
@@ -17,7 +20,7 @@ export function createOcAsyncThunk<Returned, ThunkArg = void>(
   typePrefix: string,
   payloadCreator: AsyncThunkPayloadCreator<Returned, ThunkArg, OcThunkApi>,
   throttle?: OcThrottle
-) {
+): AsyncThunk<Returned, ThunkArg, OcThunkApi> {
   return createAsyncThunk<Returned, ThunkArg, OcThunkApi>(
     typePrefix,
     async (args, thunkAPI) => {
@@ -45,6 +48,7 @@ export function createOcAsyncThunk<Returned, ThunkArg = void>(
             return false
           }
         }
+        return true
       },
     }
   )

@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from 'react'
-import useOcProductList from '../lib/useOcProductList'
+import { FunctionComponent } from 'react'
+import useOcProductList from '../hooks/useOcProductList'
 import { OcProductListOptions } from '../redux/ocProductList'
 import OcProductCard from './OcProductCard'
 
@@ -13,8 +13,8 @@ const OcProductList: FunctionComponent<OcProductListProps> = ({ options }) => {
   return (
     <ol>
       {products &&
-        products.map((p, i) => (
-          <li key={i}>
+        products.map((p) => (
+          <li key={p.ID}>
             <OcProductCard product={p} />
           </li>
         ))}

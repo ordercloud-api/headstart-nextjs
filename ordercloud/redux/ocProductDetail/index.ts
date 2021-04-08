@@ -12,13 +12,29 @@ interface OcProductDetailState {
 
 const initialState: OcProductDetailState = {}
 
+const getProductSpecs = createOcAsyncThunk<Spec[], string>(
+  'ocProductDetail/getSpecs',
+  async (productId) => {
+    const response = await Me.ListSpecs(productId, { pageSize: 100 })
+    return response.Items
+  }
+)
+
+const getProductVariants = createOcAsyncThunk<Variant[], string>(
+  'ocProductDetail/getVariants',
+  async (productId) => {
+    const response = await Me.ListVariants(productId, { pageSize: 100 })
+    return response.Items
+  }
+)
+
 export const setProductId = createAsyncThunk<BuyerProduct, string, OcThunkApi>(
   'ocProductDetail/setProductId',
   async (productId, ThunkAPI) => {
     const { ocProductList } = ThunkAPI.getState()
 
     let product = ocProductList.items
-      ? ocProductList.items.find((p) => p.ID == productId)
+      ? ocProductList.items.find((p) => p.ID === productId)
       : undefined
 
     if (!product) {
@@ -34,22 +50,6 @@ export const setProductId = createAsyncThunk<BuyerProduct, string, OcThunkApi>(
     }
 
     return product
-  }
-)
-
-const getProductSpecs = createOcAsyncThunk<Spec[], string>(
-  'ocProductDetail/getSpecs',
-  async (productId) => {
-    const response = await Me.ListSpecs(productId, { pageSize: 100 })
-    return response.Items
-  }
-)
-
-const getProductVariants = createOcAsyncThunk<Variant[], string>(
-  'ocProductDetail/getVariants',
-  async (productId) => {
-    const response = await Me.ListVariants(productId, { pageSize: 100 })
-    return response.Items
   }
 )
 

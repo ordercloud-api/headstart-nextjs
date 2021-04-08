@@ -1,14 +1,6 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
-import { useSelector } from 'react-redux'
+import { ChangeEvent, FormEvent, FunctionComponent, useCallback, useEffect, useState } from 'react'
 import login from '../redux/ocAuth/login'
-import { useOcDispatch, OcRootState } from '../redux/ocStore'
+import { useOcDispatch, useOcSelector } from '../redux/ocStore'
 
 interface OcLoginFormProps {
   title?: string
@@ -21,10 +13,10 @@ const OcLoginForm: FunctionComponent<OcLoginFormProps> = ({
 }) => {
   const dispatch = useOcDispatch()
 
-  const { loading, error, isAnonymous } = useSelector((state: OcRootState) => ({
-    isAnonymous: state.ocAuth.isAnonymous,
-    error: state.ocAuth.error,
-    loading: state.ocAuth.loading,
+  const { loading, error, isAnonymous } = useOcSelector((s) => ({
+    isAnonymous: s.ocAuth.isAnonymous,
+    error: s.ocAuth.error,
+    loading: s.ocAuth.loading,
   }))
 
   const [formValues, setFormValues] = useState({
@@ -46,7 +38,7 @@ const OcLoginForm: FunctionComponent<OcLoginFormProps> = ({
         })
       )
     },
-    [formValues]
+    [formValues, dispatch]
   )
 
   useEffect(() => {
@@ -59,26 +51,30 @@ const OcLoginForm: FunctionComponent<OcLoginFormProps> = ({
     <form name="ocLoginForm" onSubmit={handleSubmit}>
       <h1>{title}</h1>
       {error && <p>{error.message}</p>}
-      <label htmlFor="identifier">Username</label>
-      <input
-        type="text"
-        id="identifier"
-        name="identifier"
-        placeholder="Enter username"
-        value={formValues.identifier}
-        onChange={handleInputChange('identifier')}
-        required
-      />
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder="Enter password"
-        value={formValues.password}
-        onChange={handleInputChange('password')}
-        required
-      />
+      <label htmlFor="identifier">
+        Username
+        <input
+          type="text"
+          id="identifier"
+          name="identifier"
+          placeholder="Enter username"
+          value={formValues.identifier}
+          onChange={handleInputChange('identifier')}
+          required
+        />
+      </label>
+      <label htmlFor="password">
+        Password
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter password"
+          value={formValues.password}
+          onChange={handleInputChange('password')}
+          required
+        />
+      </label>
       <button disabled={loading} type="submit">
         Submit
       </button>

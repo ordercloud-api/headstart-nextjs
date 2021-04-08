@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect } from 'react'
-import { Provider } from 'react-redux'
+import React, { Provider } from 'react-redux'
 import logout from './ocAuth/logout'
 import { setConfig, OcConfig } from './ocConfig'
 import ocStore from './ocStore'
