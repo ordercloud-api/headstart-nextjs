@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import React, { FunctionComponent } from 'react'
+import { FunctionComponent } from 'react'
 import OcProductDetail from '../../ordercloud/components/OcProductDetail'
 import { useOcSelector } from '../../ordercloud/redux/ocStore'
 

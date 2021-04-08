@@ -1,4 +1,4 @@
-import { AccessToken, Auth, RequiredDeep, Tokens } from 'ordercloud-javascript-sdk'
+import { Auth, Tokens } from 'ordercloud-javascript-sdk'
 import { clearProducts } from '../ocProductList'
 import { createOcAsyncThunk, OcThrottle } from '../ocReduxHelpers'
 import { clearUser, getUser } from '../ocUser'
@@ -8,7 +8,7 @@ const logoutThrottle: OcThrottle = {
   property: 'loading',
 }
 
-const logout = createOcAsyncThunk<RequiredDeep<AccessToken> | undefined>(
+const logout = createOcAsyncThunk<void>(
   'ocAuth/logout',
   async (_, thunkAPI) => {
     const { ocConfig } = thunkAPI.getState()
@@ -24,7 +24,6 @@ const logout = createOcAsyncThunk<RequiredDeep<AccessToken> | undefined>(
       Tokens.SetAccessToken(response.access_token)
       Tokens.SetRefreshToken(response.refresh_token)
       thunkAPI.dispatch(getUser())
-      return response
     }
     Tokens.RemoveAccessToken()
     Tokens.RemoveRefreshToken()

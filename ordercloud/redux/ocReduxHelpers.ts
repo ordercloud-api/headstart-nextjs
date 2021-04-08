@@ -2,7 +2,7 @@ import { AsyncThunk, AsyncThunkPayloadCreator, createAsyncThunk } from '@reduxjs
 import logout from './ocAuth/logout'
 import { OcRootState, OcThunkApi } from './ocStore'
 
-function getDescendantProp(obj: any, desc: string) {
+function getDescendantProp(obj, desc: string) {
   const arr = desc.split('.')
   let result = obj
   while (arr.length) {

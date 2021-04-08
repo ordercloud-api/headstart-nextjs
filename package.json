@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "tsc --noEmit && eslint . --ext js,ts,tsx,json --fix"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
