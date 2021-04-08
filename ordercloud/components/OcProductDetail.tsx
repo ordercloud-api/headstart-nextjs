@@ -7,7 +7,7 @@ interface OcProductDetailProps {
 
 const OcProductDetail:FunctionComponent<OcProductDetailProps> = ({productId}) => {
 
-    const {product, specs, variants} = useOcProductDetail(productId);
+    const  {product, specs, variants} = useOcProductDetail(productId);
 
     return <div>
         <h2>Product</h2>
