@@ -3,7 +3,7 @@ import useOcProductList from '../hooks/useOcProductList'
 import { OcProductListOptions } from '../redux/ocProductList'
 import OcProductCard from './OcProductCard'
 
-interface OcProductListProps {
+export interface OcProductListProps {
   options?: OcProductListOptions
 }
 

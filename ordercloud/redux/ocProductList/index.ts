@@ -23,14 +23,13 @@ export interface OcProductListOptions {
 interface OcProductListState {
   loading: boolean
   error?: SerializedError
-  options: OcProductListOptions
+  options?: OcProductListOptions
   items?: BuyerProduct[]
   meta?: MetaWithFacets
 }
 
 const initialState: OcProductListState = {
   loading: false,
-  options: {},
 }
 
 interface SetListOptionsResult {
