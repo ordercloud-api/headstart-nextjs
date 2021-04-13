@@ -47,7 +47,13 @@ const mapOptionsToQueryParams = (
   return { ...result, ...filterResults }
 }
 
-const useNextRouterMapping = (map: NextQueryMap) => {
+const useNextRouterMapping = (
+  map: NextQueryMap
+): {
+  isReady: boolean
+  options: OcProductListOptions
+  updateQuery: (options: OcProductListOptions) => void
+} => {
   const { isReady, query, push, pathname } = useRouter()
 
   const options = useMemo(() => {

@@ -19,14 +19,14 @@ const logout = createOcAsyncThunk<void>(
     thunkAPI.dispatch(clearUser())
     thunkAPI.dispatch(clearProducts())
 
+    Tokens.RemoveAccessToken()
+    Tokens.RemoveRefreshToken()
     if (ocConfig.value.allowAnonymous) {
       const response = await Auth.Anonymous(ocConfig.value.clientId, ocConfig.value.scope)
       Tokens.SetAccessToken(response.access_token)
       Tokens.SetRefreshToken(response.refresh_token)
       thunkAPI.dispatch(getUser())
     }
-    Tokens.RemoveAccessToken()
-    Tokens.RemoveRefreshToken()
   },
   logoutThrottle
 )

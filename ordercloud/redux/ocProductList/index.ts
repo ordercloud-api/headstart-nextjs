@@ -10,7 +10,7 @@ import { createOcAsyncThunk } from '../ocReduxHelpers'
 
 export interface OcProductListOptions {
   catalogID?: string
-  categorID?: string
+  categoryID?: string
   search?: string
   page?: number
   pageSize?: number
