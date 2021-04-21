@@ -22,10 +22,15 @@ const OcLoginForm: FunctionComponent<OcLoginFormProps> = ({
   const [formValues, setFormValues] = useState({
     identifier: '',
     password: '',
+    remember: false,
   })
 
   const handleInputChange = (fieldKey: string) => (e: ChangeEvent<HTMLInputElement>) => {
     setFormValues((v) => ({ ...v, [fieldKey]: e.target.value }))
+  }
+
+  const handleCheckboxChange = (fieldKey: string) => (e: ChangeEvent<HTMLInputElement>) => {
+    setFormValues((v) => ({ ...v, [fieldKey]: !!e.target.checked }))
   }
 
   const handleSubmit = useCallback(
@@ -35,6 +40,7 @@ const OcLoginForm: FunctionComponent<OcLoginFormProps> = ({
         login({
           username: formValues.identifier,
           password: formValues.password,
+          remember: formValues.remember,
         })
       )
     },
@@ -74,6 +80,16 @@ const OcLoginForm: FunctionComponent<OcLoginFormProps> = ({
           onChange={handleInputChange('password')}
           required
         />
+      </label>
+      <label htmlFor="remember">
+        <input
+          type="checkbox"
+          id="remember"
+          name="remember"
+          checked={formValues.remember}
+          onChange={handleCheckboxChange('remember')}
+        />
+        Keep me logged in
       </label>
       <button disabled={loading} type="submit">
         Submit

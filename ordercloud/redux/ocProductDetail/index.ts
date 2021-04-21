@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice, SerializedError } from '@reduxjs/toolkit'
-import { BuyerProduct, Me, Spec, Variant } from 'ordercloud-javascript-sdk'
+import { BuyerProduct, Me, RequiredDeep, Spec, Variant } from 'ordercloud-javascript-sdk'
 import { createOcAsyncThunk } from '../ocReduxHelpers'
 import { OcThunkApi } from '../ocStore'
 
 interface OcProductDetailState {
   error?: SerializedError
-  product?: BuyerProduct
+  product?: RequiredDeep<BuyerProduct>
   specs?: Spec[]
   variants?: Variant[]
 }
@@ -28,7 +28,7 @@ const getProductVariants = createOcAsyncThunk<Variant[], string>(
   }
 )
 
-export const setProductId = createAsyncThunk<BuyerProduct, string, OcThunkApi>(
+export const setProductId = createAsyncThunk<RequiredDeep<BuyerProduct>, string, OcThunkApi>(
   'ocProductDetail/setProductId',
   async (productId, ThunkAPI) => {
     const { ocProductList } = ThunkAPI.getState()

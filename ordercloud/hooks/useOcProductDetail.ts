@@ -1,4 +1,4 @@
-import { BuyerProduct, Spec, Variant } from 'ordercloud-javascript-sdk'
+import { BuyerProduct, RequiredDeep, Spec, Variant } from 'ordercloud-javascript-sdk'
 import { useEffect, useMemo } from 'react'
 import { setProductId } from '../redux/ocProductDetail'
 import { useOcDispatch, useOcSelector } from '../redux/ocStore'
@@ -6,7 +6,7 @@ import { useOcDispatch, useOcSelector } from '../redux/ocStore'
 const useOcProductDetail = (
   productId: string
 ): {
-  product?: BuyerProduct
+  product?: RequiredDeep<BuyerProduct>
   specs?: Spec[]
   variants?: Variant[]
 } => {

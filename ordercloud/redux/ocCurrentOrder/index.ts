@@ -102,6 +102,29 @@ export const updateLineItem = createOcAsyncThunk<{ order: Order; lineItem: LineI
   }
 )
 
+export const removeLineItem = createOcAsyncThunk<{ order: Order; removedId: string }, string>(
+  'ocCurrentOrder/removeLineItem',
+  async (request, ThunkAPI) => {
+    const { ocCurrentOrder } = ThunkAPI.getState()
+    const orderId = ocCurrentOrder.order ? ocCurrentOrder.order.ID : undefined
+
+    // what to do when order doesn't exist? shouldn't happen.. but it could!
+    // if (!orderId) {
+    // }
+
+    // save the line item
+    await LineItems.Delete('Outgoing', orderId, request)
+
+    // get the updated order (totals, lineItemCount, dateLastUpdated, etc...)
+    const updatedOrder = await Orders.Get('Outgoing', orderId)
+
+    return {
+      order: updatedOrder,
+      removedId: request,
+    }
+  }
+)
+
 const ocCurrentOrderSlice = createSlice({
   name: 'ocCurrentOrder',
   initialState,
@@ -131,6 +154,10 @@ const ocCurrentOrderSlice = createSlice({
         1,
         action.payload.lineItem
       )
+      state.order = action.payload.order
+    })
+    builder.addCase(removeLineItem.fulfilled, (state, action) => {
+      state.lineItems = state.lineItems.filter((li) => li.ID !== action.payload.removedId)
       state.order = action.payload.order
     })
   },

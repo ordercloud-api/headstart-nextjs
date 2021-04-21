@@ -5,6 +5,7 @@ import {
   ListPageWithFacets,
   Me,
   MetaWithFacets,
+  RequiredDeep,
 } from 'ordercloud-javascript-sdk'
 import { createOcAsyncThunk, OcThrottle } from '../ocReduxHelpers'
 
@@ -24,7 +25,7 @@ interface OcProductListState {
   loading: boolean
   error?: SerializedError
   options?: OcProductListOptions
-  items?: BuyerProduct[]
+  items?: RequiredDeep<BuyerProduct>[]
   meta?: MetaWithFacets
 }
 
@@ -72,7 +73,7 @@ const ocProductListSlice = createSlice({
       state.error = undefined
     })
     builder.addCase(setListOptions.fulfilled, (state, action) => {
-      state.items = action.payload.response.Items
+      state.items = action.payload.response.Items as RequiredDeep<BuyerProduct>[]
       state.meta = action.payload.response.Meta
       state.options = action.payload.options
       state.loading = false
