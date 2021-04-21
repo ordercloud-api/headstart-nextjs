@@ -6,7 +6,7 @@ import {
   Me,
   MetaWithFacets,
 } from 'ordercloud-javascript-sdk'
-import { createOcAsyncThunk } from '../ocReduxHelpers'
+import { createOcAsyncThunk, OcThrottle } from '../ocReduxHelpers'
 
 export interface OcProductListOptions {
   catalogID?: string
@@ -37,15 +37,21 @@ interface SetListOptionsResult {
   options: OcProductListOptions
 }
 
+const productListThrottle: OcThrottle = {
+  location: 'ocProductList',
+  property: 'loading',
+}
+
 export const setListOptions = createOcAsyncThunk<SetListOptionsResult, OcProductListOptions>(
-  'ocProducts/setOptions',
+  'ocProductList/setOptions',
   async (options) => {
     const response = await Me.ListProducts(options)
     return {
       response,
       options,
     }
-  }
+  },
+  productListThrottle
 )
 
 const ocProductListSlice = createSlice({
@@ -54,6 +60,7 @@ const ocProductListSlice = createSlice({
   reducers: {
     clearProducts: (state) => {
       state.loading = false
+      state.options = undefined
       state.error = undefined
       state.items = undefined
       state.meta = undefined

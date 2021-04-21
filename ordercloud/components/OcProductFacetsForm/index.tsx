@@ -1,69 +1,8 @@
-import { isNil, mapKeys, mapValues, omit, omitBy, xor } from 'lodash'
+import { isNil, mapKeys, mapValues, omitBy } from 'lodash'
 import { Filters, ListFacet } from 'ordercloud-javascript-sdk'
 import { FormEvent, FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react'
-import { useOcSelector } from '../redux/ocStore'
-
-interface OcProductFacetFieldProps {
-  count: number
-  selected: string[]
-  valueId: string
-  value: string
-  onChange: (updated: string[]) => void
-}
-
-const OcProductFacetField: FunctionComponent<OcProductFacetFieldProps> = ({
-  valueId,
-  count,
-  selected,
-  value,
-  onChange,
-}) => {
-  const handleCheckboxChange = useCallback(() => {
-    onChange(xor(selected, [value]))
-  }, [selected, onChange, value])
-
-  return (
-    <label htmlFor={valueId}>
-      <input
-        id={valueId}
-        type="checkbox"
-        checked={selected.includes(value)}
-        onChange={handleCheckboxChange}
-      />{' '}
-      {`${value} (${count})`}
-    </label>
-  )
-}
-
-interface OcProductFacetProps {
-  facet: ListFacet
-  values: string[] | undefined
-  onChange: (xpPath: string, newValues?: string[]) => void
-}
-
-const OcProductFacet: FunctionComponent<OcProductFacetProps> = ({ facet, values, onChange }) => {
-  const handleChange = (updated: string[]) => {
-    onChange(facet.XpPath, updated)
-  }
-  return (
-    <div>
-      <p>{facet.Name}</p>
-      {facet.Values.map((v) => {
-        const valueId = `${facet.XpPath}_${v.Value}`
-        return (
-          <OcProductFacetField
-            onChange={handleChange}
-            key={valueId}
-            valueId={valueId}
-            value={v.Value}
-            count={v.Count}
-            selected={values}
-          />
-        )
-      })}
-    </div>
-  )
-}
+import { useOcSelector } from '../../redux/ocStore'
+import OcProductFacet from './OcProductFacet'
 
 export interface OcProductFacetsFormProps {
   onChange: (filters: { [x: string]: string }) => void

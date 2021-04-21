@@ -1,11 +1,12 @@
 import { createSlice, SerializedError } from '@reduxjs/toolkit'
-import { Tokens } from 'ordercloud-javascript-sdk'
+import { DecodedToken, Tokens } from 'ordercloud-javascript-sdk'
 import parseJwt from '../../utils/parseJwt'
 import login from './login'
 import logout from './logout'
 
 interface OcAuthState {
   isAuthenticated: boolean
+  decodedToken?: DecodedToken
   isAnonymous: boolean
   error?: SerializedError
   loading: boolean
@@ -13,13 +14,15 @@ interface OcAuthState {
 
 const initialAccessToken = Tokens.GetAccessToken()
 let isAnonymous = true
+let decodedToken
 
 if (initialAccessToken) {
-  const parsed = parseJwt(initialAccessToken)
-  isAnonymous = !!parsed.orderid
+  decodedToken = parseJwt(initialAccessToken)
+  isAnonymous = !!decodedToken.orderid
 }
 
 const initialState: OcAuthState = {
+  decodedToken,
   isAuthenticated: !!initialAccessToken,
   isAnonymous,
   loading: false,
@@ -35,9 +38,10 @@ const ocAuthSlice = createSlice({
       state.loading = true
       state.error = undefined
     })
-    builder.addCase(login.fulfilled, (state) => {
+    builder.addCase(login.fulfilled, (state, action) => {
       state.isAnonymous = false
       state.isAuthenticated = true
+      state.decodedToken = parseJwt(action.payload.access_token)
       state.loading = false
     })
     builder.addCase(login.rejected, (state, action) => {
@@ -48,13 +52,15 @@ const ocAuthSlice = createSlice({
     // LOGOUT CASES
     builder.addCase(logout.pending, (state) => {
       state.loading = true
+      state.decodedToken = undefined
       state.isAuthenticated = false
       state.isAnonymous = true
       state.error = undefined
     })
-    builder.addCase(logout.fulfilled, (state) => {
+    builder.addCase(logout.fulfilled, (state, action) => {
       state.isAnonymous = true
       state.isAuthenticated = true
+      state.decodedToken = action.payload ? parseJwt(action.payload.access_token) : undefined
       state.loading = false
     })
     builder.addCase(logout.rejected, (state, action) => {

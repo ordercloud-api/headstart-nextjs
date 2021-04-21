@@ -1,5 +1,6 @@
 import { AsyncThunk, AsyncThunkPayloadCreator, createAsyncThunk } from '@reduxjs/toolkit'
 import logout from './ocAuth/logout'
+import { logError } from './ocErrors'
 import { OcRootState, OcThunkApi } from './ocStore'
 
 function getDescendantProp(obj, desc: string) {
@@ -33,6 +34,7 @@ export function createOcAsyncThunk<Returned, ThunkArg = void>(
               thunkAPI.dispatch(logout())
               break
             default:
+              thunkAPI.dispatch(logError(err))
               break
           }
         }

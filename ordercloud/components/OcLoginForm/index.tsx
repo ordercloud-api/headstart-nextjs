@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, FunctionComponent, useCallback, useEffect, useState } from 'react'
-import login from '../redux/ocAuth/login'
-import { useOcDispatch, useOcSelector } from '../redux/ocStore'
+import login from '../../redux/ocAuth/login'
+import { useOcDispatch, useOcSelector } from '../../redux/ocStore'
 
 interface OcLoginFormProps {
   title?: string

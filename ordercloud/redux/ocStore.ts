@@ -1,18 +1,22 @@
 import { AnyAction, configureStore, ThunkDispatch } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import ocConfig from './ocConfig'
+import ocErrors from './ocErrors'
 import ocAuth from './ocAuth'
 import ocUser from './ocUser'
 import ocProductList from './ocProductList'
 import ocProductDetail from './ocProductDetail'
+import ocCurrentOrder from './ocCurrentOrder'
 
 const store = configureStore({
   reducer: {
     ocConfig,
+    ocErrors,
     ocAuth,
     ocUser,
     ocProductList,
     ocProductDetail,
+    ocCurrentOrder,
   },
 })
 

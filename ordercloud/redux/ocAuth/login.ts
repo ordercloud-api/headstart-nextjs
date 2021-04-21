@@ -1,4 +1,6 @@
 import { AccessToken, Auth, RequiredDeep, Tokens } from 'ordercloud-javascript-sdk'
+import { retrieveOrder, transferAnonOrder } from '../ocCurrentOrder'
+import { clearProducts } from '../ocProductList'
 import { createOcAsyncThunk } from '../ocReduxHelpers'
 import { clearUser, getUser } from '../ocUser'
 
@@ -16,7 +18,16 @@ const login = createOcAsyncThunk<RequiredDeep<AccessToken>, LoginActionRequest>(
       throw new Error('OrderCloud Provider was not properly configured')
     }
 
+    const { ocCurrentOrder } = thunkAPI.getState()
+
+    // set the transfer token if the anonymous user has an in progress order
+    let transferToken
+    if (ocCurrentOrder && ocCurrentOrder.order) {
+      transferToken = Tokens.GetAccessToken()
+    }
+
     thunkAPI.dispatch(clearUser())
+    thunkAPI.dispatch(clearProducts())
 
     const response = await Auth.Login(
       credentials.username,
@@ -24,12 +35,20 @@ const login = createOcAsyncThunk<RequiredDeep<AccessToken>, LoginActionRequest>(
       ocConfig.value.clientId,
       ocConfig.value.scope
     )
-    // thunkAPI.dispatch(cleanCatalogCache());
+
     Tokens.SetAccessToken(response.access_token)
     if (credentials.remember && response.refresh_token) {
       Tokens.SetRefreshToken(response.refresh_token)
     }
+
     thunkAPI.dispatch(getUser())
+
+    // transfer the order if a transfer token was set
+    if (transferToken) {
+      thunkAPI.dispatch(transferAnonOrder(transferToken))
+    } else {
+      thunkAPI.dispatch(retrieveOrder())
+    }
     return response
   }
 )
