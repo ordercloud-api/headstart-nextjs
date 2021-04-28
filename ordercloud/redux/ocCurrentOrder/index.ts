@@ -132,6 +132,7 @@ const ocCurrentOrderSlice = createSlice({
     clearCurrentOrder: (state) => {
       state.order = undefined
       state.lineItems = undefined
+      state.initialized = false
     },
   },
   extraReducers: (builder) => {
@@ -149,7 +150,7 @@ const ocCurrentOrderSlice = createSlice({
       state.order = action.payload.order
     })
     builder.addCase(updateLineItem.fulfilled, (state, action) => {
-      state.lineItems = state.lineItems.splice(
+      state.lineItems.splice(
         state.lineItems.findIndex((li) => li.ID === action.payload.lineItem.ID),
         1,
         action.payload.lineItem

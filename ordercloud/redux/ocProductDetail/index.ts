@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, SerializedError } from '@reduxjs/toolkit
 import { BuyerProduct, Me, RequiredDeep, Spec, Variant } from 'ordercloud-javascript-sdk'
 import { createOcAsyncThunk } from '../ocReduxHelpers'
 import { OcThunkApi } from '../ocStore'
+import { cacheProduct, ocProductCacheSelectors } from '../ocProductCache'
 
 interface OcProductDetailState {
   error?: SerializedError
@@ -31,14 +32,11 @@ const getProductVariants = createOcAsyncThunk<Variant[], string>(
 export const setProductId = createAsyncThunk<RequiredDeep<BuyerProduct>, string, OcThunkApi>(
   'ocProductDetail/setProductId',
   async (productId, ThunkAPI) => {
-    const { ocProductList } = ThunkAPI.getState()
-
-    let product = ocProductList.items
-      ? ocProductList.items.find((p) => p.ID === productId)
-      : undefined
+    let product = ocProductCacheSelectors.selectById(ThunkAPI.getState(), productId)
 
     if (!product) {
       product = await Me.GetProduct(productId)
+      ThunkAPI.dispatch(cacheProduct(product))
     }
 
     if (product.SpecCount > 0) {

@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ApiRole, Configuration } from 'ordercloud-javascript-sdk'
+import { ApiRole, Configuration, CookieOptions } from 'ordercloud-javascript-sdk'
 
 export interface OcConfig {
   clientId: string
   scope: ApiRole[]
   baseApiUrl?: string
   allowAnonymous?: boolean
+  cookieOptions?: CookieOptions
 }
 
 interface OcConfigState {
@@ -22,6 +23,7 @@ const ocConfigSlice = createSlice({
       Configuration.Set({
         clientID: action.payload.clientId,
         baseApiUrl: action.payload.baseApiUrl,
+        cookieOptions: action.payload.cookieOptions,
       })
       state.value = action.payload
     },

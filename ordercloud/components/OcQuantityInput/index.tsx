@@ -5,6 +5,7 @@ interface OcQuantityInputProps {
   controlId: string
   priceSchedule: RequiredDeep<PriceSchedule>
   label?: string
+  disabled?: boolean
   quantity: number
   onChange: (quantity: number) => void
 }
@@ -13,6 +14,7 @@ const OcQuantityInput: FunctionComponent<OcQuantityInputProps> = ({
   controlId,
   priceSchedule,
   label = 'Quantity',
+  disabled,
   quantity,
   onChange,
 }) => {
@@ -29,7 +31,7 @@ const OcQuantityInput: FunctionComponent<OcQuantityInputProps> = ({
       {label}
       {priceSchedule.RestrictedQuantity ? (
         // eslint-disable-next-line
-        <select id={controlId} value={quantity} onChange={handleSelectChange}>
+        <select id={controlId} disabled={disabled} value={quantity} onChange={handleSelectChange}>
           {priceSchedule.PriceBreaks.map((pb) => (
             <option key={pb.Quantity} value={pb.Quantity}>
               {pb.Quantity}
@@ -39,6 +41,7 @@ const OcQuantityInput: FunctionComponent<OcQuantityInputProps> = ({
       ) : (
         <input
           id={controlId}
+          disabled={disabled}
           type="number"
           min={priceSchedule.MinQuantity}
           max={priceSchedule.MaxQuantity}

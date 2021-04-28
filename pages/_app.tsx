@@ -19,6 +19,9 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         scope,
         baseApiUrl,
         allowAnonymous,
+        cookieOptions: {
+          prefix: 'hds-nextjs',
+        },
       }}
     >
       <Layout>

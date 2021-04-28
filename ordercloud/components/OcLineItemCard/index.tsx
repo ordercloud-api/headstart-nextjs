@@ -1,8 +1,9 @@
 import { LineItem } from 'ordercloud-javascript-sdk'
-import { FunctionComponent, useCallback, useState } from 'react'
+import { FormEvent, FunctionComponent, useCallback, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { removeLineItem } from '../../redux/ocCurrentOrder'
-import OcProductCard from '../OcProductCard'
+import useOcProduct from '../../hooks/useOcProduct'
+import { removeLineItem, updateLineItem } from '../../redux/ocCurrentOrder'
+import OcQuantityInput from '../OcQuantityInput'
 
 interface OcLineItemCardProps {
   lineItem: LineItem
@@ -11,6 +12,9 @@ interface OcLineItemCardProps {
 const OcLineItemCard: FunctionComponent<OcLineItemCardProps> = ({ lineItem }) => {
   const dispatch = useDispatch()
   const [disabled, setDisabled] = useState(false)
+  const [quantity, setQuantity] = useState(lineItem.Quantity)
+
+  const product = useOcProduct(lineItem.ProductID)
 
   const handleRemoveLineItem = useCallback(async () => {
     setDisabled(true)
@@ -18,15 +22,24 @@ const OcLineItemCard: FunctionComponent<OcLineItemCardProps> = ({ lineItem }) =>
     setDisabled(false)
   }, [dispatch, lineItem])
 
+  const handleUpdateLineItem = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault()
+      setDisabled(true)
+      await dispatch(updateLineItem({ ...lineItem, Quantity: quantity }))
+      setDisabled(false)
+    },
+    [dispatch, quantity, lineItem]
+  )
+
+  const isUpdateDisabled = useMemo(() => {
+    return disabled || lineItem.Quantity === quantity
+  }, [lineItem, disabled, quantity])
+
   return (
     <div>
-      <OcProductCard product={lineItem.Product} />
+      <h2>{lineItem.Product.Name}</h2>
 
-      {/**
-       * TODO: Will probably need to wait to figure out product caching to make this
-       * work efficiently. Forgot price schedule isn't on line item product
-       * <OcQuantityInput priceSchedule={lineItem.Product}></OcQuantityInput>
-       * */}
       <button
         aria-label="Remove Line Item"
         type="button"
@@ -35,6 +48,21 @@ const OcLineItemCard: FunctionComponent<OcLineItemCardProps> = ({ lineItem }) =>
       >
         Remove
       </button>
+
+      {product && (
+        <form onSubmit={handleUpdateLineItem}>
+          <OcQuantityInput
+            controlId={`${lineItem.ID}_quantity`}
+            quantity={quantity}
+            disabled={disabled}
+            onChange={setQuantity}
+            priceSchedule={product.PriceSchedule}
+          />
+          <button type="submit" aria-label="Update Line Item Quantity" disabled={isUpdateDisabled}>
+            Update
+          </button>
+        </form>
+      )}
     </div>
   )
 }

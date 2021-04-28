@@ -4,6 +4,7 @@ import ocConfig from './ocConfig'
 import ocErrors from './ocErrors'
 import ocAuth from './ocAuth'
 import ocUser from './ocUser'
+import ocProductCache from './ocProductCache'
 import ocProductList from './ocProductList'
 import ocProductDetail from './ocProductDetail'
 import ocCurrentOrder from './ocCurrentOrder'
@@ -14,6 +15,7 @@ const store = configureStore({
     ocErrors,
     ocAuth,
     ocUser,
+    ocProductCache,
     ocProductList,
     ocProductDetail,
     ocCurrentOrder,

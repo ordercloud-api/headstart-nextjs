@@ -1,8 +1,9 @@
 import { AccessToken, Auth, Tokens } from 'ordercloud-javascript-sdk'
-import { clearProducts } from '../ocProductList'
+import { clearProductList } from '../ocProductList'
 import { createOcAsyncThunk, OcThrottle } from '../ocReduxHelpers'
 import { clearUser, getUser } from '../ocUser'
 import { clearCurrentOrder } from '../ocCurrentOrder'
+import { cleanProductCache } from '../ocProductCache'
 
 const logoutThrottle: OcThrottle = {
   location: 'ocAuth',
@@ -18,7 +19,8 @@ const logout = createOcAsyncThunk<AccessToken | undefined>(
     }
 
     thunkAPI.dispatch(clearUser())
-    thunkAPI.dispatch(clearProducts())
+    thunkAPI.dispatch(clearProductList())
+    thunkAPI.dispatch(cleanProductCache())
     thunkAPI.dispatch(clearCurrentOrder())
 
     Tokens.RemoveAccessToken()

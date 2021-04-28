@@ -7,6 +7,7 @@ import {
   MetaWithFacets,
   RequiredDeep,
 } from 'ordercloud-javascript-sdk'
+import { cacheProducts } from '../ocProductCache'
 import { createOcAsyncThunk, OcThrottle } from '../ocReduxHelpers'
 
 export interface OcProductListOptions {
@@ -45,8 +46,9 @@ const productListThrottle: OcThrottle = {
 
 export const setListOptions = createOcAsyncThunk<SetListOptionsResult, OcProductListOptions>(
   'ocProductList/setOptions',
-  async (options) => {
+  async (options, ThunkAPI) => {
     const response = await Me.ListProducts(options)
+    ThunkAPI.dispatch(cacheProducts(response.Items))
     return {
       response,
       options,
@@ -59,7 +61,7 @@ const ocProductListSlice = createSlice({
   name: 'ocProductList',
   initialState,
   reducers: {
-    clearProducts: (state) => {
+    clearProductList: (state) => {
       state.loading = false
       state.options = undefined
       state.error = undefined
@@ -85,6 +87,6 @@ const ocProductListSlice = createSlice({
   },
 })
 
-export const { clearProducts } = ocProductListSlice.actions
+export const { clearProductList } = ocProductListSlice.actions
 
 export default ocProductListSlice.reducer
