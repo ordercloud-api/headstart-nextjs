@@ -21,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         allowAnonymous,
         cookieOptions: {
           prefix: 'hds-nextjs',
+          path: '/',
         },
       }}
     >

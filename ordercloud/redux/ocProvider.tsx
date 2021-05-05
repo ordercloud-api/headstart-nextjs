@@ -1,38 +1,55 @@
 import { isEqual } from 'lodash'
 import { FunctionComponent, useEffect } from 'react'
-import { Provider } from 'react-redux'
+import { Provider, useDispatch } from 'react-redux'
+import { initializeAuth } from './ocAuth'
 import logout from './ocAuth/logout'
 import { setConfig, OcConfig } from './ocConfig'
 import { retrieveOrder } from './ocCurrentOrder'
-import ocStore from './ocStore'
+import ocStore, { useOcDispatch, useOcSelector } from './ocStore'
 import { getUser } from './ocUser'
 
 interface OcProviderProps {
   config: OcConfig
 }
 
-const OcProvider: FunctionComponent<OcProviderProps> = ({ children, config }) => {
+const OcInitializer: FunctionComponent<OcProviderProps> = ({ children, config }) => {
+  const dispatch = useOcDispatch()
+  const { ocConfig, ocAuth, ocUser, ocCurrentOrder } = useOcSelector((s) => ({
+    ocConfig: s.ocConfig,
+    ocAuth: s.ocAuth,
+    ocUser: s.ocUser,
+    ocCurrentOrder: s.ocCurrentOrder,
+  }))
+
   useEffect(() => {
-    const { ocConfig, ocAuth, ocUser, ocCurrentOrder } = ocStore.getState()
     if (!ocConfig.value || !isEqual(ocConfig.value, config)) {
-      ocStore.dispatch(setConfig(config))
-    }
-    if (
+      dispatch(setConfig(config))
+    } else if (!ocAuth.initialized) {
+      dispatch(initializeAuth())
+    } else if (
       (ocAuth.isAnonymous && !ocAuth.isAuthenticated) ||
       (ocAuth.isAuthenticated && config.clientId.toLowerCase() !== ocAuth.decodedToken.cid)
     ) {
-      ocStore.dispatch(logout())
+      dispatch(logout())
     } else if (ocAuth.isAuthenticated) {
-      if (!ocUser.user) {
-        ocStore.dispatch(getUser())
+      if (!ocUser.user && !ocUser.loading) {
+        dispatch(getUser())
       }
       if (!ocCurrentOrder.initialized) {
-        ocStore.dispatch(retrieveOrder())
+        dispatch(retrieveOrder())
       }
     }
-  }, [config])
+  }, [dispatch, config, ocConfig, ocAuth, ocUser, ocCurrentOrder])
 
-  return <Provider store={ocStore}>{children}</Provider>
+  return <>{children}</>
+}
+
+const OcProvider: FunctionComponent<OcProviderProps> = ({ children, config }) => {
+  return (
+    <Provider store={ocStore}>
+      <OcInitializer config={config}>{children}</OcInitializer>
+    </Provider>
+  )
 }
 
 export default OcProvider

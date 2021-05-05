@@ -11,7 +11,7 @@ const CartPage: FunctionComponent = () => {
       <button type="button" onClick={() => dispatch(deleteCurrentOrder())}>
         Clear Cart
       </button>
-      <OcLineItemList />
+      <OcLineItemList emptyMessage="Your shopping cart is empty" editable />
     </div>
   )
 }

@@ -2,18 +2,24 @@ import { FunctionComponent } from 'react'
 import useOcCurrentOrder from '../../hooks/useOcCurrentOrder'
 import OcLineItemCard from '../OcLineItemCard'
 
-const OcLineItemList: FunctionComponent = () => {
+interface OcLineItemListProps {
+  emptyMessage?: string
+  editable?: boolean
+}
+
+const OcLineItemList: FunctionComponent<OcLineItemListProps> = ({ emptyMessage, editable }) => {
   const { lineItems } = useOcCurrentOrder()
 
-  return (
+  return lineItems && lineItems.length ? (
     <ol>
-      {lineItems &&
-        lineItems.map((li) => (
-          <li key={li.ID}>
-            <OcLineItemCard lineItem={li} />
-          </li>
-        ))}
+      {lineItems.map((li) => (
+        <li key={li.ID}>
+          <OcLineItemCard lineItem={li} editable={editable} />
+        </li>
+      ))}
     </ol>
+  ) : (
+    <h3>{emptyMessage}</h3>
   )
 }
 

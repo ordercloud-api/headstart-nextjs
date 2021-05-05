@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { LineItem } from 'ordercloud-javascript-sdk'
 import { FormEvent, FunctionComponent, useCallback, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -7,9 +8,10 @@ import OcQuantityInput from '../OcQuantityInput'
 
 interface OcLineItemCardProps {
   lineItem: LineItem
+  editable?: boolean
 }
 
-const OcLineItemCard: FunctionComponent<OcLineItemCardProps> = ({ lineItem }) => {
+const OcLineItemCard: FunctionComponent<OcLineItemCardProps> = ({ lineItem, editable }) => {
   const dispatch = useDispatch()
   const [disabled, setDisabled] = useState(false)
   const [quantity, setQuantity] = useState(lineItem.Quantity)
@@ -40,28 +42,40 @@ const OcLineItemCard: FunctionComponent<OcLineItemCardProps> = ({ lineItem }) =>
     <div>
       <h2>{lineItem.Product.Name}</h2>
 
-      <button
-        aria-label="Remove Line Item"
-        type="button"
-        disabled={disabled}
-        onClick={handleRemoveLineItem}
-      >
-        Remove
-      </button>
-
-      {product && (
-        <form onSubmit={handleUpdateLineItem}>
-          <OcQuantityInput
-            controlId={`${lineItem.ID}_quantity`}
-            quantity={quantity}
+      {editable ? (
+        <>
+          <button
+            aria-label="Remove Line Item"
+            type="button"
             disabled={disabled}
-            onChange={setQuantity}
-            priceSchedule={product.PriceSchedule}
-          />
-          <button type="submit" aria-label="Update Line Item Quantity" disabled={isUpdateDisabled}>
-            Update
+            onClick={handleRemoveLineItem}
+          >
+            Remove
           </button>
-        </form>
+          <Link href={`/products/${lineItem.ProductID}?lineitem=${lineItem.ID}`}>
+            <a aria-label="Edit Line Item">Edit</a>
+          </Link>
+          {product && (
+            <form onSubmit={handleUpdateLineItem}>
+              <OcQuantityInput
+                controlId={`${lineItem.ID}_quantity`}
+                quantity={quantity}
+                disabled={disabled}
+                onChange={setQuantity}
+                priceSchedule={product.PriceSchedule}
+              />
+              <button
+                type="submit"
+                aria-label="Update Line Item Quantity"
+                disabled={isUpdateDisabled}
+              >
+                Update
+              </button>
+            </form>
+          )}
+        </>
+      ) : (
+        <p>{`Quantity: ${lineItem.Quantity}`}</p>
       )}
     </div>
   )

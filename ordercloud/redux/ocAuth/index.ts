@@ -1,5 +1,5 @@
 import { createSlice, SerializedError } from '@reduxjs/toolkit'
-import { DecodedToken, Tokens } from 'ordercloud-javascript-sdk'
+import { Configuration, DecodedToken, Tokens } from 'ordercloud-javascript-sdk'
 import parseJwt from '../../utils/parseJwt'
 import login from './login'
 import logout from './logout'
@@ -10,28 +10,37 @@ interface OcAuthState {
   isAnonymous: boolean
   error?: SerializedError
   loading: boolean
-}
-
-const initialAccessToken = Tokens.GetAccessToken()
-let isAnonymous = true
-let decodedToken
-
-if (initialAccessToken) {
-  decodedToken = parseJwt(initialAccessToken)
-  isAnonymous = !!decodedToken.orderid
+  initialized: boolean
 }
 
 const initialState: OcAuthState = {
-  decodedToken,
-  isAuthenticated: !!initialAccessToken,
-  isAnonymous,
+  isAuthenticated: false,
+  isAnonymous: true,
   loading: false,
+  initialized: false,
 }
 
 const ocAuthSlice = createSlice({
   name: 'ocAuth',
   initialState,
-  reducers: {},
+  reducers: {
+    initializeAuth: (state) => {
+      console.log(Configuration.Get())
+      const initialAccessToken = Tokens.GetAccessToken()
+      let isAnonymous = true
+      let decodedToken
+
+      if (initialAccessToken) {
+        decodedToken = parseJwt(initialAccessToken)
+        isAnonymous = !!decodedToken.orderid
+      }
+
+      state.isAuthenticated = !!initialAccessToken
+      state.isAnonymous = isAnonymous
+      state.decodedToken = decodedToken
+      state.initialized = true
+    },
+  },
   extraReducers: (builder) => {
     // LOGIN CASES
     builder.addCase(login.pending, (state) => {
@@ -69,5 +78,7 @@ const ocAuthSlice = createSlice({
     })
   },
 })
+
+export const { initializeAuth } = ocAuthSlice.actions
 
 export default ocAuthSlice.reducer
