@@ -14,3 +14,13 @@ a {
 * {
   box-sizing: border-box;
 }
+
+label {
+  display: block;
+}
+
+select,
+input[type="text"],
+input[type="password"] {
+  display: block;
+}

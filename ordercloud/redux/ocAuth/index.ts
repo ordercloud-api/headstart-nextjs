@@ -25,7 +25,6 @@ const ocAuthSlice = createSlice({
   initialState,
   reducers: {
     initializeAuth: (state) => {
-      console.log(Configuration.Get())
       const initialAccessToken = Tokens.GetAccessToken()
       let isAnonymous = true
       let decodedToken

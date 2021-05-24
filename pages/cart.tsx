@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { FunctionComponent } from 'react'
 import OcLineItemList from '../ordercloud/components/OcLineItemList'
 import { deleteCurrentOrder } from '../ordercloud/redux/ocCurrentOrder'
@@ -12,6 +13,9 @@ const CartPage: FunctionComponent = () => {
         Clear Cart
       </button>
       <OcLineItemList emptyMessage="Your shopping cart is empty" editable />
+      <Link href="/checkout">
+        <a>Checkout</a>
+      </Link>
     </div>
   )
 }

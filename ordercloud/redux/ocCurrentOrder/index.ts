@@ -1,5 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { LineItem, LineItems, Me, Order, Orders } from 'ordercloud-javascript-sdk'
+import {
+  BuyerAddress,
+  Address,
+  LineItem,
+  LineItems,
+  Me,
+  Order,
+  Orders,
+} from 'ordercloud-javascript-sdk'
+import { EMPTY_ADDRESS } from '../ocAddressBook'
 import { createOcAsyncThunk } from '../ocReduxHelpers'
 
 export interface OcCurrentOrderState {
@@ -125,6 +134,77 @@ export const removeLineItem = createOcAsyncThunk<{ order: Order; removedId: stri
   }
 )
 
+export const saveShippingAddress = createOcAsyncThunk<
+  { order: Order; lineItems: LineItem[] },
+  Partial<BuyerAddress>
+>('ocCurrentOrder/saveShippingAddress', async (request, ThunkAPI) => {
+  const { ocCurrentOrder } = ThunkAPI.getState()
+  const orderId = ocCurrentOrder.order ? ocCurrentOrder.order.ID : undefined
+
+  // what to do when order doesn't exist? shouldn't happen.. but it could!
+  // if (!orderId) {
+  // }
+  let updatedOrder
+  if (request.ID) {
+    updatedOrder = await Orders.Patch('Outgoing', orderId, { ShippingAddressID: request.ID })
+  } else {
+    await Orders.SetShippingAddress('Outgoing', orderId, request as Address)
+    updatedOrder = await Orders.Get('Outgoing', orderId)
+  }
+
+  const lineItemList = await LineItems.List('Outgoing', orderId, { pageSize: 100 })
+
+  return {
+    order: updatedOrder,
+    lineItems: lineItemList.Items,
+  }
+})
+
+export const saveBillingAddress = createOcAsyncThunk<{ order: Order }, Partial<BuyerAddress>>(
+  'ocCurrentOrder/saveBillingAddress',
+  async (request, ThunkAPI) => {
+    const { ocCurrentOrder } = ThunkAPI.getState()
+    const orderId = ocCurrentOrder.order ? ocCurrentOrder.order.ID : undefined
+
+    // what to do when order doesn't exist? shouldn't happen.. but it could!
+    // if (!orderId) {
+    // }
+    let updatedOrder
+    if (request.ID) {
+      updatedOrder = await Orders.Patch('Outgoing', orderId, { BillingAddressID: request.ID })
+    } else {
+      await Orders.SetBillingAddress('Outgoing', orderId, request as Address)
+      updatedOrder = await Orders.Get('Outgoing', orderId)
+    }
+
+    return {
+      order: updatedOrder,
+    }
+  }
+)
+
+export const removeBillingAddress = createOcAsyncThunk<{ order: Order }, undefined>(
+  'ocCurrentOrder/removeBillingAddress',
+  async (request, ThunkAPI) => {
+    const { ocCurrentOrder } = ThunkAPI.getState()
+    const { order } = ocCurrentOrder
+
+    // what to do when order doesn't exist? shouldn't happen.. but it could!
+    // if (!orderId) {
+    // }
+
+    let updatedOrder = order
+    if (order && order.BillingAddress) {
+      if (order.BillingAddressID) {
+        updatedOrder = await Orders.Patch('Outgoing', order.ID, { BillingAddressID: null })
+      } else {
+        updatedOrder = await Orders.Patch('Outgoing', order.ID, { BillingAddressID: null })
+      }
+    }
+    return { order: updatedOrder }
+  }
+)
+
 const ocCurrentOrderSlice = createSlice({
   name: 'ocCurrentOrder',
   initialState,
@@ -159,6 +239,16 @@ const ocCurrentOrderSlice = createSlice({
     })
     builder.addCase(removeLineItem.fulfilled, (state, action) => {
       state.lineItems = state.lineItems.filter((li) => li.ID !== action.payload.removedId)
+      state.order = action.payload.order
+    })
+    builder.addCase(saveShippingAddress.fulfilled, (state, action) => {
+      state.lineItems = action.payload.lineItems
+      state.order = action.payload.order
+    })
+    builder.addCase(saveBillingAddress.fulfilled, (state, action) => {
+      state.order = action.payload.order
+    })
+    builder.addCase(removeBillingAddress.fulfilled, (state, action) => {
       state.order = action.payload.order
     })
   },

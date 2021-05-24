@@ -40,7 +40,9 @@ const OcLineItemCard: FunctionComponent<OcLineItemCardProps> = ({ lineItem, edit
 
   return (
     <div>
-      <h2>{lineItem.Product.Name}</h2>
+      <p>
+        <b>{lineItem.Product.Name}</b>
+      </p>
 
       {editable ? (
         <>
