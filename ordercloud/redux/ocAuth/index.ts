@@ -45,6 +45,7 @@ const ocAuthSlice = createSlice({
     builder.addCase(login.pending, (state) => {
       state.loading = true
       state.error = undefined
+      state.isAuthenticated = false
     })
     builder.addCase(login.fulfilled, (state, action) => {
       state.isAnonymous = false
@@ -54,6 +55,7 @@ const ocAuthSlice = createSlice({
     })
     builder.addCase(login.rejected, (state, action) => {
       state.error = action.error
+      state.isAuthenticated = true
       state.loading = false
     })
 

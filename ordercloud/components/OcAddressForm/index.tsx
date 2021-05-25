@@ -14,10 +14,16 @@ import { EMPTY_ADDRESS } from '../../redux/ocAddressBook'
 interface OcAddressFormProps {
   id: string
   onSubmit: (address: BuyerAddress) => void
+  onDelete?: (addressId: string) => void
   address?: BuyerAddress
 }
 
-const OcAddressForm: FunctionComponent<OcAddressFormProps> = ({ id, onSubmit, address }) => {
+const OcAddressForm: FunctionComponent<OcAddressFormProps> = ({
+  id,
+  onSubmit,
+  onDelete,
+  address,
+}) => {
   const [formValues, setFormValues] = useState(address || EMPTY_ADDRESS)
 
   useEffect(() => {
@@ -31,6 +37,10 @@ const OcAddressForm: FunctionComponent<OcAddressFormProps> = ({ id, onSubmit, ad
     },
     [onSubmit, formValues]
   )
+
+  const handleDeleteAddress = useCallback(() => {
+    onDelete(address.ID)
+  }, [onDelete, address])
 
   const handleInputChange = (field: keyof BuyerAddress) => (e: ChangeEvent<HTMLInputElement>) => {
     setFormValues((s) => ({ ...s, [field]: e.target.value }))
@@ -174,6 +184,9 @@ const OcAddressForm: FunctionComponent<OcAddressFormProps> = ({ id, onSubmit, ad
           onChange={handleInputChange('Phone')}
         />
       </label>
+      <button type="button" onClick={handleDeleteAddress} disabled={hasChanges || !address.ID}>
+        Delete Address
+      </button>
       <button type="button" onClick={handleDiscardChanges} disabled={!hasChanges}>
         Discard Changes
       </button>

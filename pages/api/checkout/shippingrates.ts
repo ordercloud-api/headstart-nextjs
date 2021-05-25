@@ -1,10 +1,29 @@
-export default (req, res) => {
-  console.log('payload', req.body)
+import { NextApiHandler } from 'next'
+import { ShipEstimateResponse } from 'ordercloud-javascript-sdk'
+import withOcHashValidation from '../../../ordercloud/utils/withOcHashValidation'
+import { OrderCheckoutIntegrationEvent } from './ordercalculate'
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
+
+const ShippingRatesHandler: NextApiHandler<ShipEstimateResponse> = (req, res) => {
+  /**
+   * OrderCloud API will pass the OrderWorksheet to the /shippingrates middleware
+   * within the request body. Use this information to calculate shipment estimate groups.
+   * In this example we are not using a third party shipping service. It assumes
+   * all LineItems are in a single ShipEstimate, and the 3 different shipping options
+   * are provided at a fixed rate.
+   * */
+  const event = req.body as OrderCheckoutIntegrationEvent
+
   res.status(200).send({
     ShipEstimates: [
       {
         ID: 'test',
-        ShipEstimateItems: req.body.OrderWorksheet.LineItems.map((li) => ({
+        ShipEstimateItems: event.OrderWorksheet.LineItems.map((li) => ({
           LineItemID: li.ID,
           Quantity: li.Quantity,
         })),
@@ -32,3 +51,5 @@ export default (req, res) => {
     ],
   })
 }
+
+export default withOcHashValidation(ShippingRatesHandler)

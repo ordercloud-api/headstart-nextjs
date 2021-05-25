@@ -1,7 +1,6 @@
-import { BuyerAddress, Filters, Searchable, Sortable } from 'ordercloud-javascript-sdk'
+import { BuyerAddress } from 'ordercloud-javascript-sdk'
 import { ChangeEvent, FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react'
 import useOcAddressBook, { OcAddressListOptions } from '../../hooks/useOcAddressBook'
-import { useOcDispatch } from '../../redux/ocStore'
 import OcAddressForm from '../OcAddressForm'
 
 interface OcAddressBookProps {
@@ -24,6 +23,10 @@ const OcAddressBook: FunctionComponent<OcAddressBookProps> = ({
     setSelectedId(selected || '')
   }, [selected])
 
+  // useEffect(() => {
+  //   setSelectedId((sid) => (sid || addresses.length ? addresses[addresses.length - 1].ID : ''))
+  // }, [addresses])
+
   const handleSelectionChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
       if (onChange) {
@@ -33,6 +36,18 @@ const OcAddressBook: FunctionComponent<OcAddressBookProps> = ({
       }
     },
     [onChange, addresses]
+  )
+
+  const handleDeleteAddress = useCallback(
+    async (addressId: string) => {
+      await deleteAddress(addressId)
+      if (onChange) {
+        onChange(undefined)
+      } else {
+        setSelectedId('')
+      }
+    },
+    [deleteAddress, onChange]
   )
 
   const selectedAddress = useMemo(() => {
@@ -57,7 +72,12 @@ const OcAddressBook: FunctionComponent<OcAddressBookProps> = ({
           ))}
         </select>
       </label>
-      <OcAddressForm id={`${id}_address_book`} address={selectedAddress} onSubmit={saveAddress} />
+      <OcAddressForm
+        id={`${id}_address_book`}
+        address={selectedAddress}
+        onSubmit={saveAddress}
+        onDelete={handleDeleteAddress}
+      />
     </div>
   ) : (
     <OcAddressForm id={`${id}_address_book`} onSubmit={saveAddress} />

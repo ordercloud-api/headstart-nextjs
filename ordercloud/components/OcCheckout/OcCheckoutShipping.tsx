@@ -1,12 +1,14 @@
-import { BuyerAddress, IntegrationEvents } from 'ordercloud-javascript-sdk'
-import { FunctionComponent, useEffect, useMemo } from 'react'
+import { BuyerAddress } from 'ordercloud-javascript-sdk'
+import { FunctionComponent, useMemo } from 'react'
 import { saveShippingAddress } from '../../redux/ocCurrentOrder'
 import { useOcDispatch, useOcSelector } from '../../redux/ocStore'
 import OcAddressBook from '../OcAddressBook'
 import OcAddressForm from '../OcAddressForm'
+import OcShipEstimates from './OcShipEstimates'
 
 const OcCheckoutShipping: FunctionComponent = () => {
   const dispatch = useOcDispatch()
+
   const { initialized, order, lineItems, user } = useOcSelector((s) => ({
     initialized: s.ocCurrentOrder.initialized,
     order: s.ocCurrentOrder.order,
@@ -15,6 +17,7 @@ const OcCheckoutShipping: FunctionComponent = () => {
   }))
 
   const handleSetShippingAddress = (address: Partial<BuyerAddress>) => {
+    console.log('address', address)
     dispatch(saveShippingAddress(address))
   }
 
@@ -24,25 +27,6 @@ const OcCheckoutShipping: FunctionComponent = () => {
     }
     return {}
   }, [initialized, lineItems])
-
-  const estimateApplyAndCalculate = async (orderId) => {
-    const estimateResponse = await IntegrationEvents.EstimateShipping('Outgoing', orderId)
-    // await IntegrationEvents.SelectShipmethods('Outgoing', orderId, {
-    //   ShipMethodSelections: [
-    //     {
-    //       ShipEstimateID: estimateResponse.ShipEstimateResponse.ShipEstimates[0].ID,
-    //       ShipMethodID: 'standard',
-    //     },
-    //   ],
-    // })
-    // await IntegrationEvents.Calculate('Outgoing', orderId)
-  }
-
-  useEffect(() => {
-    if (currentShippingAddress && order) {
-      estimateApplyAndCalculate(order.ID)
-    }
-  }, [currentShippingAddress, order])
 
   const showAddressBook = useMemo(() => {
     return user && user.AvailableRoles && user.AvailableRoles.includes('MeAddressAdmin')
@@ -65,6 +49,7 @@ const OcCheckoutShipping: FunctionComponent = () => {
           onSubmit={handleSetShippingAddress}
         />
       )}
+      <OcShipEstimates />
     </div>
   ) : null
 }
