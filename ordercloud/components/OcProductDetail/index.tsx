@@ -3,6 +3,7 @@ import { FormEvent, FunctionComponent, useCallback, useEffect, useState } from '
 import useOcProductDetail from '../../hooks/useOcProductDetail'
 import { createLineItem, updateLineItem } from '../../redux/ocCurrentOrder'
 import { useOcDispatch, useOcSelector } from '../../redux/ocStore'
+import formatPrice from '../../utils/formatPrice'
 import OcQuantityInput from '../OcQuantityInput'
 import OcProductSpecField from './OcProductSpecField'
 
@@ -60,7 +61,6 @@ const OcProductDetail: FunctionComponent<OcProductDetailProps> = ({
     setSpecValues((sv) =>
       sv.map((s) => {
         if (s.SpecID === values.SpecID) {
-          console.log('change', values.OptionID)
           return {
             SpecID: values.SpecID,
             OptionID: values.OptionID === 'OpenText' ? undefined : values.OptionID,
@@ -103,13 +103,13 @@ const OcProductDetail: FunctionComponent<OcProductDetailProps> = ({
   return product ? (
     <div>
       <h2>{product.Name}</h2>
+      <b>{formatPrice(product.PriceSchedule.PriceBreaks[0].Price)}</b>
       {/* eslint-disable-next-line */}
       <p dangerouslySetInnerHTML={{ __html: product.Description }} />
       <form onSubmit={lineItem ? handleUpdateCart : handleAddToCart}>
         {specs &&
           specs.map((s) => {
             const specValue = specValues.find((sv) => sv.SpecID === s.ID)
-            console.log('render', specValue)
             return (
               <OcProductSpecField
                 key={s.ID}
@@ -130,25 +130,6 @@ const OcProductDetail: FunctionComponent<OcProductDetailProps> = ({
           {`${lineItem ? 'Update' : 'Add To'} Cart`}
         </button>
       </form>
-      <pre>
-        <code>{JSON.stringify(product, null, 2)}</code>
-      </pre>
-      {specs && (
-        <>
-          <h2>Specs</h2>
-          <pre>
-            <code>{JSON.stringify(specs, null, 2)}</code>
-          </pre>
-        </>
-      )}
-      {variants && (
-        <>
-          <h2>Variants</h2>
-          <pre>
-            <code>{JSON.stringify(variants, null, 2)}</code>
-          </pre>
-        </>
-      )}
     </div>
   ) : null
 }

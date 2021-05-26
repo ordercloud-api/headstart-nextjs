@@ -6,7 +6,7 @@ import OcLineItemList from '../OcLineItemList'
 import OcCheckoutSummary from './OcCheckoutSummary'
 
 interface OcCheckoutReviewProps extends OcCheckoutStepProps {
-  onOrderSubmitted: (co: OcCurrentOrderState) => void
+  onOrderSubmitted: (orderId: string) => void
 }
 
 const OcCheckoutReview: FunctionComponent<OcCheckoutReviewProps> = ({

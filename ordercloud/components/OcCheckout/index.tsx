@@ -22,8 +22,8 @@ const OcCheckout: FunctionComponent<{ onSubmitted: any }> = ({ onSubmitted }) =>
     setStep((s) => s + 1)
   }
 
-  const handleOrderSubmitted = (co: OcCurrentOrderState) => {
-    onSubmitted(co)
+  const handleOrderSubmitted = (orderId: string) => {
+    onSubmitted(orderId)
     setStep(0)
   }
 

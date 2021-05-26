@@ -281,6 +281,7 @@ const ocCurrentOrderSlice = createSlice({
       state.lineItems = undefined
       state.shipEstimateResponse = undefined
       state.payments = undefined
+      state.recentOrders = []
       state.initialized = false
     },
   },
