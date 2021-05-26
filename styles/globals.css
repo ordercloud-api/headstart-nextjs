@@ -20,6 +20,10 @@ label {
 }
 
 select,
+input[type="phone"],
+input[type="date"],
+input[type="datetime"],
+input[type="number"],
 input[type="text"],
 input[type="password"] {
   display: block;

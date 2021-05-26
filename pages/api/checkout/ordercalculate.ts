@@ -21,8 +21,8 @@ const OrderCalculateHandler: NextApiHandler<OrderCalculateResponse> = (req, res)
   const event = req.body as OrderCheckoutIntegrationEvent
 
   return res.status(200).send({
-    TaxTotal: 5,
+    TaxTotal: event.OrderWorksheet.Order.BillingAddress ? 5 : 0,
   })
 }
 
-export default withOcHashValidation(OrderCalculateHandler)
+export default withOcHashValidation(OrderCalculateHandler, process.env.NEXT_OC_HASH_KEY)

@@ -8,7 +8,9 @@ interface OcProductCardProps {
 const OcProductCard: FunctionComponent<OcProductCardProps> = ({ product }) => {
   return (
     <div>
-      <h2>{product.Name}</h2>
+      <p>
+        <b>{product.Name}</b>
+      </p>
       <p>{product.Description}</p>
     </div>
   )

@@ -7,13 +7,13 @@ import { cacheProduct, ocProductCacheSelectors } from '../ocProductCache'
 interface OcProductDetailState {
   error?: SerializedError
   product?: RequiredDeep<BuyerProduct>
-  specs?: Spec[]
-  variants?: Variant[]
+  specs?: RequiredDeep<Spec>[]
+  variants?: RequiredDeep<Variant>[]
 }
 
 const initialState: OcProductDetailState = {}
 
-const getProductSpecs = createOcAsyncThunk<Spec[], string>(
+const getProductSpecs = createOcAsyncThunk<RequiredDeep<Spec>[], string>(
   'ocProductDetail/getSpecs',
   async (productId) => {
     const response = await Me.ListSpecs(productId, { pageSize: 100 })
@@ -21,7 +21,7 @@ const getProductSpecs = createOcAsyncThunk<Spec[], string>(
   }
 )
 
-const getProductVariants = createOcAsyncThunk<Variant[], string>(
+const getProductVariants = createOcAsyncThunk<RequiredDeep<Variant>[], string>(
   'ocProductDetail/getVariants',
   async (productId) => {
     const response = await Me.ListVariants(productId, { pageSize: 100 })

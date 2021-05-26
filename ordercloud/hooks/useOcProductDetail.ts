@@ -7,8 +7,8 @@ const useOcProductDetail = (
   productId: string
 ): {
   product?: RequiredDeep<BuyerProduct>
-  specs?: Spec[]
-  variants?: Variant[]
+  specs?: RequiredDeep<Spec>[]
+  variants?: RequiredDeep<Variant>[]
 } => {
   const dispatch = useOcDispatch()
 

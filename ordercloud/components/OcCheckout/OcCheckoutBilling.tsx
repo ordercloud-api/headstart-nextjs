@@ -1,12 +1,13 @@
 import { isEqual } from 'lodash'
 import { BuyerAddress } from 'ordercloud-javascript-sdk'
 import { ChangeEvent, FunctionComponent, useCallback, useMemo } from 'react'
+import { OcCheckoutStepProps } from '.'
 import { removeBillingAddress, saveBillingAddress } from '../../redux/ocCurrentOrder'
 import { useOcDispatch, useOcSelector } from '../../redux/ocStore'
 import OcAddressBook from '../OcAddressBook'
 import OcAddressForm from '../OcAddressForm'
 
-const OcCheckoutBilling: FunctionComponent = () => {
+const OcCheckoutBilling: FunctionComponent<OcCheckoutStepProps> = ({ onNext, onPrev }) => {
   const dispatch = useOcDispatch()
   const { initialized, order, user, lineItems } = useOcSelector((s) => ({
     initialized: s.ocCurrentOrder.initialized,
@@ -81,6 +82,13 @@ const OcCheckoutBilling: FunctionComponent = () => {
             onSubmit={handleSetBillingAddress}
           />
         ))}
+      <hr />
+      <button type="button" onClick={onPrev}>
+        Edit Shipping
+      </button>
+      <button type="button" onClick={onNext}>
+        Payment
+      </button>
     </div>
   ) : null
 }

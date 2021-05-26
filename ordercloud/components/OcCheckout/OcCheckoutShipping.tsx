@@ -5,8 +5,9 @@ import { useOcDispatch, useOcSelector } from '../../redux/ocStore'
 import OcAddressBook from '../OcAddressBook'
 import OcAddressForm from '../OcAddressForm'
 import OcShipEstimates from './OcShipEstimates'
+import { OcCheckoutStepProps } from './index'
 
-const OcCheckoutShipping: FunctionComponent = () => {
+const OcCheckoutShipping: FunctionComponent<OcCheckoutStepProps> = ({ onNext, onPrev }) => {
   const dispatch = useOcDispatch()
 
   const { initialized, order, lineItems, user } = useOcSelector((s) => ({
@@ -50,6 +51,10 @@ const OcCheckoutShipping: FunctionComponent = () => {
         />
       )}
       <OcShipEstimates />
+      <hr />
+      <button type="button" onClick={onNext}>
+        Billing
+      </button>
     </div>
   ) : null
 }

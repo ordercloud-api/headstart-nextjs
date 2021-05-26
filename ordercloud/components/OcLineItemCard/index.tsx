@@ -42,6 +42,12 @@ const OcLineItemCard: FunctionComponent<OcLineItemCardProps> = ({ lineItem, edit
     <div>
       <p>
         <b>{lineItem.Product.Name}</b>
+        {lineItem.Specs.map((s) => (
+          <span key={s.SpecID}>
+            <br />
+            {`${s.Name}: ${s.Value}`}
+          </span>
+        ))}
       </p>
 
       {editable ? (

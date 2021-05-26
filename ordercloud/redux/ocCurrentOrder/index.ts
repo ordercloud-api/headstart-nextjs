@@ -12,19 +12,30 @@ import {
   RequiredDeep,
   ShipMethodSelection,
   OrderWorksheet,
+  Payment,
+  Payments,
 } from 'ordercloud-javascript-sdk'
 import { EMPTY_ADDRESS } from '../ocAddressBook'
 import { createOcAsyncThunk } from '../ocReduxHelpers'
 
+export interface RecentOrder {
+  order: RequiredDeep<Order>
+  lineItems: RequiredDeep<LineItem>[]
+  payments: RequiredDeep<Payment>[]
+}
+
 export interface OcCurrentOrderState {
   initialized: boolean
-  order?: Order
-  lineItems?: LineItem[]
+  order?: RequiredDeep<Order>
+  lineItems?: RequiredDeep<LineItem>[]
+  payments?: RequiredDeep<Payment>[]
   shipEstimateResponse?: RequiredDeep<ShipEstimateResponse>
+  recentOrders: RecentOrder[]
 }
 
 const initialState: OcCurrentOrderState = {
   initialized: false,
+  recentOrders: [],
 }
 
 export const calculateOrder = createOcAsyncThunk<RequiredDeep<OrderWorksheet>, string>(
@@ -32,6 +43,14 @@ export const calculateOrder = createOcAsyncThunk<RequiredDeep<OrderWorksheet>, s
   async (orderId, ThunkAPI) => {
     const response = await IntegrationEvents.Calculate('Outgoing', orderId)
     return response
+  }
+)
+
+export const retrievePayments = createOcAsyncThunk<RequiredDeep<Payment>[], string>(
+  'ocCurrentOrder/retrievePayments',
+  async (orderId, ThunkAPI) => {
+    const response = await Payments.List('Outgoing', orderId, { pageSize: 100 })
+    return response.Items
   }
 )
 
@@ -43,7 +62,18 @@ export const retrieveOrder = createOcAsyncThunk<RequiredDeep<OrderWorksheet> | u
     const response = await Me.ListOrders({ sortBy, filters: { Status: 'Unsubmitted' } })
     const firstOrder = response.Items[0]
     if (firstOrder) {
-      return IntegrationEvents.GetWorksheet('Outgoing', firstOrder.ID)
+      const worksheet = await IntegrationEvents.GetWorksheet('Outgoing', firstOrder.ID)
+      if (
+        worksheet.Order.BillingAddress &&
+        worksheet.ShipEstimateResponse &&
+        worksheet.ShipEstimateResponse.ShipEstimates &&
+        worksheet.ShipEstimateResponse.ShipEstimates.length &&
+        worksheet.ShipEstimateResponse.ShipEstimates.filter((se) => !se.SelectedShipMethodID)
+          .length === 0
+      ) {
+        ThunkAPI.dispatch(retrievePayments(firstOrder.ID))
+      }
+      return worksheet
     }
     return undefined
   }
@@ -160,7 +190,7 @@ export const saveBillingAddress = createOcAsyncThunk<
   }
 
   // ThunkAPI.dispatch(calculateOrder(orderId))
-  return IntegrationEvents.GetWorksheet('Outgoing', orderId)
+  return IntegrationEvents.Calculate('Outgoing', orderId)
 })
 
 export const removeBillingAddress = createOcAsyncThunk<RequiredDeep<OrderWorksheet>, undefined>(
@@ -175,7 +205,7 @@ export const removeBillingAddress = createOcAsyncThunk<RequiredDeep<OrderWorkshe
 
     await Orders.Patch('Outgoing', order.ID, { BillingAddressID: null })
 
-    return IntegrationEvents.GetWorksheet('Outgoing', order.ID)
+    return IntegrationEvents.Calculate('Outgoing', order.ID)
   }
 )
 
@@ -192,10 +222,39 @@ export const selectShipMethods = createOcAsyncThunk<
   RequiredDeep<ShipMethodSelection>[]
 >('ocCurrentOrder/selectShipMethods', async (selection, ThunkAPI) => {
   const { ocCurrentOrder } = ThunkAPI.getState()
-  return IntegrationEvents.SelectShipmethods('Outgoing', ocCurrentOrder.order.ID, {
+  const response = await IntegrationEvents.SelectShipmethods('Outgoing', ocCurrentOrder.order.ID, {
     ShipMethodSelections: selection,
   })
+  if (ocCurrentOrder.order.BillingAddress) {
+    return IntegrationEvents.Calculate('Outgoing', ocCurrentOrder.order.ID)
+  }
+  return response
 })
+
+export const addPayment = createOcAsyncThunk<RequiredDeep<Payment>, Payment>(
+  'ocCurrentOrder/addPayment',
+  async (payment, ThunkAPI) => {
+    const { ocCurrentOrder } = ThunkAPI.getState()
+    return Payments.Create('Outgoing', ocCurrentOrder.order.ID, payment)
+  }
+)
+
+export const submitOrder = createOcAsyncThunk<RecentOrder, any>(
+  'ocCurrentOrder/submit',
+  async (onSubmitted, ThunkAPI) => {
+    const { ocCurrentOrder } = ThunkAPI.getState()
+    const submitResponse = await Orders.Submit('Outgoing', ocCurrentOrder.order.ID)
+
+    onSubmitted(ocCurrentOrder.order.ID)
+    // eslint-disable-next-line no-use-before-define
+    ThunkAPI.dispatch(clearCurrentOrder())
+    return {
+      order: submitResponse,
+      lineItems: ocCurrentOrder.lineItems,
+      payments: ocCurrentOrder.payments,
+    }
+  }
+)
 
 const ocCurrentOrderSlice = createSlice({
   name: 'ocCurrentOrder',
@@ -205,6 +264,7 @@ const ocCurrentOrderSlice = createSlice({
       state.order = undefined
       state.lineItems = undefined
       state.shipEstimateResponse = undefined
+      state.payments = undefined
       state.initialized = false
     },
   },
@@ -250,19 +310,28 @@ const ocCurrentOrderSlice = createSlice({
       state.shipEstimateResponse = action.payload.ShipEstimateResponse
     })
     builder.addCase(calculateOrder.fulfilled, (state, action) => {
-      state.shipEstimateResponse = action.payload.ShipEstimateResponse
       state.order = action.payload.Order
       state.lineItems = action.payload.LineItems
+      state.shipEstimateResponse = action.payload.ShipEstimateResponse
     })
     builder.addCase(estimateShipping.fulfilled, (state, action) => {
-      state.shipEstimateResponse = action.payload.ShipEstimateResponse
       state.order = action.payload.Order
       state.lineItems = action.payload.LineItems
+      state.shipEstimateResponse = action.payload.ShipEstimateResponse
     })
     builder.addCase(selectShipMethods.fulfilled, (state, action) => {
-      state.shipEstimateResponse = action.payload.ShipEstimateResponse
       state.order = action.payload.Order
       state.lineItems = action.payload.LineItems
+      state.shipEstimateResponse = action.payload.ShipEstimateResponse
+    })
+    builder.addCase(retrievePayments.fulfilled, (state, action) => {
+      state.payments = action.payload
+    })
+    builder.addCase(addPayment.fulfilled, (state, action) => {
+      state.payments.push(action.payload)
+    })
+    builder.addCase(submitOrder.fulfilled, (state, action) => {
+      state.recentOrders.unshift(action.payload)
     })
   },
 })

@@ -52,4 +52,4 @@ const ShippingRatesHandler: NextApiHandler<ShipEstimateResponse> = (req, res) =>
   })
 }
 
-export default withOcHashValidation(ShippingRatesHandler)
+export default withOcHashValidation(ShippingRatesHandler, process.env.NEXT_OC_HASH_KEY)
