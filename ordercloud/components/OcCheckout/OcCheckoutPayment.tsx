@@ -10,7 +10,7 @@ import {
 } from 'react'
 import { OcCheckoutStepProps } from '.'
 import useOcCurrentOrder from '../../hooks/useOcCurrentOrder'
-import { addPayment } from '../../redux/ocCurrentOrder'
+import { addPayment, removePayment } from '../../redux/ocCurrentOrder'
 import { useOcDispatch } from '../../redux/ocStore'
 import formatPrice from '../../utils/formatPrice'
 
@@ -20,7 +20,7 @@ const OcCheckoutPayment: FunctionComponent<OcCheckoutStepProps> = ({ onNext, onP
 
   const amountDue = useMemo(() => {
     if (!order) return 0
-    if (!payments.length) return order.Total
+    if (!payments || (payments && !payments.length)) return order.Total
     return order.Total - payments.map((p) => p.Amount).reduceRight((p, c) => p + c)
   }, [order, payments])
 
@@ -32,6 +32,13 @@ const OcCheckoutPayment: FunctionComponent<OcCheckoutStepProps> = ({ onNext, onP
       dispatch(addPayment({ Type: 'PurchaseOrder', Amount: pendingPayment }))
     },
     [dispatch, pendingPayment]
+  )
+
+  const handleRemovePayment = useCallback(
+    (paymentId: string) => () => {
+      dispatch(removePayment(paymentId))
+    },
+    [dispatch]
   )
 
   useEffect(() => {
@@ -46,12 +53,18 @@ const OcCheckoutPayment: FunctionComponent<OcCheckoutStepProps> = ({ onNext, onP
     <div>
       <h2>Payment</h2>
       <h3>{`Amount Due ${formatPrice(amountDue)}`}</h3>
-      {payments.map((p) => (
-        <p key={p.ID}>
-          {p.Type}
-          <b>{` ${formatPrice(p.Amount)}`}</b>
-        </p>
-      ))}
+      {payments &&
+        payments.map((p) => (
+          <div key={p.ID}>
+            <p>
+              {p.Type}
+              <b>{` ${formatPrice(p.Amount)}`}</b>
+            </p>
+            <button type="button" onClick={handleRemovePayment(p.ID)}>
+              Remove Payment
+            </button>
+          </div>
+        ))}
       <form id="checkout_payment" onSubmit={handleAddPayment}>
         <label htmlFor="checkout_pending_payment">
           Payment Amount

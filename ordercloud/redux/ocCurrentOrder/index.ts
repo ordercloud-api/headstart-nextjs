@@ -38,11 +38,18 @@ const initialState: OcCurrentOrderState = {
   recentOrders: [],
 }
 
-export const calculateOrder = createOcAsyncThunk<RequiredDeep<OrderWorksheet>, string>(
-  'ocCurrentOrder/calculateOrder',
-  async (orderId, ThunkAPI) => {
-    const response = await IntegrationEvents.Calculate('Outgoing', orderId)
-    return response
+export const removeAllPayments = createOcAsyncThunk<undefined, undefined>(
+  'ocCurrentOrder/removeAllPayments',
+  async (paymentId, ThunkAPI) => {
+    const { ocCurrentOrder } = ThunkAPI.getState()
+    const queue: Promise<any>[] = []
+    if (ocCurrentOrder.payments) {
+      ocCurrentOrder.payments.forEach((p) => {
+        queue.push(Payments.Delete('Outgoing', ocCurrentOrder.order.ID, p.ID))
+      })
+    }
+    await Promise.all(queue)
+    return undefined
   }
 )
 
@@ -188,8 +195,8 @@ export const saveBillingAddress = createOcAsyncThunk<
   } else {
     await Orders.SetBillingAddress('Outgoing', orderId, request as Address)
   }
+  ThunkAPI.dispatch(removeAllPayments())
 
-  // ThunkAPI.dispatch(calculateOrder(orderId))
   return IntegrationEvents.Calculate('Outgoing', orderId)
 })
 
@@ -204,6 +211,7 @@ export const removeBillingAddress = createOcAsyncThunk<RequiredDeep<OrderWorkshe
     // }
 
     await Orders.Patch('Outgoing', order.ID, { BillingAddressID: null })
+    ThunkAPI.dispatch(removeAllPayments())
 
     return IntegrationEvents.Calculate('Outgoing', order.ID)
   }
@@ -225,6 +233,7 @@ export const selectShipMethods = createOcAsyncThunk<
   const response = await IntegrationEvents.SelectShipmethods('Outgoing', ocCurrentOrder.order.ID, {
     ShipMethodSelections: selection,
   })
+  ThunkAPI.dispatch(removeAllPayments())
   if (ocCurrentOrder.order.BillingAddress) {
     return IntegrationEvents.Calculate('Outgoing', ocCurrentOrder.order.ID)
   }
@@ -239,13 +248,20 @@ export const addPayment = createOcAsyncThunk<RequiredDeep<Payment>, Payment>(
   }
 )
 
+export const removePayment = createOcAsyncThunk<string, string>(
+  'ocCurrentOrder/removePayment',
+  async (paymentId, ThunkAPI) => {
+    const { ocCurrentOrder } = ThunkAPI.getState()
+    await Payments.Delete('Outgoing', ocCurrentOrder.order.ID, paymentId)
+    return paymentId
+  }
+)
+
 export const submitOrder = createOcAsyncThunk<RecentOrder, any>(
   'ocCurrentOrder/submit',
   async (onSubmitted, ThunkAPI) => {
     const { ocCurrentOrder } = ThunkAPI.getState()
     const submitResponse = await Orders.Submit('Outgoing', ocCurrentOrder.order.ID)
-
-    onSubmitted(ocCurrentOrder.order.ID)
     // eslint-disable-next-line no-use-before-define
     ThunkAPI.dispatch(clearCurrentOrder())
     return {
@@ -309,11 +325,6 @@ const ocCurrentOrderSlice = createSlice({
       state.lineItems = action.payload.LineItems
       state.shipEstimateResponse = action.payload.ShipEstimateResponse
     })
-    builder.addCase(calculateOrder.fulfilled, (state, action) => {
-      state.order = action.payload.Order
-      state.lineItems = action.payload.LineItems
-      state.shipEstimateResponse = action.payload.ShipEstimateResponse
-    })
     builder.addCase(estimateShipping.fulfilled, (state, action) => {
       state.order = action.payload.Order
       state.lineItems = action.payload.LineItems
@@ -328,10 +339,21 @@ const ocCurrentOrderSlice = createSlice({
       state.payments = action.payload
     })
     builder.addCase(addPayment.fulfilled, (state, action) => {
-      state.payments.push(action.payload)
+      if (!state.payments) {
+        state.payments = [action.payload]
+      } else {
+        state.payments.push(action.payload)
+      }
+    })
+    builder.addCase(removePayment.fulfilled, (state, action) => {
+      state.payments = state.payments.filter((p) => p.ID !== action.payload)
+    })
+    builder.addCase(removeAllPayments.fulfilled, (state, action) => {
+      state.payments = []
     })
     builder.addCase(submitOrder.fulfilled, (state, action) => {
       state.recentOrders.unshift(action.payload)
+      action.meta.arg(action.payload.order.ID)
     })
   },
 })

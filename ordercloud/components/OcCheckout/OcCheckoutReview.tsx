@@ -1,12 +1,12 @@
 import { FunctionComponent, useCallback } from 'react'
 import { OcCheckoutStepProps } from '.'
-import { submitOrder } from '../../redux/ocCurrentOrder'
+import { OcCurrentOrderState, submitOrder } from '../../redux/ocCurrentOrder'
 import { useOcDispatch } from '../../redux/ocStore'
 import OcLineItemList from '../OcLineItemList'
 import OcCheckoutSummary from './OcCheckoutSummary'
 
 interface OcCheckoutReviewProps extends OcCheckoutStepProps {
-  onOrderSubmitted: (orderId: string) => void
+  onOrderSubmitted: (co: OcCurrentOrderState) => void
 }
 
 const OcCheckoutReview: FunctionComponent<OcCheckoutReviewProps> = ({

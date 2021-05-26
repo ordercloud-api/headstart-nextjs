@@ -1,4 +1,5 @@
 import { FunctionComponent, useState } from 'react'
+import { OcCurrentOrderState } from '../../redux/ocCurrentOrder'
 import OcCheckoutBilling from './OcCheckoutBilling'
 import OcCheckoutPayment from './OcCheckoutPayment'
 import OcCheckoutReview from './OcCheckoutReview'
@@ -21,6 +22,11 @@ const OcCheckout: FunctionComponent<{ onSubmitted: any }> = ({ onSubmitted }) =>
     setStep((s) => s + 1)
   }
 
+  const handleOrderSubmitted = (co: OcCurrentOrderState) => {
+    onSubmitted(co)
+    setStep(0)
+  }
+
   return (
     <div>
       {step === 0 && <OcCheckoutShipping onPrev={handlePrevClick} onNext={handleNextClick} />}
@@ -30,7 +36,7 @@ const OcCheckout: FunctionComponent<{ onSubmitted: any }> = ({ onSubmitted }) =>
         <OcCheckoutReview
           onPrev={handlePrevClick}
           onNext={handleNextClick}
-          onOrderSubmitted={onSubmitted}
+          onOrderSubmitted={handleOrderSubmitted}
         />
       )}
     </div>

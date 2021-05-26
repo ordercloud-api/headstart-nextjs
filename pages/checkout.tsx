@@ -10,8 +10,8 @@ const CheckoutPage: FunctionComponent = () => {
   const { order, initialized } = useOcSelector((s) => s.ocCurrentOrder)
 
   useEffect(() => {
-    if (initialized && order && !order.LineItemCount) {
-      push('/')
+    if (!initialized || !order || (order && !order.LineItemCount)) {
+      push('/cart')
     }
   }, [order, initialized, push])
 
