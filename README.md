@@ -4,20 +4,29 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 [Link to demo](https://headstart-nextjs.vercel.app/)
 
-Log in with either `buyer01` or `buyer02`. Password for both is `Password1234`
+Log in with either `buyer01` or `buyer02`. Password for both is `Password1234!`
 
-* Login
+* Automatic Anonymous Authentication
+* Registered User Login
+    * Automatic Anonymous Order Transfer
+    * Refreh Tokens / Remember Me
 * Product List
+    * Product Cache
     * Product Card
     * Faceted Search
 * Product Detail
-    * Specs
-* Mini Cart
+    * Dynamic Spec Forms
+    * Quantity Input
+    * Add to Cart
 * Checkout
-    * Saved Addresses
+    * Address Book
     * One time addresses
-    * Purchase Order Payment
-
+    * Shipping Estimates (placeholder integration)
+    * Select Ship Methods
+    * Calculate Order (placeholder tax integration)
+    * Split Payments (purchase order only)
+    * Order Submit
+    * Order Confirmation
 
 ## Getting Started
 
