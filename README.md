@@ -1,5 +1,20 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Currently complete (or partially complete) features
+
+* Login
+* Product List
+    * Product Card
+    * Faceted Search
+* Product Detail
+    * Specs
+* Mini Cart
+* Checkout
+    * Saved Addresses
+    * One time addresses
+    * Purchase Order Payment
+
+
 ## Getting Started
 
 First, run the development server:
