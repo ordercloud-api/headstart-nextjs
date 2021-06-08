@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import { createHmac } from 'crypto'
 
 const headerName = 'x-oc-hash'
 
@@ -22,7 +22,7 @@ const withOcHashValidation = (handler, hashKey?: string) => (req, res) => {
       req.on('end', () => {
         req.rawBody = buf
         req.body = JSON.parse(Buffer.from(req.rawBody).toString())
-        const hash = crypto.createHmac('sha256', hashKey).update(req.rawBody).digest('base64')
+        const hash = createHmac('sha256', hashKey).update(req.rawBody).digest('base64')
         if (hash !== sent) {
           res.status(403).send(`Header '${headerName} is Not Valid`)
         } else {
