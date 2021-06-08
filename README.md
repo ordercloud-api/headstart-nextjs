@@ -18,7 +18,13 @@ Log in with either `buyer01` or `buyer02`. Password for both is `Password1234!`
     * Dynamic Spec Forms
     * Quantity Input
     * Add to Cart
+* Cart
+   * LineItem List
+   * LineItem Card
+   * Edit/Remove LineItem
+   * Order Summary
 * Checkout
+    * Order Summary
     * Address Book
     * One time addresses
     * Shipping Estimates (placeholder integration)
