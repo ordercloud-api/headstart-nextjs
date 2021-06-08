@@ -2,6 +2,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Currently complete (or partially complete) features
 
+[Link to demo](https://headstart-nextjs.vercel.app/)
+
+Log in with either `buyer01` or `buyer02`. Password for both is `Password1234`
+
 * Login
 * Product List
     * Product Card
