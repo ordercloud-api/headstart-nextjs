@@ -1,10 +1,12 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Overview
+This project showcases a simple buyer application built with [Next.js](https://nextjs.org/) and [Sitecore OrderCloud](https://ordercloud.io/)
 
-## Currently complete (or partially complete) features
-
+## Demo
 [Link to demo](https://headstart-nextjs.vercel.app/)
 
 Log in with either `buyer01` or `buyer02`. Password for both is `Password1234!`
+
+## Currently complete (or partially complete) features
 
 * Automatic Anonymous Authentication
 * Registered User Login
@@ -35,6 +37,22 @@ Log in with either `buyer01` or `buyer02`. Password for both is `Password1234!`
     * Order Confirmation
 
 ## Getting Started
+
+Configure your application by creating a new `.env` file at the root of your project and fill it in with details from your OrderCloud organization.
+
+```
+NEXT_PUBLIC_OC_CLIENT_ID=YOUR_BUYER_CLIENT_ID_HERE
+NEXT_PUBLIC_OC_SCOPE=Shopper,MeAddressAdmin
+NEXT_PUBLIC_OC_BASE_API_URL=https://sandboxapi.ordercloud.io
+NEXT_PUBLIC_OC_ALLOW_ANONYMOUS=false
+```
+
+The API client defined by `NEXT_PUBLIC_OC_CLIENT_ID` should:
+* Allow buyer users (`apiClient.AllowAnyBuyer = true`)
+* Not have a client secret (`apiClient.ClientSecret = null`)
+* Optionally be configured for anonymous shopping (if you want to allow anonymous by setting `NEXT_PUBLIC_OC_ALLOW_ANONYMOUS=true`)
+    * `apiClient.IsAnonBuyer = true`
+    * `apiClient.DefaultContextUserName` set to the username of a valid buyer user
 
 First, run the development server:
 
