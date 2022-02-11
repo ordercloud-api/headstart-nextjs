@@ -1,6 +1,9 @@
 ## Overview
 This project showcases a simple buyer application built with [Next.js](https://nextjs.org/) and [Sitecore OrderCloud](https://ordercloud.io/)
 
+
+:warning: **Interested in OrderCloud with NextJS?**: Check out OrderCloud's [vercel intergration](https://vercel.com/integrations/ordercloud)! The [guide for installing](https://ordercloud.io/knowledge-base/vercel-integration) gives you steps to get a free hosted NextJS storefront in 5 minutes. 
+
 ## Demo
 [Link to demo](https://headstart-nextjs.vercel.app/)
 
