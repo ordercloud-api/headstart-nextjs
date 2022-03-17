@@ -1,0 +1,35 @@
+.header {
+    height: 83px;
+    position: fixed;
+    width: 100%;
+    background: #ffffff;
+    box-shadow: 0 0 15px 0 rgb(197 197 197 / 50%);
+}
+
+.inner {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.link {
+    margin-left: 20px;
+}
+
+.link:hover {
+    color: #ff6441;
+}
+
+.active {
+    color: #ff6441;
+}
+
+.cart {
+    margin-left: 20px;
+    font-weight: 700;
+}

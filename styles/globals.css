@@ -28,3 +28,18 @@ input[type="text"],
 input[type="password"] {
   display: block;
 }
+
+.wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+main .wrapper {
+  padding-top: 133px;
+}
+
+main {
+  background: #F5F7FA;
+  padding-bottom: 50px;
+}

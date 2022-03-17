@@ -1,5 +1,6 @@
 import { BuyerProduct } from 'ordercloud-javascript-sdk'
 import { FunctionComponent } from 'react'
+import styles from './ProductCard.module.css'
 
 interface OcProductCardProps {
   product: BuyerProduct
@@ -8,9 +9,7 @@ interface OcProductCardProps {
 const OcProductCard: FunctionComponent<OcProductCardProps> = ({ product }) => {
   return (
     <div>
-      <p>
-        <b>{product.Name}</b>
-      </p>
+      <p className={styles.name}>{product.Name}</p>
       <p>{product.Description}</p>
     </div>
   )

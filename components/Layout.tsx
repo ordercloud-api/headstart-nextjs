@@ -1,11 +1,14 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { FunctionComponent } from 'react'
+import { useRouter } from 'next/router'
 import logout from '../ordercloud/redux/ocAuth/logout'
 import { useOcDispatch, useOcSelector } from '../ordercloud/redux/ocStore'
+import styles from './Layout.module.css'
 
 const Layout: FunctionComponent = ({ children }) => {
   const dispatch = useOcDispatch()
+  const router = useRouter()
 
   const { user, isAnonymous, loading, lineItemCount } = useOcSelector((s) => ({
     user: s.ocUser.user,
@@ -20,32 +23,61 @@ const Layout: FunctionComponent = ({ children }) => {
         <title>React Headstart</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header>
-        <h1>React Headstart</h1>
-        <p>{`Cart Count ${lineItemCount}`}</p>
-        <nav>
-          <Link href="/">
-            <a>Home</a>
-          </Link>
-          <Link href="/cart">
-            <a>Cart</a>
-          </Link>
-          <Link href="/products">
-            <a>Products</a>
-          </Link>
-          {isAnonymous ? (
-            <Link href="/login">
-              <a>Login</a>
+      <header className={styles.header}>
+        <div className={`${styles.inner} wrapper`}>
+          <nav className={styles.nav}>
+            <Link href="/">
+              <a className={`${styles.link} ${router.pathname === '/' ? `${styles.active}` : ''}`}>
+                Home
+              </a>
             </Link>
-          ) : (
-            <button type="button" disabled={loading} onClick={() => dispatch(logout())}>
-              Logout
-            </button>
-          )}
-          {!isAnonymous && user && <p>{`${user.FirstName} ${user.LastName}`}</p>}
-        </nav>
+            <Link href="/cart">
+              <a
+                className={`${styles.link} ${
+                  router.pathname === '/cart' ? `${styles.active}` : ''
+                }`}
+              >
+                Cart
+              </a>
+            </Link>
+            <Link href="/products">
+              <a
+                className={`${styles.link} ${
+                  router.pathname === '/products' ? `${styles.active}` : ''
+                }`}
+              >
+                Products
+              </a>
+            </Link>
+            {isAnonymous ? (
+              <Link href="/login">
+                <a
+                  className={`${styles.link} ${
+                    router.pathname === '/login' ? `${styles.active}` : ''
+                  }`}
+                >
+                  Login
+                </a>
+              </Link>
+            ) : (
+              <button
+                className={styles.link}
+                type="button"
+                disabled={loading}
+                onClick={() => dispatch(logout())}
+              >
+                Logout
+              </button>
+            )}
+            {!isAnonymous && user && <p>{`${user.FirstName} ${user.LastName}`}</p>}
+            <p className={styles.cart}>{`Cart Count ${lineItemCount}`}</p>
+          </nav>
+        </div>
       </header>
-      <main>{children}</main>
+      {/* <h1>React Headstart</h1> */}
+      <main>
+        <div className="wrapper">{children}</div>
+      </main>
     </>
   )
 }

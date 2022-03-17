@@ -3,6 +3,7 @@ import { FunctionComponent } from 'react'
 import useOcProductList from '../../hooks/useOcProductList'
 import { OcProductListOptions } from '../../redux/ocProductList'
 import OcProductCard from '../OcProductCard'
+import styles from './ProductList.module.css'
 
 export interface OcProductListProps {
   options?: OcProductListOptions
@@ -13,12 +14,14 @@ const OcProductList: FunctionComponent<OcProductListProps> = ({ options, renderI
   const products = useOcProductList(options)
 
   return (
-    <ol>
+    <ul className={styles.list}>
       {products &&
         products.map((p) => (
-          <li key={p.ID}>{renderItem ? renderItem(p) : <OcProductCard product={p} />}</li>
+          <li className={styles.product} key={p.ID}>
+            {renderItem ? renderItem(p) : <OcProductCard product={p} />}
+          </li>
         ))}
-    </ol>
+    </ul>
   )
 }
 
