@@ -43,3 +43,11 @@ main {
   background: #F5F7FA;
   padding-bottom: 50px;
 }
+
+.btn {
+  padding: 15px 25px;
+  background-color: #FFEFEC;
+  color: #FF6441;
+  border: 1px solid #FF6441;
+  cursor: pointer;
+}

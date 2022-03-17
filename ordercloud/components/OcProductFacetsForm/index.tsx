@@ -20,6 +20,7 @@ function mapOptionFilters(filters?: Filters): { [x: string]: string[] | undefine
 
 const OcProductFacetsForm: FunctionComponent<OcProductFacetsFormProps> = ({ onChange }) => {
   const { options, meta, loading } = useOcSelector((s) => s.ocProductList)
+  console.log(meta)
 
   const [filters, setFilters] = useState(mapOptionFilters(options && options.filters))
 
@@ -43,6 +44,7 @@ const OcProductFacetsForm: FunctionComponent<OcProductFacetsFormProps> = ({ onCh
   }, [options])
 
   const handleFacetChange = useCallback((xpPath: string, newValue: string[]) => {
+    console.log(xpPath)
     setFilters((f) => {
       return f ? { ...f, [`xp.${xpPath}`]: newValue } : { [`xp.${xpPath}`]: newValue }
     })
@@ -51,6 +53,8 @@ const OcProductFacetsForm: FunctionComponent<OcProductFacetsFormProps> = ({ onCh
   const handleSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault()
+      console.log(filters)
+      console.log(mapValues(filters, (v) => v && v.join('|')))
       onChange(mapValues(filters, (v) => v && v.join('|')))
     },
     [onChange, filters]
@@ -58,6 +62,7 @@ const OcProductFacetsForm: FunctionComponent<OcProductFacetsFormProps> = ({ onCh
 
   const mapProductFacets = useCallback(
     (f: ListFacet) => {
+      console.log(f)
       return (
         <OcProductFacet
           key={f.XpPath}
