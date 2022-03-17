@@ -31,13 +31,13 @@ const OcProductCard: FunctionComponent<OcProductCardProps> = ({ product }) => {
       <div className={styles.bottom}>
         <ul className={styles.icons}>
           <li className={styles.iconItem}>
-            <ContactIcon />
+            <ContactIcon customClass={undefined} />
           </li>
           <li className={styles.iconItem}>
-            <ViewIcon />
+            <ViewIcon customClass={undefined} />
           </li>
           <li className={styles.iconItem}>
-            <RemoveIcon />
+            <RemoveIcon customClass={undefined} />
           </li>
         </ul>
         <ul className={styles.list}>
