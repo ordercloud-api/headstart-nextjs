@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { FunctionComponent } from 'react'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import logout from '../ordercloud/redux/ocAuth/logout'
 import { useOcDispatch, useOcSelector } from '../ordercloud/redux/ocStore'
 import styles from './Layout.module.css'
@@ -25,6 +26,8 @@ const Layout: FunctionComponent = ({ children }) => {
       </Head>
       <header className={styles.header}>
         <div className={`${styles.inner} wrapper`}>
+          {/* <Image src="/logo.jpg" alt="logo" width="196" height="147" /> */}
+          <img className={styles.logo} src="/logo.jpg" alt="logo" width="196" height="147" />
           <nav className={styles.nav}>
             <Link href="/">
               <a className={`${styles.link} ${router.pathname === '/' ? `${styles.active}` : ''}`}>
@@ -61,15 +64,15 @@ const Layout: FunctionComponent = ({ children }) => {
               </Link>
             ) : (
               <button
-                className={styles.link}
+                className={styles.logout}
                 type="button"
                 disabled={loading}
                 onClick={() => dispatch(logout())}
               >
-                Logout
+                Logout, {!isAnonymous && user && user.LastName}
               </button>
             )}
-            {!isAnonymous && user && <p>{`${user.FirstName} ${user.LastName}`}</p>}
+            {/* {!isAnonymous && user && <p>{` ${user.FirstName} ${user.LastName}`}</p>} */}
             <p className={styles.cart}>{`Cart Count ${lineItemCount}`}</p>
           </nav>
         </div>

@@ -9,6 +9,13 @@
 .inner {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+}
+
+.logo {
+    width: 80px;
+    height: auto;
+    margin-right: auto;
 }
 
 .nav {
@@ -23,6 +30,19 @@
 
 .link:hover {
     color: #ff6441;
+}
+
+.logout {
+    margin-left: 20px;
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid #ff6441;
+    color: #ff6441;
+    background: none;
+}
+.logout:hover {
+    background-color: #ff6441;
+    color: #ffffff;
 }
 
 .active {
