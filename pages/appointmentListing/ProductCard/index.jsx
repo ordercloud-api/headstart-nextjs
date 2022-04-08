@@ -9,15 +9,22 @@ import ContactIcon from './icons/contact-icon'
 import ViewIcon from './icons/view-icon'
 import RemoveIcon from './icons/remove-icon'
 
-const OcProductCard = ({ product, worksheetId }) => {
+const OcProductCard = ({ product, worksheetId, promotionDiscount }) => {
   if (!product) {
     return null
   }
+
+  console.log(promotionDiscount)
 
   return (
     <div className={styles.container}>
       <p className={styles.name}>{product.Name}</p>
       <p className={styles.description}>{product.Description}</p>
+      <div className={styles.pricecontainer}>
+        <p>
+          Estimated cost <span className={styles.price}>{formatPrice(promotionDiscount)}</span>
+        </p>
+      </div>
       {product.PriceSchedule?.PriceBreaks[0].Price && (
         <div className={styles.pricecontainer}>
           <p>

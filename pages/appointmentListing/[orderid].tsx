@@ -23,6 +23,7 @@ import {
   Tokens,
   Product,
   Products,
+  Promotion,
 } from 'ordercloud-javascript-sdk'
 import OcProductDetail from '../../ordercloud/components/OcProductDetail'
 import { useOcSelector } from '../../ordercloud/redux/ocStore'
@@ -42,11 +43,22 @@ const OrderPage: FunctionComponent = () => {
 
       LineItems.Patch('Outgoing', query.orderid.toString(), lineItemId, {
         xp: {
-          cargoWidth: parseInt(e.target.width.value),
-          cargoHeight: parseInt(e.target.height.value),
-          cargoLength: parseInt(e.target.length.value),
-          cargoWeight: parseInt(e.target.weight.value),
+          CargoWidth: parseInt(e.target.width.value),
+          CargoHeight: parseInt(e.target.height.value),
+          CargoLenght: parseInt(e.target.length.value),
+          CargoWeight: parseInt(e.target.weight.value),
         },
+      }).then((response) => {
+        console.log(response)
+        if (response.PromotionDiscount) {
+          Orders.RemovePromotion('Outgoing', query.orderid.toString(), 'container-weighing').then(
+            () => {
+              Orders.AddPromotion('Outgoing', query.orderid.toString(), 'container-weighing')
+            }
+          )
+        } else {
+          Orders.AddPromotion('Outgoing', query.orderid.toString(), 'container-weighing')
+        }
       })
     })
   }
