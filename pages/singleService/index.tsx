@@ -110,11 +110,11 @@ const SingleServicePage: FunctionComponent<OcProductListProps> = ( { options }) 
     const orders = []
 
     for (const [orderId, value] of Object.entries(ordersLineItems)) {
-      const valueType = value;
+      const valueType:any = value;
       await Orders.Create("Outgoing", { ID: orderId }).then(() => {
         LineItems.Create("Outgoing", orderId, {
-          ProductID: value.lineItemId,
-          Quantity: value.quantity
+          ProductID: valueType.lineItemId,
+          Quantity: valueType.quantity
         }).then((order) => {
           //IntegrationEvents.GetWorksheet('Outgoing', orderId)
           // Orders.Save("Outgoing", orderId, order).then(() => {
