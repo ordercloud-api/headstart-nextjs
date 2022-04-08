@@ -11,7 +11,9 @@ export interface OcProductListProps {
 }
 
 const OcProductList: FunctionComponent<OcProductListProps> = ({ options, renderItem }) => {
+  console.log(options)
   const products = useOcProductList(options)
+  console.log(products)
 
   return (
     <ul className={styles.list}>

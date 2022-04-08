@@ -1,0 +1,31 @@
+.request {
+    max-width: 650px;
+    margin: 70px auto 0;
+}
+
+.row {
+    display: flex;
+    margin-top: 10px;
+}
+
+.selectWrapper {
+    flex: 1;
+}
+.selectWrapper select {
+    width: 100%;
+}
+
+.quantityWrapper {
+    max-width: 50px;
+}
+.quantityWrapper input {
+    width: 100%;
+}
+
+.submit {
+    margin-top: 30px;
+}
+
+.add {
+    margin-top: 10px;
+}

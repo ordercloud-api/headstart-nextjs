@@ -1,5 +1,6 @@
 import { AppProps } from 'next/app'
-import { ApiRole } from 'ordercloud-javascript-sdk'
+import { Auth, ApiRole, Tokens } from 'ordercloud-javascript-sdk'
+import { useEffect } from 'react'
 import Layout from '../components/Layout'
 import OcProvider from '../ordercloud/redux/ocProvider'
 import '../styles/globals.css'
@@ -12,6 +13,28 @@ const baseApiUrl = process.env.NEXT_PUBLIC_OC_BASE_API_URL
 const allowAnonymous = Boolean(process.env.NEXT_PUBLIC_OC_ALLOW_ANONYMOUS)
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+  const getToken = async () => {
+    const roles: ApiRole = [
+      'Shopper',
+      'MeAddressAdmin',
+      'PasswordReset',
+      'MeAdmin',
+      'OrderAdmin',
+      'OrderReader',
+    ]
+
+    await Auth.Anonymous('1C78FDC8-F202-4D98-886A-6B6E0C48D204', roles).then((response) => {
+      console.log(response)
+
+      const token = response.access_token
+      Tokens.SetAccessToken(token)
+    })
+  }
+
+  useEffect(() => {
+    // getToken()
+  }, [])
+
   return (
     <OcProvider
       config={{

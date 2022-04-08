@@ -34,6 +34,25 @@ const Layout: FunctionComponent = ({ children }) => {
                 Home
               </a>
             </Link>
+            <Link href="/singleService">
+              <a
+                className={`${styles.link} ${
+                  router.pathname === '/singleService' ? `${styles.active}` : ''
+                }`}
+              >
+                Single Service
+              </a>
+            </Link>
+            <Link href="/appointmentListing">
+              <a
+                className={`${styles.link} ${
+                  router.pathname === '/appointmentListing' ? `${styles.active}` : ''
+                }`}
+              >
+                Appointment Listing
+              </a>
+            </Link>
+            <div style={{ marginLeft: '15px' }}>|</div>
             <Link href="/cart">
               <a
                 className={`${styles.link} ${

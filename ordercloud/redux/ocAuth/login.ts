@@ -35,8 +35,9 @@ const login = createOcAsyncThunk<RequiredDeep<AccessToken>, LoginActionRequest>(
       credentials.username,
       credentials.password,
       ocConfig.value.clientId,
-      ocConfig.value.scope
+      ['MeAdmin', 'OrderAdmin', 'OrderReader', 'PasswordReset', 'Shopper']
     )
+    // ocConfig.value.scope
 
     Tokens.SetAccessToken(response.access_token)
     if (credentials.remember && response.refresh_token) {

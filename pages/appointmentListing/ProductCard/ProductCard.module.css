@@ -1,0 +1,50 @@
+.container {
+    margin-top: 55px;
+    padding-top: 45px;
+    border-top: 1px solid #cccccc;
+}
+.name {
+    margin-top: 0;
+    font-size: 25px;
+}
+.description {
+    margin-bottom: 0;
+}
+.list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+.item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+.svg {
+    margin-right: 15px;
+}
+.bottom {
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #F5F7FA;
+}
+.price {
+    font-size: 28px;
+    color: #FF6441;
+}
+.pricecontainer {
+    display: flex;
+    justify-content: flex-end;
+}
+.icons {
+    list-style: none;
+    padding: 0;
+    display: flex;
+}
+.iconItem {
+    margin-right: 15px;
+}
+.iconItem:last-child {
+    margin-right: 0;
+}
