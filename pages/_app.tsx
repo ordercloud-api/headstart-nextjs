@@ -14,21 +14,19 @@ const allowAnonymous = Boolean(process.env.NEXT_PUBLIC_OC_ALLOW_ANONYMOUS)
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const getToken = async () => {
-    const roles: ApiRole = [
-      'Shopper',
-      'MeAddressAdmin',
-      'PasswordReset',
-      'MeAdmin',
-      'OrderAdmin',
-      'OrderReader',
-    ]
-
-    await Auth.Anonymous('1C78FDC8-F202-4D98-886A-6B6E0C48D204', roles).then((response) => {
-      console.log(response)
-
-      const token = response.access_token
-      Tokens.SetAccessToken(token)
-    })
+    // const roles: ApiRole = [
+    //   'Shopper',
+    //   'MeAddressAdmin',
+    //   'PasswordReset',
+    //   'MeAdmin',
+    //   'OrderAdmin',
+    //   'OrderReader',
+    // ]
+    // await Auth.Anonymous('1C78FDC8-F202-4D98-886A-6B6E0C48D204', roles).then((response) => {
+    //   console.log(response)
+    //   const token = response.access_token
+    //   Tokens.SetAccessToken(token)
+    // })
   }
 
   useEffect(() => {
