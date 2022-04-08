@@ -10,6 +10,10 @@ import ViewIcon from './icons/view-icon'
 import RemoveIcon from './icons/remove-icon'
 
 const OcProductCard = ({ product, worksheetId }) => {
+  if (!product) {
+    return null
+  }
+
   return (
     <div className={styles.container}>
       <p className={styles.name}>{product.Name}</p>
