@@ -52,28 +52,28 @@ function generateUUID() {
   })
 }
 
-const SingleServicePage: FunctionComponent<OcProductListProps> = () => {
-  const options = { filters: {} }
-  const options2 = {
-    filters: {
-      'xp.color': undefined,
-      'xp.size': undefined,
-      'xp.test_boolean': undefined,
-      'xp.test_number': undefined,
-    },
-    page: undefined,
-    pageSize: undefined,
-    search: undefined,
-    searchOn: undefined,
-    sortBy: undefined,
-  }
+const SingleServicePage: FunctionComponent<OcProductListProps> = ( { options }) => {
+  // const options = { filters: {} }
+  // const options2 = {
+  //   filters: {
+  //     'xp.color': undefined,
+  //     'xp.size': undefined,
+  //     'xp.test_boolean': undefined,
+  //     'xp.test_number': undefined,
+  //   },
+  //   page: undefined,
+  //   pageSize: undefined,
+  //   search: undefined,
+  //   searchOn: undefined,
+  //   sortBy: undefined,
+  // }
   const firstOrederId = generateUUID()
   const [rows, setRows] = useState([{ orderId: firstOrederId }])
   const [ordersLineItems, setOrdersLineItems] = useState({})
 
   const dispatch = useOcDispatch()
 
-  const products = useOcProductList()
+  const products = useOcProductList(options)
   // console.log(products);
 
   const onLineItemChange = (e) => {
