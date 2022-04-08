@@ -32,6 +32,7 @@ export interface OcProductListProps {
   renderItem?: (product: BuyerProduct) => JSX.Element
 }
 
+
 function generateUUID() {
   // Public Domain/MIT
   let d = new Date().getTime() // Timestamp
@@ -109,6 +110,7 @@ const SingleServicePage: FunctionComponent<OcProductListProps> = () => {
     const orders = []
 
     for (const [orderId, value] of Object.entries(ordersLineItems)) {
+      const valueType = value;
       await Orders.Create("Outgoing", { ID: orderId }).then(() => {
         LineItems.Create("Outgoing", orderId, {
           ProductID: value.lineItemId,

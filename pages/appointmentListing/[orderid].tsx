@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -36,10 +37,10 @@ const OrderPage: FunctionComponent = () => {
   const onFormSubmit = (e) => {
     e.preventDefault()
 
-    IntegrationEvents.GetWorksheet('Outgoing', query.orderid).then((worksheet) => {
+    IntegrationEvents.GetWorksheet('Outgoing', query.orderid.toString()).then((worksheet) => {
       const lineItemId = worksheet.LineItems[0].ID
 
-      LineItems.Patch('Outgoing', query.orderid, lineItemId, {
+      LineItems.Patch('Outgoing', query.orderid.toString(), lineItemId, {
         xp: {
           cargoWidth: parseInt(e.target.width.value),
           cargoHeight: parseInt(e.target.height.value),
