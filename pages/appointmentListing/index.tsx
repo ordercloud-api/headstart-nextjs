@@ -9,6 +9,7 @@ import useOcProductList from '../../ordercloud/hooks/useOcProductList'
 import { useOcDispatch } from '../../ordercloud/redux/ocStore'
 import styles from './SingleService.module.css'
 import ProductCard from './ProductCard'
+import { useOcSelector } from '../../ordercloud/redux/ocStore'
 
 import { OcProductListOptions } from '../../ordercloud/redux/ocProductList'
 import {
@@ -42,45 +43,95 @@ export interface OcProductListProps {
 const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
     const [products, setProducts] = useState([])
     const worksheets = useRef([])
+    const storeToken = useOcSelector(store => store.ocAuth.decodedToken)
+    //console.log(store.ocAuth.decodedToken)
 
     const getOrders = async () => {
-        getProducts()
+        //getProducts()
+
+        //https://sandboxapi.ordercloud.io/v1/me/orders?Status=Unsubmitted&sortBy=DateCreated
+
+        // Me.ListOrders().then((response) => {
+        //     console.log(response.Items)
+        // })
+        
+        const sortBy = 'DateCreated' as any // TODO: Not sure how to make this work better... might need a fix in the SDK
+        
+        Me.ListOrders({ sortBy, filters: { Status: 'Unsubmitted, Open' } }).then((response) => {
+            console.log(response.Items)
+        })
     }
 
-    const getProducts = () => {
-        const token = Tokens.GetAccessToken()
-        const orders = JSON.parse(window.localStorage.getItem("orders"));
+    // const getProducts = () => {
+    //     const token = Tokens.GetAccessToken()
+    //     const orders = JSON.parse(window.localStorage.getItem("orders"));
         
-        const requests = []
+    //     const requests = []        
+
+    //     if(token) {
+    //         orders.forEach(orderId => {
+    //             requests.push(IntegrationEvents.GetWorksheet('Outgoing', orderId))                
+    //         });
+
+    //         Promise.all(requests).then((worksheetsResponse) => {
+    //             const productRequests = []
+    //             console.log(worksheetsResponse)
+
+    //             worksheets.current = worksheetsResponse
+
+    //             worksheetsResponse.forEach((worksheet) => {
+    //                 const productId = worksheet.LineItems[0].ProductID
+
+    //                 productRequests.push(Me.GetProduct(productId))
+    //             })
+
+    //             Promise.all(productRequests).then((productsResponse) => {
+    //                 console.log(productsResponse)
+    //                 setProducts(productsResponse)
+    //             })
+    //         })
+    //     }
+    // }
+
+    const getProducts = () => {
+        const token = Tokens.GetAccessToken()        
+        const requests = []        
+        const sortBy = 'DateCreated' as any
 
         if(token) {
-            orders.forEach(orderId => {
-                requests.push(IntegrationEvents.GetWorksheet('Outgoing', orderId))                
-            });
+            Me.ListOrders({ sortBy, filters: { Status: 'Unsubmitted' } }).then((response) => {
 
-            Promise.all(requests).then((worksheetsResponse) => {
-                const productRequests = []
-                console.log(worksheetsResponse)
+                console.log(response)
+                response.Items.forEach(order => {
+                    //Orders.Delete("Outgoing", order.ID)
+                    requests.push(IntegrationEvents.GetWorksheet('Outgoing', order.ID))                
+                });
 
-                worksheets.current = worksheetsResponse
+                
+                Promise.all(requests).then((worksheetsResponse) => {
+                    const productRequests = []
 
-                worksheetsResponse.forEach((worksheet) => {
-                    const productId = worksheet.LineItems[0].ProductID
+                    worksheets.current = worksheetsResponse
 
-                    productRequests.push(Me.GetProduct(productId))
-                })
+                    worksheetsResponse.forEach((worksheet) => {
+                        const productId = worksheet.LineItems[0].ProductID
 
-                Promise.all(productRequests).then((productsResponse) => {
-                    console.log(productsResponse)
-                    setProducts(productsResponse)
+                        productRequests.push(Me.GetProduct(productId))
+                    })
+
+                    Promise.all(productRequests).then((productsResponse) => {
+                        setProducts(productsResponse)
+                    })
                 })
             })
+
+            
         }
     }
 
     useEffect(() => {
         getProducts()
-    }, [])
+    }, [storeToken])
 
     return (
         <div>

@@ -1,6 +1,7 @@
 import { AppProps } from 'next/app'
 import { Auth, ApiRole, Tokens } from 'ordercloud-javascript-sdk'
 import { useEffect } from 'react'
+import AuthGuard from '../components/AuthGuard'
 import Layout from '../components/Layout'
 import OcProvider from '../ordercloud/redux/ocProvider'
 import '../styles/globals.css'
@@ -46,9 +47,11 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         },
       }}
     >
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <AuthGuard>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </AuthGuard>
     </OcProvider>
   )
 }

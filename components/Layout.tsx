@@ -28,75 +28,78 @@ const Layout: FunctionComponent = ({ children }) => {
         <div className={`${styles.inner} wrapper`}>
           {/* <Image src="/logo.jpg" alt="logo" width="196" height="147" /> */}
           <img className={styles.logo} src="/logo.jpg" alt="logo" width="196" height="147" />
-          <nav className={styles.nav}>
-            <Link href="/">
-              <a className={`${styles.link} ${router.pathname === '/' ? `${styles.active}` : ''}`}>
-                Home
-              </a>
-            </Link>
-            <Link href="/singleService">
-              <a
-                className={`${styles.link} ${
-                  router.pathname === '/singleService' ? `${styles.active}` : ''
-                }`}
-              >
-                Single Service
-              </a>
-            </Link>
-            <Link href="/appointmentListing">
-              <a
-                className={`${styles.link} ${
-                  router.pathname === '/appointmentListing' ? `${styles.active}` : ''
-                }`}
-              >
-                Appointment Listing
-              </a>
-            </Link>
-            <div style={{ marginLeft: '15px' }}>|</div>
-            <Link href="/cart">
-              <a
-                className={`${styles.link} ${
-                  router.pathname === '/cart' ? `${styles.active}` : ''
-                }`}
-              >
-                Cart
-              </a>
-            </Link>
-            <Link href="/products">
-              <a
-                className={`${styles.link} ${
-                  router.pathname === '/products' ? `${styles.active}` : ''
-                }`}
-              >
-                Products
-              </a>
-            </Link>
-            {isAnonymous ? (
-              <Link href="/login">
+          {!isAnonymous && (
+            <nav className={styles.nav}>
+              <Link href="/">
                 <a
-                  className={`${styles.link} ${
-                    router.pathname === '/login' ? `${styles.active}` : ''
-                  }`}
+                  className={`${styles.link} ${router.pathname === '/' ? `${styles.active}` : ''}`}
                 >
-                  Login
+                  Home
                 </a>
               </Link>
-            ) : (
-              <button
-                className={styles.logout}
-                type="button"
-                disabled={loading}
-                onClick={() => dispatch(logout())}
-              >
-                Logout, {!isAnonymous && user && user.LastName}
-              </button>
-            )}
-            {/* {!isAnonymous && user && <p>{` ${user.FirstName} ${user.LastName}`}</p>} */}
-            <p className={styles.cart}>{`Cart Count ${lineItemCount}`}</p>
-          </nav>
+              <Link href="/singleService">
+                <a
+                  className={`${styles.link} ${
+                    router.pathname === '/singleService' ? `${styles.active}` : ''
+                  }`}
+                >
+                  Single Service
+                </a>
+              </Link>
+              <Link href="/appointmentListing">
+                <a
+                  className={`${styles.link} ${
+                    router.pathname === '/appointmentListing' ? `${styles.active}` : ''
+                  }`}
+                >
+                  Appointment Listing
+                </a>
+              </Link>
+              <div style={{ marginLeft: '15px' }}>|</div>
+              <Link href="/cart">
+                <a
+                  className={`${styles.link} ${
+                    router.pathname === '/cart' ? `${styles.active}` : ''
+                  }`}
+                >
+                  Cart
+                </a>
+              </Link>
+              <Link href="/products">
+                <a
+                  className={`${styles.link} ${
+                    router.pathname === '/products' ? `${styles.active}` : ''
+                  }`}
+                >
+                  Products
+                </a>
+              </Link>
+              {isAnonymous ? (
+                <Link href="/login">
+                  <a
+                    className={`${styles.link} ${
+                      router.pathname === '/login' ? `${styles.active}` : ''
+                    }`}
+                  >
+                    Login
+                  </a>
+                </Link>
+              ) : (
+                <button
+                  className={styles.logout}
+                  type="button"
+                  disabled={loading}
+                  onClick={() => dispatch(logout())}
+                >
+                  Logout, {!isAnonymous && user && user.LastName}
+                </button>
+              )}
+              {/* {!isAnonymous && user && <p>{` ${user.FirstName} ${user.LastName}`}</p>} */}
+              <p className={styles.cart}>{`Cart Count ${lineItemCount}`}</p>
+            </nav>
+          )}
         </div>
       </header>
-      {/* <h1>React Headstart</h1> */}
       <main>
         <div className="wrapper">{children}</div>
       </main>

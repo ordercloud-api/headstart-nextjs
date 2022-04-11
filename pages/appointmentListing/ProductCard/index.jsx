@@ -10,25 +10,27 @@ import ViewIcon from './icons/view-icon'
 import RemoveIcon from './icons/remove-icon'
 
 const OcProductCard = ({ product, worksheetId, promotionDiscount }) => {
+  const hasPromotion = promotionDiscount > 0
+
   if (!product) {
     return null
   }
-
-  console.log(promotionDiscount)
 
   return (
     <div className={styles.container}>
       <p className={styles.name}>{product.Name}</p>
       <p className={styles.description}>{product.Description}</p>
-      <div className={styles.pricecontainer}>
-        <p>
-          Estimated cost <span className={styles.price}>{formatPrice(promotionDiscount)}</span>
-        </p>
-      </div>
-      {product.PriceSchedule?.PriceBreaks[0].Price && (
+      {hasPromotion && (
         <div className={styles.pricecontainer}>
           <p>
-            Estimated cost{' '}
+            Estimated cost <span className={styles.price}>{formatPrice(promotionDiscount)}</span>
+          </p>
+        </div>
+      )}
+      {product.PriceSchedule?.PriceBreaks[0].Price && !hasPromotion && (
+        <div className={styles.pricecontainer}>
+          <p>
+            Base cost{' '}
             <span className={styles.price}>
               {formatPrice(product.PriceSchedule?.PriceBreaks[0].Price)}
             </span>
@@ -62,9 +64,16 @@ const OcProductCard = ({ product, worksheetId, promotionDiscount }) => {
             Send request
           </li>
         </ul>
-        <Link href={`/appointmentListing/${worksheetId}`}>
-          <a className="btn">Add details</a>
-        </Link>
+        {hasPromotion ? (
+          <Link href={`/sendRequest/${worksheetId}`}>
+            <a className="btn">Send request</a>
+          </Link>
+        ) : (
+          <Link href={`/appointmentListing/${worksheetId}`}>
+            <a className="btn">Add details</a>
+          </Link>
+        )}
+
         {/* <button type="button" className="btn">
           Add details
         </button> */}

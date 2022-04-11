@@ -49,7 +49,6 @@ const OrderPage: FunctionComponent = () => {
           CargoWeight: parseInt(e.target.weight.value),
         },
       }).then((response) => {
-        console.log(response)
         if (response.PromotionDiscount) {
           Orders.RemovePromotion('Outgoing', query.orderid.toString(), 'container-weighing').then(
             () => {

@@ -8,6 +8,7 @@ import { deleteCurrentOrder } from '../../ordercloud/redux/ocCurrentOrder'
 import useOcProductList from '../../ordercloud/hooks/useOcProductList'
 import { useOcDispatch } from '../../ordercloud/redux/ocStore'
 import styles from './SingleService.module.css'
+import { useRouter } from 'next/router'
 
 import { OcProductListOptions } from '../../ordercloud/redux/ocProductList'
 import {
@@ -26,6 +27,7 @@ import {
   Payment,
   Payments,
 } from 'ordercloud-javascript-sdk'
+import router from 'next/router'
 
 export interface OcProductListProps {
   options?: OcProductListOptions
@@ -53,20 +55,7 @@ function generateUUID() {
 }
 
 const SingleServicePage: FunctionComponent<OcProductListProps> = ( { options }) => {
-  // const options = { filters: {} }
-  // const options2 = {
-  //   filters: {
-  //     'xp.color': undefined,
-  //     'xp.size': undefined,
-  //     'xp.test_boolean': undefined,
-  //     'xp.test_number': undefined,
-  //   },
-  //   page: undefined,
-  //   pageSize: undefined,
-  //   search: undefined,
-  //   searchOn: undefined,
-  //   sortBy: undefined,
-  // }
+  const router = useRouter()
   const firstOrederId = generateUUID()
   const [rows, setRows] = useState([{ orderId: firstOrederId }])
   const [ordersLineItems, setOrdersLineItems] = useState({})
@@ -128,6 +117,8 @@ const SingleServicePage: FunctionComponent<OcProductListProps> = ( { options }) 
     }
 
     window.localStorage.setItem("orders", JSON.stringify(orders))
+
+    router.push("/appointmentListing")
 
     // for (const [key, value] of Object.entries(ordersLineItems)) {
     //   await Orders.Save("Outgoing", key, order)
