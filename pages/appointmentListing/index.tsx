@@ -96,10 +96,10 @@ const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
     const getProducts = () => {
         const token = Tokens.GetAccessToken()        
         const requests = []        
-        const sortBy = 'DateCreated' as any
+        const sortBy = 'DateCreated, LastUpdated' as any
 
         if(token) {
-            Me.ListOrders({ sortBy, filters: { Status: 'Unsubmitted' } }).then((response) => {
+            Me.ListOrders({ sortBy: ['!LastUpdated'], filters: { Status: 'Unsubmitted' } }).then((response) => {
 
                 console.log(response)
                 response.Items.forEach(order => {

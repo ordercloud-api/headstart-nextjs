@@ -46,9 +46,15 @@ const SendrequestPage: FunctionComponent = () => {
     //   console.log(submitResponse)
     // })
 
-    IntegrationEvents.Calculate('Outgoing', query.orderid.toString()).then((response) => {
+    // Payments.Create('Outgoing', query.orderid.toString(), { Amount: 10 })
+
+    IntegrationEvents.EstimateShipping('Outgoing', query.orderid.toString()).then((response) => {
       console.log(response)
     })
+
+    // IntegrationEvents.Calculate('Outgoing', query.orderid.toString()).then((response) => {
+    //   console.log(response)
+    // })
   }
 
   useEffect(() => {

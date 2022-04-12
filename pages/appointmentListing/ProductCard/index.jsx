@@ -10,7 +10,7 @@ import ViewIcon from './icons/view-icon'
 import RemoveIcon from './icons/remove-icon'
 
 const OcProductCard = ({ product, worksheetId, promotionDiscount }) => {
-  const hasPromotion = promotionDiscount > 0
+  const hasPromotion = promotionDiscount !== 0
 
   if (!product) {
     return null
