@@ -69,7 +69,7 @@ const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
 
             worksheets.current = worksheetsResponse
 
-            worksheetsResponse.forEach((worksheet) => {
+            worksheetsResponse.forEach((worksheet: any) => {
                 const productId = worksheet.LineItems[0].ProductID
 
                 productRequests.push(Me.GetProduct(productId))
