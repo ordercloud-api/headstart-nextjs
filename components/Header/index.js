@@ -13,7 +13,7 @@ const Header = () => {
   const dispatch = useOcDispatch()
   const router = useRouter()
 
-  const { user, isAnonymous, loading, lineItemCount } = useOcSelector((s) => ({
+  const { user, isAnonymous, loading } = useOcSelector((s) => ({
     user: s.ocUser.user,
     loading: s.ocAuth.loading,
     isAnonymous: s.ocAuth.isAnonymous,
