@@ -1,0 +1,79 @@
+.title {
+    margin: 15px 0 30px;
+}
+.buttonList {
+    display: flex;
+    background: #333333;
+}
+.buttonList button {
+    padding: 19px 15px;
+    color: #ffffff;
+    cursor: pointer;
+    border-right: 1px solid #ffffff
+}
+button.active {
+    background: #F5F7FA;
+    color: #333333;
+}
+.results {
+    display: flex;
+    flex-direction: column;
+    background: #F5F7FA;
+    padding: 82px 115px;
+}
+.results button[type=submit] {
+    align-self: flex-end;
+    margin-top: 20px;
+}
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+.col,
+.colHalf {
+    flex: 1;
+    max-width: 50%;
+    margin-right: 30px;
+}
+.colHalf {
+    max-width: calc(50% - 15px);
+}
+.col input[type=text],
+.colHalf input[type=text] {
+    width: 100%;
+    height: 48px;
+    border: 1px solid #7a8591;
+    padding: 10px;
+    border-radius: 4px;
+}
+.col label,
+.colHalf label {
+    margin-bottom: 10px;
+}
+.col:last-child {
+    margin-right: 0;
+}
+.radio {
+    border: none;
+    padding: 0;
+    display: flex;
+}
+.radio label {
+    display: flex;
+    align-items: center;
+    margin-right: 31px;
+}
+.radio input {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+.radioContainer p {
+    display: flex;
+    align-items: flex-start;
+    margin: 20px 0 10px;
+    color: var(--mid-grey);
+    white-space: normal;
+    text-overflow: ellipsis;
+}
