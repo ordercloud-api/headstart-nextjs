@@ -7,9 +7,10 @@ import { deleteCurrentOrder } from '../../ordercloud/redux/ocCurrentOrder'
 // import useOcProductList from '../hooks/useOcProductList'
 import useOcProductList from '../../ordercloud/hooks/useOcProductList'
 import { useOcDispatch } from '../../ordercloud/redux/ocStore'
-import styles from './SingleService.module.css'
+import styles from './appointmentListing.module.css'
 import ProductCard from './ProductCard'
 import { useOcSelector } from '../../ordercloud/redux/ocStore'
+import Loader from '../../components/Helpers/Loader'
 
 import { OcProductListOptions } from '../../ordercloud/redux/ocProductList'
 import {
@@ -44,13 +45,15 @@ const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
     const [products, setProducts] = useState([])
     const worksheets = useRef([])
     const storeToken = useOcSelector(store => store.ocAuth.decodedToken)
-    const allProducts = useRef([])
-    const requireDetailsProducts = useRef([])
-    const readyToSendProducts = useRef([])
-    const sentProducts = useRef([])
+    const [showLoader, setShowLoader] = useState(true)
+    const [activeTab, setActiveTab] = useState('all')
+    const allOrders = useRef(0)
+    const requireDetails = useRef(0)
+    const readyToSend = useRef(0)
+    const sentRequests = useRef(0)
     //console.log(store.ocAuth.decodedToken)
 
-    const getOrders = async () => {
+    const deleteOrers = async () => {
         Me.ListOrders({ sortBy: ['!LastUpdated'], filters: { Status: 'Open' } }).then((response) => {
             console.log(response.Items)
 
@@ -60,114 +63,177 @@ const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
         })
     }
 
-    const getProducts = () => {
-        const token = Tokens.GetAccessToken()        
+    const resolvePromises = (requests) => {
+        Promise.all(requests).then((worksheetsResponse) => {
+            const productRequests = []
+
+            worksheets.current = worksheetsResponse
+
+            worksheetsResponse.forEach((worksheet) => {
+                const productId = worksheet.LineItems[0].ProductID
+
+                productRequests.push(Me.GetProduct(productId))
+            })
+
+            Promise.all(productRequests).then((productsResponse) => {
+                setShowLoader(false)
+                setProducts(productsResponse)
+            })
+        })
+    }
+
+    const getAllProducts = () => {
+        const token = Tokens.GetAccessToken()
         const requests = []
-        const openRequests = []
 
-        if(token) {
+        if (token) {
+            setShowLoader(true)
+
             Me.ListOrders({ sortBy: ['!LastUpdated'], filters: { Status: 'Open' } }).then((responseOpen) => {
-                //console.log(responseOpen.Items)
-
+                sentRequests.current = responseOpen.Items.length
 
                 Me.ListOrders({ sortBy: ['!LastUpdated'], filters: { Status: 'Unsubmitted' } }).then((responseUnsubmitted) => {
+                    let requireDetailsCount = 0
+                    let readyToSendCount = 0
+
                     responseOpen.Items.forEach(order => {
                         requests.push(IntegrationEvents.GetWorksheet('Outgoing', order.ID))
                     });
 
                     responseUnsubmitted.Items.forEach(order => {
+                        if (order.PromotionDiscount === 0) {
+                            requireDetailsCount += 1
+                        } else {
+                            readyToSendCount += 1
+                        }
+
                         requests.push(IntegrationEvents.GetWorksheet('Outgoing', order.ID))
                     });
 
-                    Promise.all(requests).then((worksheetsResponse) => {
-                        console.log(worksheetsResponse)
-                        const productRequests = []
-    
-                        worksheets.current = worksheetsResponse
-    
-                        worksheetsResponse.forEach((worksheet) => {
-                            const productId = worksheet.LineItems[0].ProductID
-    
-                            productRequests.push(Me.GetProduct(productId))
-                        })
-    
-                        Promise.all(productRequests).then((productsResponse) => {
-                            console.log(productsResponse)
-                            //requireDetailsProducts.current = productsResponse.filter(product => )
-                            
-                            allProducts.current = productsResponse
-                            setProducts(productsResponse)
-                        })
-                    })
+                    readyToSend.current = readyToSendCount
+                    requireDetails.current = requireDetailsCount
+                    allOrders.current = requests.length
+
+                    resolvePromises(requests)
                 })
             })
         }
     }
 
-    const showAll  = () => {
-        setProducts(allProducts.current)
+    const getRequireDetails = () => {
+        const token = Tokens.GetAccessToken()
+        const requests = []
+
+        if (token) {
+            setShowLoader(true)
+
+            Me.ListOrders({ sortBy: ['!LastUpdated'], filters: { Status: 'Unsubmitted' } }).then((responseUnsubmitted) => {
+                const requireDetails = responseUnsubmitted.Items.filter((item) => item.PromotionDiscount === 0)
+
+                requireDetails.forEach(order => {
+                    requests.push(IntegrationEvents.GetWorksheet('Outgoing', order.ID))
+                });
+
+                resolvePromises(requests)
+            })
+        }
     }
 
-    const showRequireDetails  = () => {
-        setProducts(requireDetailsProducts.current)
+    const getReadyToSend = () => {
+        const token = Tokens.GetAccessToken()
+        const requests = []
+
+        if (token) {
+            setShowLoader(true)
+
+            Me.ListOrders({ sortBy: ['!LastUpdated'], filters: { Status: 'Unsubmitted' } }).then((responseUnsubmitted) => {
+                const requireDetails = responseUnsubmitted.Items.filter((item) => item.PromotionDiscount !== 0)
+
+                requireDetails.forEach(order => {
+                    requests.push(IntegrationEvents.GetWorksheet('Outgoing', order.ID))
+                });
+
+                resolvePromises(requests)
+            })
+        }
     }
 
-    const showReadyToSend  = () => {
-        setProducts(readyToSendProducts.current)
+    const getSent = () => {
+        const token = Tokens.GetAccessToken()
+        const requests = []
+
+        if (token) {
+            setShowLoader(true)
+
+            Me.ListOrders({ sortBy: ['!LastUpdated'], filters: { Status: 'Open' } }).then((responseOpen) => {
+                responseOpen.Items.forEach(order => {
+                    requests.push(IntegrationEvents.GetWorksheet('Outgoing', order.ID))
+                });
+
+                resolvePromises(requests)
+            })
+        }
     }
 
-    const showSent  = () => {
-        setProducts(sentProducts.current)
+    const showAll = () => {
+        setActiveTab('all')
+        getAllProducts()
+    }
+
+    const showRequireDetails = () => {
+        setActiveTab('require')
+        getRequireDetails()
+    }
+
+    const showReadyToSend = () => {
+        setActiveTab('ready')
+        getReadyToSend()
+    }
+
+    const showSent = () => {
+        setActiveTab('sent')
+        getSent()
     }
 
     useEffect(() => {
-        getProducts()
+        getAllProducts()
     }, [storeToken])
 
     return (
         <div>
-            <div>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    ut labore et dolore magna aliqua. Non pulvinar neque laoreet suspendisse interdum
-                    consectetur libero. Tempus egestas sed sed risus pretium quam vulputate dignissim. Vel
-                    turpis nunc eget lorem dolor sed viverra ipsum. At volutpat diam ut venenatis tellus in
-                    metus vulputate. Sed libero enim sed faucibus turpis. Dignissim suspendisse in est ante in
-                    nibh mauris cursus. Scelerisque eleifend donec pretium vulputate sapien nec. Cursus vitae
-                    congue mauris rhoncus aenean vel. Vitae semper quis lectus nulla at volutpat. Ut pharetra
-                    sit amet aliquam id diam maecenas.
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    ut labore et dolore magna aliqua. Non pulvinar neque laoreet suspendisse interdum
-                    consectetur libero. Tempus egestas sed sed risus pretium quam vulputate dignissim. Vel
-                    turpis nunc eget lorem dolor sed viverra ipsum. At volutpat diam ut venenatis tellus in
-                    metus vulputate. Sed libero enim sed faucibus turpis. Dignissim suspendisse in est ante in
-                    nibh mauris cursus. Scelerisque eleifend donec pretium vulputate sapien nec. Cursus vitae
-                    congue mauris rhoncus aenean vel. Vitae semper quis lectus nulla at volutpat. Ut pharetra
-                    sit amet aliquam id diam maecenas.
-                </p>
-            </div>
+            <h1 className={styles.title}>Service Enquiries</h1>
             {/* <div>
                 <p>
-                    <button onClick={getOrders}>Delete orders</button>
+                    <button onClick={deleteOrers}>Delete orders</button>
                 </p>
             </div> */}
-            <div>
-                <button type="button" onClick={showAll}>Show All</button>
-                <button type="button" onClick={showRequireDetails}>Requires Details</button>
-                <button type="button" onClick={showReadyToSend}>Ready to Send</button>
-                <button type="button" onClick={showSent}>Sent Requests</button>
-            </div>
-            {products.length <= 0 && (
-                <div>Loading...</div>
-            )}
-            <div>
-                {products.map((product, i) => {
-                    return (
-                        <ProductCard product={product} worksheetId={worksheets.current[i]?.Order?.ID} isSubmitted={worksheets.current[i]?.Order.IsSubmitted} promotionDiscount={worksheets.current[i]?.LineItems[0]?.PromotionDiscount} key={`${product.ID}-${i}`} />
-                    )
-                })}
+            <ul className={styles.buttonList}>
+                <li>
+                    <button className={activeTab === 'all' ? styles.active : ''} type="button" onClick={showAll}>Showing All ({allOrders.current})</button>
+                </li>
+                <li>
+                    <button className={activeTab === 'require' ? styles.active : ''} type="button" onClick={showRequireDetails}>Requires Details ({requireDetails.current})</button>
+                </li>
+                <li>
+                    <button className={activeTab === 'ready' ? styles.active : ''} type="button" onClick={showReadyToSend}>Ready to Send ({readyToSend.current})</button>
+                </li>
+                <li>
+                    <button className={activeTab === 'sent' ? styles.active : ''} type="button" onClick={showSent}>Sent Requests ({sentRequests.current})</button>
+                </li>
+            </ul>
+            <div className={styles.results}>
+                {showLoader && (
+                    <div className={styles.loader}><Loader /></div>
+                )}
+                {!showLoader && (
+                    <>
+                        {products.map((product, i) => {
+                            return (
+                                <ProductCard product={product} worksheetId={worksheets.current[i]?.Order?.ID} isSubmitted={worksheets.current[i]?.Order.IsSubmitted} promotionDiscount={worksheets.current[i]?.LineItems[0]?.PromotionDiscount} key={`${product.ID}-${i}`} />
+                            )
+                        })}
+                    </>
+                )}
             </div>
         </div>
     )

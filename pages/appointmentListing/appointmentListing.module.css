@@ -1,0 +1,27 @@
+.title {
+    margin: 15px 0 30px;
+}
+.buttonList {
+    display: flex;
+    background: #333333;
+}
+.buttonList button {
+    padding: 19px 15px;
+    color: #ffffff;
+    cursor: pointer;
+    border-right: 1px solid #ffffff
+}
+button.active {
+    background: #F5F7FA;
+    color: #333333;
+}
+.loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 150px 0;
+}
+.results {
+    background: #F5F7FA;
+    padding: 37px 115px;
+}

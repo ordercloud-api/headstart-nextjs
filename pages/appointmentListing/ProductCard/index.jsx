@@ -19,24 +19,25 @@ const OcProductCard = ({ product, isSubmitted, worksheetId, promotionDiscount })
   return (
     <div className={styles.container}>
       <p className={styles.name}>{product.Name}</p>
-      <p className={styles.description}>{product.Description}</p>
-      {hasPromotion && (
-        <div className={styles.pricecontainer}>
-          <p>
-            Estimated cost <span className={styles.price}>{formatPrice(promotionDiscount)}</span>
-          </p>
-        </div>
-      )}
-      {product.PriceSchedule?.PriceBreaks[0].Price && !hasPromotion && (
-        <div className={styles.pricecontainer}>
-          <p>
-            Base cost{' '}
-            <span className={styles.price}>
-              {formatPrice(product.PriceSchedule?.PriceBreaks[0].Price)}
-            </span>
-          </p>
-        </div>
-      )}
+      <div className={styles.middle}>
+        <p className={styles.description}>{product.Description}</p>
+        {hasPromotion && (
+          <div className={styles.pricecontainer}>
+            <span>Estimated cost</span>{' '}
+            <span className={styles.price}>{formatPrice(promotionDiscount)}</span>
+          </div>
+        )}
+        {product.PriceSchedule?.PriceBreaks[0].Price && !hasPromotion && (
+          <div className={styles.pricecontainer}>
+            <p>
+              Base cost{' '}
+              <span className={styles.price}>
+                {formatPrice(product.PriceSchedule?.PriceBreaks[0].Price)}
+              </span>
+            </p>
+          </div>
+        )}
+      </div>
 
       <div className={styles.bottom}>
         <ul className={styles.icons}>
@@ -77,10 +78,6 @@ const OcProductCard = ({ product, isSubmitted, worksheetId, promotionDiscount })
             )}
           </>
         )}
-
-        {/* <button type="button" className="btn">
-          Add details
-        </button> */}
       </div>
     </div>
   )

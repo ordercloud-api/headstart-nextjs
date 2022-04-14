@@ -1,7 +1,10 @@
 .container {
-    margin-top: 55px;
-    padding-top: 45px;
-    border-top: 1px solid #cccccc;
+    margin-top: 30px;
+    padding: 30px 40px 20px 40px;
+    background-color: #ffffff;
+}
+.container:first-child {
+    margin-top: 0;
 }
 .name {
     margin-top: 0;
@@ -24,18 +27,24 @@
     margin-right: 15px;
 }
 .bottom {
-    padding-top: 20px;
+    margin-top: 20px;
+    padding-top: 15px;
     display: flex;
     justify-content: space-between;
-    border-top: 1px solid #F5F7FA;
+    align-items: center;
+    border-top: 2px solid #f5f7fa;
 }
 .price {
+    margin-left: 15px;
     font-size: 28px;
     color: #FF6441;
 }
 .pricecontainer {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    margin-left: 75px;
 }
 .icons {
     list-style: none;
@@ -47,4 +56,8 @@
 }
 .iconItem:last-child {
     margin-right: 0;
+}
+.middle {
+    display: flex;
+    align-items: flex-start;
 }
