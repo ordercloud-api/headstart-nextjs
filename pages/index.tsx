@@ -1,11 +1,10 @@
 import { FunctionComponent } from 'react'
 import { useOcSelector } from '../ordercloud/redux/ocStore'
 import styles from '../styles/Home.module.css'
-import type { ReactElement } from 'react'
-import Layout from '../components/Layout'
 
-export default function Page() {
+const Home: FunctionComponent = () => {
   const user = useOcSelector((s) => s.ocUser.user)
+
   return (
     <div className={styles.container}>
       <main className={styles.main}>
@@ -23,10 +22,4 @@ export default function Page() {
   )
 }
 
-Page.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout>
-      {page}
-    </Layout>
-  )
-};
+export default Home

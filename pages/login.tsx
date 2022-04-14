@@ -1,29 +1,19 @@
 import { useRouter } from 'next/router'
-import { FunctionComponent } from 'react';
-import type { ReactElement } from 'react'
+import { FunctionComponent } from 'react'
 import OcLoginForm from '../ordercloud/components/OcLoginForm'
-import LoggedOutLayout from '../components/LoggedOutLayout';
 
 const LoginPage: FunctionComponent = () => {
   const { push } = useRouter()
 
   const handleOnLoggedIn = () => {
-    push('/singleService')
+    push('/products')
   }
 
   return (
-    <main>
+    <div>
       <OcLoginForm onLoggedIn={handleOnLoggedIn} />
-    </main>
+    </div>
   )
-};
+}
 
-LoginPage.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <LoggedOutLayout>
-      {page}
-    </LoggedOutLayout>
-  )
-};
-
-export default LoginPage;
+export default LoginPage
