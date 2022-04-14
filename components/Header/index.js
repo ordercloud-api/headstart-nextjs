@@ -1,3 +1,6 @@
+/* eslint-disable react/self-closing-comp */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
@@ -42,14 +45,14 @@ const Header = () => {
             <nav className={styles['global-nav']}>
               <li>
                 <a href="#">
-                  <button className={styles.terminal}>
+                  <button type="button" className={styles.terminal}>
                     <span>Switch Terminal</span>
                   </button>
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <button className={styles.Menu}>
+                  <button type="button" className={styles.Menu}>
                     <span className={styles.toggle}>
                       <span className={styles['toggle-dot']} />
                       <span className={styles['toggle-dot']} />
@@ -66,7 +69,7 @@ const Header = () => {
                 </a>
               </li>
             </nav>
-            <div className={styles.separator} />
+            <div className={styles.separator}></div>
             <div className={styles.login}>
               {isAnonymous ? (
                 <Link href="/login">
