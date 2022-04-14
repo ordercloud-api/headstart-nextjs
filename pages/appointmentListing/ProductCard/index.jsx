@@ -9,7 +9,7 @@ import ContactIcon from './icons/contact-icon'
 import ViewIcon from './icons/view-icon'
 import RemoveIcon from './icons/remove-icon'
 
-const OcProductCard = ({ product, worksheetId, promotionDiscount }) => {
+const OcProductCard = ({ product, isSubmitted, worksheetId, promotionDiscount }) => {
   const hasPromotion = promotionDiscount !== 0
 
   if (!product) {
@@ -64,14 +64,18 @@ const OcProductCard = ({ product, worksheetId, promotionDiscount }) => {
             Send request
           </li>
         </ul>
-        {hasPromotion ? (
-          <Link href={`/sendRequest/${worksheetId}`}>
-            <a className="btn">Send request</a>
-          </Link>
-        ) : (
-          <Link href={`/appointmentListing/${worksheetId}`}>
-            <a className="btn">Add details</a>
-          </Link>
+        {!isSubmitted && (
+          <>
+            {hasPromotion ? (
+              <Link href={`/sendRequest/${worksheetId}`}>
+                <a className="btn">Send request</a>
+              </Link>
+            ) : (
+              <Link href={`/appointmentListing/${worksheetId}`}>
+                <a className="btn">Add details</a>
+              </Link>
+            )}
+          </>
         )}
 
         {/* <button type="button" className="btn">

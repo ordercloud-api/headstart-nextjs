@@ -35,8 +35,9 @@ const login = createOcAsyncThunk<RequiredDeep<AccessToken>, LoginActionRequest>(
       credentials.username,
       credentials.password,
       ocConfig.value.clientId,
-      ['MeAdmin', 'OrderAdmin', 'OrderReader', 'PasswordReset', 'Shopper']
+      ['MeAdmin', 'OrderAdmin', 'OrderReader', 'PasswordReset', 'Shopper', 'FullAccess']
     )
+    // ['MeAdmin', 'OrderAdmin', 'OrderReader', 'PasswordReset', 'Shopper']
     // ocConfig.value.scope
 
     Tokens.SetAccessToken(response.access_token)

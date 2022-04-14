@@ -38,23 +38,12 @@ const SendrequestPage: FunctionComponent = () => {
   const sendRequest = () => {
     const token = Tokens.GetAccessToken()
 
-    // Orders.Submit('Outgoing', query.orderid.toString()).then((response) => {
-    //   console.log(response)
-    // })
-
-    // Orders.Submit('Outgoing', query.orderid.toString()).then((submitResponse) => {
-    //   console.log(submitResponse)
-    // })
-
-    // Payments.Create('Outgoing', query.orderid.toString(), { Amount: 10 })
-
-    IntegrationEvents.EstimateShipping('Outgoing', query.orderid.toString()).then((response) => {
+    Orders.Submit('Outgoing', query.orderid.toString()).then((response) => {
       console.log(response)
+      setTimeout(() => {
+        push('/appointmentListing')
+      }, 5000)
     })
-
-    // IntegrationEvents.Calculate('Outgoing', query.orderid.toString()).then((response) => {
-    //   console.log(response)
-    // })
   }
 
   useEffect(() => {

@@ -44,89 +44,80 @@ const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
     const [products, setProducts] = useState([])
     const worksheets = useRef([])
     const storeToken = useOcSelector(store => store.ocAuth.decodedToken)
+    const allProducts = useRef([])
+    const requireDetailsProducts = useRef([])
+    const readyToSendProducts = useRef([])
+    const sentProducts = useRef([])
     //console.log(store.ocAuth.decodedToken)
 
     const getOrders = async () => {
-        //getProducts()
-
-        //https://sandboxapi.ordercloud.io/v1/me/orders?Status=Unsubmitted&sortBy=DateCreated
-
-        // Me.ListOrders().then((response) => {
-        //     console.log(response.Items)
-        // })
-        
-        const sortBy = 'DateCreated' as any // TODO: Not sure how to make this work better... might need a fix in the SDK
-        
-        Me.ListOrders({ sortBy, filters: { Status: 'Unsubmitted, Open' } }).then((response) => {
+        Me.ListOrders({ sortBy: ['!LastUpdated'], filters: { Status: 'Open' } }).then((response) => {
             console.log(response.Items)
+
+            response.Items.forEach(order => {
+                Orders.Delete("Outgoing", order.ID)
+            });
         })
     }
 
-    // const getProducts = () => {
-    //     const token = Tokens.GetAccessToken()
-    //     const orders = JSON.parse(window.localStorage.getItem("orders"));
-        
-    //     const requests = []        
-
-    //     if(token) {
-    //         orders.forEach(orderId => {
-    //             requests.push(IntegrationEvents.GetWorksheet('Outgoing', orderId))                
-    //         });
-
-    //         Promise.all(requests).then((worksheetsResponse) => {
-    //             const productRequests = []
-    //             console.log(worksheetsResponse)
-
-    //             worksheets.current = worksheetsResponse
-
-    //             worksheetsResponse.forEach((worksheet) => {
-    //                 const productId = worksheet.LineItems[0].ProductID
-
-    //                 productRequests.push(Me.GetProduct(productId))
-    //             })
-
-    //             Promise.all(productRequests).then((productsResponse) => {
-    //                 console.log(productsResponse)
-    //                 setProducts(productsResponse)
-    //             })
-    //         })
-    //     }
-    // }
-
     const getProducts = () => {
         const token = Tokens.GetAccessToken()        
-        const requests = []        
-        const sortBy = 'DateCreated, LastUpdated' as any
+        const requests = []
+        const openRequests = []
 
         if(token) {
-            Me.ListOrders({ sortBy: ['!LastUpdated'], filters: { Status: 'Unsubmitted' } }).then((response) => {
+            Me.ListOrders({ sortBy: ['!LastUpdated'], filters: { Status: 'Open' } }).then((responseOpen) => {
+                //console.log(responseOpen.Items)
 
-                console.log(response)
-                response.Items.forEach(order => {
-                    //Orders.Delete("Outgoing", order.ID)
-                    requests.push(IntegrationEvents.GetWorksheet('Outgoing', order.ID))                
-                });
 
-                
-                Promise.all(requests).then((worksheetsResponse) => {
-                    const productRequests = []
+                Me.ListOrders({ sortBy: ['!LastUpdated'], filters: { Status: 'Unsubmitted' } }).then((responseUnsubmitted) => {
+                    responseOpen.Items.forEach(order => {
+                        requests.push(IntegrationEvents.GetWorksheet('Outgoing', order.ID))
+                    });
 
-                    worksheets.current = worksheetsResponse
+                    responseUnsubmitted.Items.forEach(order => {
+                        requests.push(IntegrationEvents.GetWorksheet('Outgoing', order.ID))
+                    });
 
-                    worksheetsResponse.forEach((worksheet) => {
-                        const productId = worksheet.LineItems[0].ProductID
-
-                        productRequests.push(Me.GetProduct(productId))
-                    })
-
-                    Promise.all(productRequests).then((productsResponse) => {
-                        setProducts(productsResponse)
+                    Promise.all(requests).then((worksheetsResponse) => {
+                        console.log(worksheetsResponse)
+                        const productRequests = []
+    
+                        worksheets.current = worksheetsResponse
+    
+                        worksheetsResponse.forEach((worksheet) => {
+                            const productId = worksheet.LineItems[0].ProductID
+    
+                            productRequests.push(Me.GetProduct(productId))
+                        })
+    
+                        Promise.all(productRequests).then((productsResponse) => {
+                            console.log(productsResponse)
+                            //requireDetailsProducts.current = productsResponse.filter(product => )
+                            
+                            allProducts.current = productsResponse
+                            setProducts(productsResponse)
+                        })
                     })
                 })
             })
-
-            
         }
+    }
+
+    const showAll  = () => {
+        setProducts(allProducts.current)
+    }
+
+    const showRequireDetails  = () => {
+        setProducts(requireDetailsProducts.current)
+    }
+
+    const showReadyToSend  = () => {
+        setProducts(readyToSendProducts.current)
+    }
+
+    const showSent  = () => {
+        setProducts(sentProducts.current)
     }
 
     useEffect(() => {
@@ -157,16 +148,24 @@ const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
                     sit amet aliquam id diam maecenas.
                 </p>
             </div>
-            <div>
+            {/* <div>
                 <p>
-                    <button onClick={getOrders}>Get orders</button>
+                    <button onClick={getOrders}>Delete orders</button>
                 </p>
+            </div> */}
+            <div>
+                <button type="button" onClick={showAll}>Show All</button>
+                <button type="button" onClick={showRequireDetails}>Requires Details</button>
+                <button type="button" onClick={showReadyToSend}>Ready to Send</button>
+                <button type="button" onClick={showSent}>Sent Requests</button>
             </div>
+            {products.length <= 0 && (
+                <div>Loading...</div>
+            )}
             <div>
                 {products.map((product, i) => {
-                    console.log(`${product.ID}-${i}`)
                     return (
-                        <ProductCard product={product} worksheetId={worksheets.current[i]?.Order?.ID} promotionDiscount={worksheets.current[i]?.LineItems[0]?.PromotionDiscount} key={`${product.ID}-${i}`} />
+                        <ProductCard product={product} worksheetId={worksheets.current[i]?.Order?.ID} isSubmitted={worksheets.current[i]?.Order.IsSubmitted} promotionDiscount={worksheets.current[i]?.LineItems[0]?.PromotionDiscount} key={`${product.ID}-${i}`} />
                     )
                 })}
             </div>

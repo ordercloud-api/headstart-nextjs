@@ -59,11 +59,8 @@ const SingleServicePage: FunctionComponent<OcProductListProps> = ( { options }) 
   const firstOrederId = generateUUID()
   const [rows, setRows] = useState([{ orderId: firstOrederId }])
   const [ordersLineItems, setOrdersLineItems] = useState({})
-
   const dispatch = useOcDispatch()
-
   const products = useOcProductList(options)
-  // console.log(products);
 
   const onLineItemChange = (e) => {
     const { orderId } = e.currentTarget.dataset
@@ -89,10 +86,6 @@ const SingleServicePage: FunctionComponent<OcProductListProps> = ( { options }) 
     setRows(newRows)
   }
 
-  const getOrders = async () => {
-    await Orders.List("Outgoing")
-    //await Orders.List("Outgoing")
-  }
 
   const onFormSubmit = async (e) => {
     e.preventDefault()
@@ -119,27 +112,6 @@ const SingleServicePage: FunctionComponent<OcProductListProps> = ( { options }) 
     window.localStorage.setItem("orders", JSON.stringify(orders))
 
     router.push("/appointmentListing")
-
-    // for (const [key, value] of Object.entries(ordersLineItems)) {
-    //   await Orders.Save("Outgoing", key, order)
-    //   console.log(key)
-    //   console.log(value)
-    // }
-    // fetch("https://sandboxapi.ordercloud.io/v1/orders/Outgoing", {
-    //   method: "POST",
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(data)
-    // })
-
-    
-
-    // fetch("https://sandboxapi.ordercloud.io/v1/orders/Outgoing")
-    // .then(response => response.json())
-    // .then((data) => {
-    //   console.log(data)
-    // })
   }
 
   if (!products) {
@@ -148,13 +120,6 @@ const SingleServicePage: FunctionComponent<OcProductListProps> = ( { options }) 
 
   return (
     <div>
-      {/* <button type="button" onClick={() => dispatch(deleteCurrentOrder())}>
-        Clear Cart
-      </button>
-      <OcLineItemList emptyMessage="Your shopping cart is empty" editable />
-      <Link href="/checkout">
-        <a>asd</a>
-      </Link> */}
       <div>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt

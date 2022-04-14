@@ -29,11 +29,7 @@ import OcProductDetail from '../../ordercloud/components/OcProductDetail'
 import { useOcSelector } from '../../ordercloud/redux/ocStore'
 
 const OrderPage: FunctionComponent = () => {
-  const { isReady, query, push } = useRouter()
-
-  console.log(isReady)
-  console.log(query)
-  console.log(push)
+  const { query, push } = useRouter()
 
   const onFormSubmit = (e) => {
     e.preventDefault()
@@ -52,11 +48,19 @@ const OrderPage: FunctionComponent = () => {
         if (response.PromotionDiscount) {
           Orders.RemovePromotion('Outgoing', query.orderid.toString(), 'container-weighing').then(
             () => {
-              Orders.AddPromotion('Outgoing', query.orderid.toString(), 'container-weighing')
+              Orders.AddPromotion('Outgoing', query.orderid.toString(), 'container-weighing').then(
+                () => {
+                  push('/appointmentListing')
+                }
+              )
             }
           )
         } else {
-          Orders.AddPromotion('Outgoing', query.orderid.toString(), 'container-weighing')
+          Orders.AddPromotion('Outgoing', query.orderid.toString(), 'container-weighing').then(
+            () => {
+              push('/appointmentListing')
+            }
+          )
         }
       })
     })
