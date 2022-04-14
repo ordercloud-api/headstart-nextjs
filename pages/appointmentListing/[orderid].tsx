@@ -147,7 +147,9 @@ const OrderPage: FunctionComponent = () => {
           </label>
         </div>
 
-        <button type="submit">Add details</button>
+        <button type="submit" className="btn">
+          Add details
+        </button>
       </form>
     </div>
     // <>

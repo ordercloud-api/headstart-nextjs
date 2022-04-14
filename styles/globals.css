@@ -154,8 +154,6 @@ a,
 a:focus,
 .a:focus {
     outline: 0;
-    margin: 0 -8px -4px;
-    padding: 0 8px 4px;
     background-color: var(--primary-two-hint);
 }
 a:hover,

@@ -61,3 +61,13 @@
     display: flex;
     align-items: flex-start;
 }
+.submitted {
+    border-left: 4px solid #008040;
+}
+.submittedIcon { 
+    padding: 8px 21px 8px 8px;
+    margin-right: 0;
+    border-radius: 25px;
+    background: #eafaf1;
+}
+

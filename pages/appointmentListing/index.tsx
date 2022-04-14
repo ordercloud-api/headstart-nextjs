@@ -229,7 +229,7 @@ const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
                     <>
                         {products.map((product, i) => {
                             return (
-                                <ProductCard product={product} worksheetId={worksheets.current[i]?.Order?.ID} isSubmitted={worksheets.current[i]?.Order.IsSubmitted} promotionDiscount={worksheets.current[i]?.LineItems[0]?.PromotionDiscount} key={`${product.ID}-${i}`} />
+                                <ProductCard product={product} worksheet={worksheets.current[i]} key={`${product.ID}-${i}`} />
                             )
                         })}
                     </>
