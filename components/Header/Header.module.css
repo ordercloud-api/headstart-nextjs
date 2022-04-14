@@ -213,6 +213,8 @@
     display: flex;
     align-items: center;
     height: 100%;
+    position: relative;
+    left: 10px;
 }
 
 .nav li {
@@ -222,6 +224,10 @@
     padding: 0;
     margin-right: 28px;
     height: 100%;
+}
+
+.nav li:last-child {
+    margin-right: 0;
 }
 
 .nav li:first-child {
