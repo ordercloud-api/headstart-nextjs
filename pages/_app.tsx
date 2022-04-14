@@ -1,10 +1,11 @@
-import { AppProps } from 'next/app'
-import { Auth, ApiRole, Tokens } from 'ordercloud-javascript-sdk'
-import type { ReactElement, ReactNode,useEffect } from 'react'
-import AuthGuard from '../components/AuthGuard'
-import Layout from '../components/Layout'
-import OcProvider from '../ordercloud/redux/ocProvider'
-import '../styles/globals.css'
+import { NextPage } from 'next';
+import { AppProps } from 'next/app';
+import { ApiRole } from 'ordercloud-javascript-sdk';
+import type { ReactElement, ReactNode } from 'react';
+import AuthGuard from '../components/AuthGuard';
+import Layout from '../components/Layout';
+import OcProvider from '../ordercloud/redux/ocProvider';
+import '../styles/globals.css';
 
 const clientId = process.env.NEXT_PUBLIC_OC_CLIENT_ID || ''
 const scope = process.env.NEXT_PUBLIC_OC_SCOPE
