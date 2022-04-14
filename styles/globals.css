@@ -116,7 +116,12 @@ a {
 }
 
 label {
-  display: block;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 7px;
+  color: var(--mid-grey);
+  white-space: normal;
+  text-overflow: ellipsis;
 }
 
 select,

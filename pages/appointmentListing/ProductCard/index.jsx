@@ -58,7 +58,7 @@ const OcProductCard = ({ worksheet, product }) => {
           <ul className={styles.list}>
             <li className={`${styles.item} ${isSubmitted ? styles.submittedIcon : ''}`}>
               <TickIcon customClass={styles.svg} />
-              Send to terminal
+              Sent to terminal
             </li>
           </ul>
         ) : (
