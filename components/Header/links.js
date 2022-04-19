@@ -13,11 +13,11 @@ export const MainNavLinks = [
         Url: "/appointmentListing"
     },
     {
-        Name: "Cart",
-        Url: "/cart"
+        Name: "News",
+        Url: "/"
     },
     {
-        Name: "Products",
-        Url: "/products"
+        Name: "Contact Terminal",
+        Url: "/"
     }
 ];

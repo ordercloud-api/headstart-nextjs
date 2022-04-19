@@ -10,9 +10,9 @@ const LoginPage = () => {
   }
 
   return (
-    <main>
+    <div>
       <OcLoginForm onLoggedIn={handleOnLoggedIn} />
-    </main>
+    </div>
   )
 };
 
