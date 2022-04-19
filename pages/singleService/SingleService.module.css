@@ -15,13 +15,6 @@
     width: 100%;
 }
 
-.quantityWrapper {
-    max-width: 50px;
-}
-.quantityWrapper input {
-    width: 100%;
-}
-
 .submit {
     margin-top: 30px;
 }
