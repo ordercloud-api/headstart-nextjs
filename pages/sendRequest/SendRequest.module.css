@@ -1,10 +1,25 @@
+.title {
+    margin: 15px 0 30px;
+}
 .list {
     list-style: none;
     padding: 0;
-    border: 1px solid #D1D0D5;
+    display: flex;
+    flex-wrap: wrap;
 }
-.list li:first-child p {
-    margin-top: 0;
+.list li {
+    width: calc(50% - 15px);
+    margin-right: 30px;
+    border: 1px solid #D1D0D5;
+    border-bottom: none;
+    border-top: none;
+}
+.list li:nth-child(even) {
+    margin-right: 0;
+}
+.list li:last-child,
+.list li:nth-last-child(2) {
+    border-bottom: 1px solid #D1D0D5;
 }
 
 .item {
@@ -15,8 +30,17 @@
     background-color: #e5e5e5;
     padding: 5px 10px;
     font-weight: 600;
+    margin: 0;
 }
 
 .value {
-    padding: 5px 10px;
+    padding: 16px 10px 12px;
+    margin: 0;
+}
+.actions {
+    display: flex;
+    justify-content: flex-end;
+}
+.submit {
+    margin-top: 30px;
 }
