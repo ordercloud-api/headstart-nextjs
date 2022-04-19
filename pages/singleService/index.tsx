@@ -59,7 +59,6 @@ const SingleServicePage: FunctionComponent<OcProductListProps> = ( { options }) 
   const firstOrederId = generateUUID()
   const [rows, setRows] = useState([{ orderId: firstOrederId }])
   const [ordersLineItems, setOrdersLineItems] = useState({})
-  const dispatch = useOcDispatch()
   const products = useOcProductList(options)
 
   const onLineItemChange = (e) => {
@@ -96,7 +95,7 @@ const SingleServicePage: FunctionComponent<OcProductListProps> = ( { options }) 
       await Orders.Create("Outgoing", { ID: orderId }).then(() => {
         LineItems.Create("Outgoing", orderId, {
           ProductID: valueType.lineItemId,
-          Quantity: valueType.quantity
+          Quantity: 1
         }).then((order) => {
           //IntegrationEvents.GetWorksheet('Outgoing', orderId)
           // Orders.Save("Outgoing", orderId, order).then(() => {
@@ -166,17 +165,6 @@ const SingleServicePage: FunctionComponent<OcProductListProps> = ( { options }) 
                       )
                     })}
                   </select>
-                </div>
-                <div className={styles.quantityWrapper}>
-                  <label htmlFor="quantity">Quantity</label>
-                  <input
-                    id="quantity"
-                    type="number"
-                    min="0"
-                    data-order-id={row.orderId}
-                    data-value-type="quantity"
-                    onChange={onLineItemChange}
-                  />
                 </div>
               </div>
             )
