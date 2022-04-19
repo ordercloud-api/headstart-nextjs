@@ -184,7 +184,7 @@ const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
                     <div className={styles.error}>
                         <div className={styles.icon}>
                             <svg width="222" height="81" viewBox="0 0 222 81" xmlns="http://www.w3.org/2000/svg">
-                                <g fill="#FF6441" fill-rule="evenodd">
+                                <g fill="#FF6441" fillRule="evenodd">
                                     <path d="M165 50h57.001v-2.001H165V50zM0 50h57v-2.001H0V50z" />
                                     <path d="M56 0v60h73v-2H58V2h106v36.5h2V0z" />
                                     <path d="m152.808 56.169 1.415-1.414 5.727 5.727-1.414 1.414-5.728-5.727zM150 24.5h2v-12h-2v12zm-10 0h2v-12h-2v12zm-10 0h2v-12h-2v12zM120 46h2V12h-2v34zm-10 0h2V12h-2v34zm-10 0h2V12h-2v34zm-10 0h2V12h-2v34zm-10 0h2V12h-2v34zm-10 0h2V12h-2v34z" />
