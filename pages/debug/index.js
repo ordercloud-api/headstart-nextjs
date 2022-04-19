@@ -5,6 +5,7 @@ import generateUUID from '../../utils/generateUUID';
 
 const TestPage = () => {
   const [order, setOrder] = useState({});
+  const [apiResponse, setResponse] = useState({});
   const orderDirection = 'Outgoing';
 
   const createOrder = () => {
@@ -16,6 +17,7 @@ const TestPage = () => {
 
       log(`order ${response.ID} created`, 'success');
       log(response);
+      setResponse(response);
     }).catch((e) => {
       log(e, 'error');
     });
@@ -29,10 +31,11 @@ const TestPage = () => {
       return;
     }
 
-    LineItems.Create(orderDirection, order.ID, { ProductID: 'break-bulk-3', Quantity: '1' }).then((response) => {
+    LineItems.Create(orderDirection, order.ID, { ProductID: 'break-bulk', Quantity: '1' }).then((response) => {
       //localStorage.setItem('order', JSON.stringify(response));
       log('line item added to order', 'success');
       log(response);
+      setResponse(response);
     }).catch((e) => {
       log(e, 'error');
     });
@@ -52,7 +55,7 @@ const TestPage = () => {
 
     Orders.Delete(orderDirection, storedOrder.ID).then((response) => {
       log(`order ${response.ID} deleted`, 'success');
-
+      setResponse(response);
       localStorage.clear('order');
     }).catch((e) => {
       log(e, 'error');
@@ -75,10 +78,10 @@ const TestPage = () => {
             <button className='btn' onClick={deleteOrder}>Delete Order</button>
           </div>
         </div>
-        <aside style={{ minWidth: "30%" }}>
+        <aside style={{ minWidth: "40%", maxWidth: "30%", overflowX: "auto" }}>
           <h3>Order</h3>
           <pre>
-            <code>{JSON.stringify(order, null, 2)}</code>
+            <code>{JSON.stringify(apiResponse, null, 2)}</code>
           </pre>
         </aside>
       </section>
