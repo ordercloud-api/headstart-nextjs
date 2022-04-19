@@ -159,7 +159,6 @@ a,
 a:focus,
 .a:focus {
     outline: 0;
-    background-color: var(--primary-two-hint);
 }
 a:hover,
 .a:hover {
