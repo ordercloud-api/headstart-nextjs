@@ -1,39 +1,13 @@
 /* eslint-disable */
-import Link from 'next/link'
-import { FunctionComponent, useEffect, useRef, useState } from 'react'
-import { BuyerProduct } from 'ordercloud-javascript-sdk'
-import OcLineItemList from '../../ordercloud/components/OcLineItemList'
-import { deleteCurrentOrder } from '../../ordercloud/redux/ocCurrentOrder'
-// import useOcProductList from '../hooks/useOcProductList'
-import useOcProductList from '../../ordercloud/hooks/useOcProductList'
-import { useOcDispatch } from '../../ordercloud/redux/ocStore'
-import styles from './appointmentListing.module.css'
-import ProductCard from './ProductCard'
-import { useOcSelector } from '../../ordercloud/redux/ocStore'
-import Loader from '../../components/Helpers/Loader'
+import { FunctionComponent, useEffect, useRef, useState } from 'react';
+import { BuyerProduct } from 'ordercloud-javascript-sdk';
+import styles from './appointmentListing.module.css';
+import ProductCard from './ProductCard';
+import { useOcSelector } from '../../ordercloud/redux/ocStore';
+import Loader from '../../components/Helpers/Loader';
 
-import { OcProductListOptions } from '../../ordercloud/redux/ocProductList'
-import {
-    BuyerAddress,
-    Address,
-    LineItem,
-    LineItems,
-    Me,
-    Order,
-    Orders,
-    ShipEstimateResponse,
-    IntegrationEvents,
-    RequiredDeep,
-    ShipMethodSelection,
-    OrderWorksheet,
-    Payment,
-    Payments,
-    Auth,
-    ApiRole,
-    Tokens,
-    Product,
-    Products
-} from 'ordercloud-javascript-sdk'
+import { OcProductListOptions } from '../../ordercloud/redux/ocProductList';
+import { Me, Orders, IntegrationEvents, Tokens } from 'ordercloud-javascript-sdk';
 
 export interface OcProductListProps {
     options?: OcProductListOptions
@@ -51,7 +25,6 @@ const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
     const requireDetails = useRef(0)
     const readyToSend = useRef(0)
     const sentRequests = useRef(0)
-    //console.log(store.ocAuth.decodedToken)
 
     const deleteOrers = async () => {
         Me.ListOrders({ sortBy: ['!LastUpdated'], filters: { Status: 'Open' } }).then((response) => {
@@ -196,7 +169,6 @@ const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
     }
 
     useEffect(() => {
-        console.log(Tokens.GetAccessToken());
         getAllProducts()
     }, [storeToken])
 
