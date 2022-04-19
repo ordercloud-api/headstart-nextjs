@@ -116,19 +116,19 @@ const OrderPage: FunctionComponent = () => {
         <div className={styles.row}>
           <div className={styles.col}>
             <label htmlFor="length">Add length</label>
-            <input id="length" type="text" placeholder="Length" />
+            <input required id="length" type="text" placeholder="Length" />
           </div>
           <div className={styles.col}>
             <label htmlFor="height">Add height</label>
-            <input id="height" type="text" placeholder="Height" />
+            <input required id="height" type="text" placeholder="Height" />
           </div>
           <div className={styles.col}>
             <label htmlFor="width">Add width</label>
-            <input id="width" type="text" placeholder="Width" />
+            <input required id="width" type="text" placeholder="Width" />
           </div>
           <div className={styles.col}>
             <label htmlFor="weight">Add weight</label>
-            <input id="weight" type="text" placeholder="Weight" />
+            <input required id="weight" type="text" placeholder="Weight" />
           </div>
         </div>
 
