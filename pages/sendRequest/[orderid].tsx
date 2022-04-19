@@ -60,7 +60,7 @@ const SendrequestPage: FunctionComponent = () => {
 
   return (
     <div>
-      <h1>Send request</h1>
+      <h1 className={styles.title}>Send request</h1>
       {orderDetails && (
         <>
           {orderDetails.map((lineItem, i) => {
@@ -69,27 +69,27 @@ const SendrequestPage: FunctionComponent = () => {
                 <ul className={styles.list}>
                   <li className={styles.item}>
                     <p className={styles.label}>Cargo width</p>
-                    <p className={styles.value}>{lineItem.xp.CargoWidth}cm</p>
+                    <p className={styles.value}>{lineItem.xp.CargoWidth}m</p>
                   </li>
                   <li className={styles.item}>
                     <p className={styles.label}>Cargo height</p>
-                    <p className={styles.value}>{lineItem.xp.CargoHeight}cm</p>
+                    <p className={styles.value}>{lineItem.xp.CargoHeight}m</p>
                   </li>
                   <li className={styles.item}>
                     <p className={styles.label}>Cargo length</p>
-                    <p className={styles.value}>{lineItem.xp.CargoLenght}cm</p>
+                    <p className={styles.value}>{lineItem.xp.CargoLenght}m</p>
                   </li>
                   <li className={styles.item}>
                     <p className={styles.label}>Cargo weight</p>
-                    <p className={styles.value}>{lineItem.xp.CargoWeight}cm</p>
+                    <p className={styles.value}>{lineItem.xp.CargoWeight}m</p>
                   </li>
                 </ul>
               </div>
             )
           })}
-          <div>
-            <button type="button" className="btn" onClick={sendRequest}>
-              Send request
+          <div className={styles.actions}>
+            <button type="button" className={`${styles.submit} btn`} onClick={sendRequest}>
+              Submit enquiry
             </button>
           </div>
         </>
