@@ -167,16 +167,16 @@ const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
             <h1 className={styles.title}>Service Enquiries</h1>
             <ul className={styles.buttonList}>
                 <li>
-                    <button disabled={allOrders.current === 0} className={activeTab === 'all' ? styles.active : ''} type="button" onClick={showAll}>Showing All ({allOrders.current})</button>
+                    <button disabled={allOrders.current === 0 || activeTab === 'all'} className={activeTab === 'all' ? styles.active : ''} type="button" onClick={showAll}>Showing All ({allOrders.current})</button>
                 </li>
                 <li>
-                    <button disabled={requireDetails.current === 0} className={activeTab === 'require' ? styles.active : ''} type="button" onClick={showRequireDetails}>Requires Details ({requireDetails.current})</button>
+                    <button disabled={requireDetails.current === 0 || activeTab === 'require'} className={activeTab === 'require' ? styles.active : ''} type="button" onClick={showRequireDetails}>Requires Details ({requireDetails.current})</button>
                 </li>
                 <li>
-                    <button disabled={readyToSend.current === 0} className={activeTab === 'ready' ? styles.active : ''} type="button" onClick={showReadyToSend}>Ready to Send ({readyToSend.current})</button>
+                    <button disabled={readyToSend.current === 0 || activeTab === 'ready'} className={activeTab === 'ready' ? styles.active : ''} type="button" onClick={showReadyToSend}>Ready to Send ({readyToSend.current})</button>
                 </li>
                 <li>
-                    <button disabled={sentRequests.current === 0} className={activeTab === 'sent' ? styles.active : ''} type="button" onClick={showSent}>Sent Requests ({sentRequests.current})</button>
+                    <button disabled={sentRequests.current === 0 || activeTab === 'sent'} className={activeTab === 'sent' ? styles.active : ''} type="button" onClick={showSent}>Sent Requests ({sentRequests.current})</button>
                 </li>
             </ul>
             <div className={styles.results}>
