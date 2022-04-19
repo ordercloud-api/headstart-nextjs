@@ -10,11 +10,11 @@ const Layout: FunctionComponent = ({ children }) => {
         <title>React Headstart</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* <Header/> */}
+      <Header/>
       <main>
         <div className="wrapper">{children}</div>
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };
