@@ -1,10 +1,8 @@
-import { FunctionComponent } from 'react'
-import { useOcSelector } from '../ordercloud/redux/ocStore'
-import styles from '../styles/Home.module.css'
-import type { ReactElement } from 'react'
-import Layout from '../components/Layout'
+import { useOcSelector } from '../ordercloud/redux/ocStore';
+import styles from '../styles/Home.module.css';
+import Layout from '../components/Layout';
 
-const Home: FunctionComponent = () => {
+const Home = () => {
   const user = useOcSelector((s) => s.ocUser.user);
 
   return (
@@ -24,7 +22,7 @@ const Home: FunctionComponent = () => {
   )
 }
 
-Home.getLayout = function getLayout(page: ReactElement) {
+Home.getLayout = function getLayout(page) {
   return (
     <Layout>
       {page}
