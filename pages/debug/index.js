@@ -1,18 +1,63 @@
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
-import OcProductDetail from '../../ordercloud/components/OcProductDetail'
-import { useOcSelector } from '../../ordercloud/redux/ocStore'
-import {
-  createOrder,
-  addLineItem,
-  submitOrder,
-  deleteOrder
-} from './events';
-
+import { useState } from 'react';
+import { LineItems, Orders } from 'ordercloud-javascript-sdk';
+import log from '../../utils/logs';
+import generateUUID from '../../utils/generateUUID';
 
 const TestPage = () => {
   const [order, setOrder] = useState({});
+  const orderDirection = 'Outgoing';
+
+  const createOrder = () => {
+    const orderId = generateUUID();
+
+    Orders.Create(orderDirection, { ID: orderId }).then((response) => {
+      localStorage.setItem('order', JSON.stringify(response));
+      setOrder(response);
+
+      log(`order ${response.ID} created`, 'success');
+      log(response);
+    }).catch((e) => {
+      log(e, 'error');
+    });
+  };
+
+  const addLineItem = () => {
+    log('trying to add line item', 'info');
+
+    if (!order || !order.ID) {
+      log('no order has been created', 'error');
+      return;
+    }
+
+    LineItems.Create(orderDirection, order.ID, { ProductID: 'break-bulk-3', Quantity: '1' }).then((response) => {
+      //localStorage.setItem('order', JSON.stringify(response));
+      log('line item added to order', 'success');
+      log(response);
+    }).catch((e) => {
+      log(e, 'error');
+    });
+  };
+
+  const submitOrder = () => {
+    log('submit order', 'info');
+  };
+
+  const deleteOrder = () => {
+    const storedOrder = JSON.parse(localStorage.getItem('order'));
+
+    if (!storedOrder || !storedOrder.ID) {
+      log('no order available to delete', 'error');
+      return;
+    }
+
+    Orders.Delete(orderDirection, storedOrder.ID).then((response) => {
+      log(`order ${response.ID} deleted`, 'success');
+
+      localStorage.clear('order');
+    }).catch((e) => {
+      log(e, 'error');
+    });
+  }
 
   return (
     <>
@@ -30,7 +75,7 @@ const TestPage = () => {
             <button className='btn' onClick={deleteOrder}>Delete Order</button>
           </div>
         </div>
-        <aside style={{ minWidth: "30%", position: "sticky", background: "white" }}>
+        <aside style={{ minWidth: "30%" }}>
           <h3>Order</h3>
           <pre>
             <code>{JSON.stringify(order, null, 2)}</code>
@@ -39,6 +84,6 @@ const TestPage = () => {
       </section>
     </>
   )
-}
+};
 
 export default TestPage;
