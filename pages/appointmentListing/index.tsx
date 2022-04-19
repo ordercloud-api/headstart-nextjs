@@ -26,16 +26,6 @@ const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
     const readyToSend = useRef(0)
     const sentRequests = useRef(0)
 
-    const deleteOrers = async () => {
-        Me.ListOrders({ sortBy: ['!LastUpdated'], filters: { Status: 'Open' } }).then((response) => {
-            console.log(response.Items)
-
-            response.Items.forEach(order => {
-                Orders.Delete("Outgoing", order.ID)
-            });
-        })
-    }
-
     const resolvePromises = (requests) => {
         Promise.all(requests).then((worksheetsResponse) => {
             const productRequests = []
@@ -175,11 +165,6 @@ const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
     return (
         <div>
             <h1 className={styles.title}>Service Enquiries</h1>
-            {/* <div>
-                <p>
-                    <button onClick={deleteOrers}>Delete orders</button>
-                </p>
-            </div> */}
             <ul className={styles.buttonList}>
                 <li>
                     <button disabled={allOrders.current === 0} className={activeTab === 'all' ? styles.active : ''} type="button" onClick={showAll}>Showing All ({allOrders.current})</button>

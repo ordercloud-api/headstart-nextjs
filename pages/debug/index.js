@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LineItems, Orders } from 'ordercloud-javascript-sdk';
+import { LineItems, Orders, Me } from 'ordercloud-javascript-sdk';
 import log from '../../utils/logs';
 import generateUUID from '../../utils/generateUUID';
 
@@ -42,7 +42,7 @@ const TestPage = () => {
   };
 
   const submitOrder = () => {
-    log('submit order', 'info');
+    log('TODO submit order. Not working currently', 'error');
   };
 
   const deleteOrder = () => {
@@ -60,7 +60,19 @@ const TestPage = () => {
     }).catch((e) => {
       log(e, 'error');
     });
-  }
+  };
+
+  const deleteOrders = (e) => {
+    const status = e.currentTarget.dataset.status;
+
+    Me.ListOrders({ sortBy: ['!LastUpdated'], filters: { Status: status } }).then((response) => {
+      console.log(response.Items)
+
+      response.Items.forEach(order => {
+        Orders.Delete("Outgoing", order.ID)
+      });
+    })
+  };
 
   return (
     <>
@@ -76,6 +88,11 @@ const TestPage = () => {
           <div>
             <h2>Order deletion</h2>
             <button className='btn' onClick={deleteOrder}>Delete Order</button>
+          </div>
+          <div>
+            <h2>Delete all orders</h2>
+            <button className='btn' onClick={deleteOrders} data-status="Open">Delete "Open" orders</button>
+            <button className='btn' onClick={deleteOrders} data-status="Unsubmitted">Delete "Unsubmitted" orders</button>
           </div>
         </div>
         <aside style={{ minWidth: "40%", maxWidth: "30%", overflowX: "auto" }}>
