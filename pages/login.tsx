@@ -1,6 +1,6 @@
-import { useRouter } from 'next/router';
-import OcLoginForm from '../ordercloud/components/OcLoginForm';
-import LoggedOutLayout from '../components/LoggedOutLayout';
+import { useRouter } from 'next/router'
+import OcLoginForm from '../ordercloud/components/OcLoginForm'
+import LoggedOutLayout from '../components/LoggedOutLayout'
 
 const LoginPage = () => {
   const { push } = useRouter()
@@ -14,14 +14,10 @@ const LoginPage = () => {
       <OcLoginForm onLoggedIn={handleOnLoggedIn} />
     </div>
   )
-};
+}
 
 LoginPage.getLayout = function getLayout(page) {
-  return (
-    <LoggedOutLayout>
-      {page}
-    </LoggedOutLayout>
-  )
-};
+  return <LoggedOutLayout>{page}</LoggedOutLayout>
+}
 
-export default LoginPage;
+export default LoginPage

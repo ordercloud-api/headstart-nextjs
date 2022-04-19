@@ -1,30 +1,12 @@
-import { useOcSelector } from '../ordercloud/redux/ocStore'
-import styles from '../styles/Home.module.css'
 import Layout from '../components/Layout'
 import SingleService from './singleService'
 
-// const Home = () => {
-//   const user = useOcSelector((s) => s.ocUser.user)
+const Home = () => {
+  return <SingleService />
+}
 
-//   return (
-//     <div className={styles.container}>
-//       <main className={styles.main}>
-//         <h1 className={styles.title}>React Headstart</h1>
-
-//         <p className={styles.description}>OrderCloud shopping experience built on React</p>
-
-//         {user && (
-//           <pre className={styles.code}>
-//             <code>{JSON.stringify(user, null, 2)}</code>
-//           </pre>
-//         )}
-//       </main>
-//     </div>
-//   )
-// }
-
-SingleService.getLayout = function getLayout(page) {
+Home.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>
 }
 
-export default SingleService
+export default Home
