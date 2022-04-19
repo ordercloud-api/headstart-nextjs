@@ -172,7 +172,6 @@ const AppointmentListingPage: FunctionComponent<OcProductListProps> = () => {
         getAllProducts()
     }, [storeToken])
 
-    console.log(products)
     return (
         <div>
             <h1 className={styles.title}>Service Enquiries</h1>
