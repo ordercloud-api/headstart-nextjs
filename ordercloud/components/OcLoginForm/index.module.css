@@ -1,0 +1,135 @@
+.form-field {
+    flex: 1;
+    margin-left: 16px;
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.form-field:first-child {
+    margin-left: 0;
+}
+
+.form-label {
+    display: inline-block;
+    margin-bottom: 7px;
+    color: var(--mid-grey);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 16px);
+    font-family: var(--maersk);
+}
+
+.input {
+    width: 100%;
+    border: 1px solid var(--mid-grey-hint);
+    background-color: var(--white-four);
+    color: var(--primary-one);
+    height: 48px;
+    font-size: 1.6rem;
+    line-height: 3.2rem;
+    padding: 0 8px;
+    border-radius: 4px;
+}
+
+.checkbox {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border: 1px solid #aab4c3;
+    background-color: #ffffff;
+    vertical-align: bottom;
+    appearance: none;
+}
+
+.checkbox-label {
+    margin-left: 8px;
+    color: var(--primary-one);
+    margin-bottom: 3px;
+}
+
+.login {
+    padding: 54px 97px 18px;
+    background: #ffffff;
+    box-shadow: 0 0 15px 0 rgba(197, 197, 197, 0.5);
+    font-size: 1.6rem;
+    color: #2f2f2f;
+    max-width: 600px;
+}
+.login-title {
+    color: var(--primary-one);
+    text-align: center;
+}
+.login__inner {
+    padding-bottom: 40px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--white);
+}
+.login-email {
+    margin-top: 52px;
+    margin-bottom: 30px;
+}
+.login-actions {
+    display: flex;
+    margin-top: 12px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.login-remember {
+    display: flex;
+    align-items: center;
+}
+.login-create-account {
+    padding: 40px 0;
+    text-align: center;
+    margin-top: 14px;
+}
+.login-splitter {
+    flex-basis: 100%;
+    margin-top: 46px;
+    height: 2px;
+    border: 1px solid var(--white);
+}
+
+.login--forgot-password {
+    margin: 100px auto;
+    width: calc(100% - 40px) !important;
+    box-shadow: none;
+    padding: 0;
+    background: none;
+}
+
+/* dashboard lock out */
+.login__lock-out .rich-text {
+    padding: 0 30px;
+}
+
+.login-modal__content {
+    display: flex;
+}
+.login-modal__text {
+    width: 300px !important;
+    background: var(--white-two);
+    padding: 100px 40px 40px !important;
+    margin: 0 auto !important;
+}
+.login-modal__form {
+    position: relative;
+    width: calc(100% - 300px);
+    padding: 75px 70px;
+}
+.login-modal__error--hidden {
+    display: none;
+}
+
+.login-modal__text ul,
+.login-modal__text ol {
+    padding: 0 0 0 55px !important;
+}
+[dir="rtl"] .login-modal__text ul,
+[dir="rtl"] .login-modal__text ol {
+    padding: 0 55px 0 0 !important;
+}
+.login-modal__text p {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}

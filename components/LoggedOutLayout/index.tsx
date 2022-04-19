@@ -1,7 +1,6 @@
 import Head from 'next/head';
-import { FunctionComponent } from 'react'
-import Header from './Header';
-import Footer from './Footer';
+import { FunctionComponent } from 'react';
+import styles from './index.module.css';
 
 const LoggedOutLayout: FunctionComponent = ({ children }) => {
   return (
@@ -10,8 +9,10 @@ const LoggedOutLayout: FunctionComponent = ({ children }) => {
         <title>React Headstart</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <div className="wrapper">{children}</div>
+      <main className={styles['logged-out']}>
+        <div className={styles['logged-out-wrapper']}>
+          {children}
+        </div>
       </main>
     </>
   );
