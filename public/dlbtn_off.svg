@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="32px" height="32px" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <mask fill="white" id="clip7">
+      <path d="M 0 16  C 0 7.039999999999999  7.039999999999999 0  16 0  C 24.96 0  32 7.039999999999999  32 16  C 32 24.38386225043776  25.836251526008706 31.08670218978698  17.703236570906718 31.91403782516707  C 17.144337009652133 31.97089220526804  16.576137749562243 32  16 32  C 7.039999999999999 32  0 24.96  0 16  Z " fill-rule="evenodd" />
+    </mask>
+  </defs>
+  <g transform="matrix(1 0 0 1 -1000 -788 )">
+    <image preserveAspectRatio="none" style="overflow:visible" width="32" height="32" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAKfSURBVFhHxZfPaxNREMdnXrZasNamTci1hRzqoQcPHgoeVfAgxUPFP8F/QMSzePKi4MGjBw+igoII/rgKCnpQLJhDoB48GFragDlI7e44M+/tkt1kk812k3wgbJi3yXd29r1534eQEdrenqVTJ84D4AZ/6hxZBsSKHaRdjv3kL01EeA3tzhtcWfmrY0MYmkDQbtUhMDdZ7BrfPOfCAyECFqcnYII7ZqHWdOG+pCZArdYczZjbfMt1fqpZFx4JIjpkhYd4ENzCWq3jwjH6JkA7O6vk4QseXHWhI0EADTykK1itNlwooicB2ts7R+C/QsQFFyoErkYboXQZFxc/uJASS0CfvAQfixYP0SR8WO+uRJSAvvNjpc9FlT0NfR0H/tlwThiNMjLhxi0uiIad3BatgF1qpe95Z/uo6DI1/posUVsBXue5xG9s2s+IqJb0FsZIh5MmoyOThDVF20h75feQqcMViWiKNr8C6e3TAjckAd5YpgXWOQHe1aYGLWOwv/tn4BwIZ/ndZ/b6nq/vntrvSS5eBbjg7k/+rg/clDpRI8qMCIhQkm7xrBB4hrsCm4kRSSaRR1yh3zIJ2cnkIEwitziDIAnQQMcyEBHOKy4QNIx6uGlB9Bat2Ty5n7oX5Oj1MVJWgdg1RK9qrHtlAzl5HmO5zC6Jcc73BzshT4fGjJpVE5yOtmO1zuxedXQyPArtulZAmJglI2jiP/9MjyWTgFhnMY4uVDjSehH9ze4zQqwVi1sV6zyOJFSczCUs1766kBJLQBDfLtZZ3KsLHRkC+gUBrifPBEJPAoJWgq0zV+KePeflh8UfIHhrZmlpy4ViRJMwjdyHU4SX4MN9U6l8cuG+DE0gJO14Lkm5Km3xv32BgL7hzPHnOD+fYZcF+A+CrwTtOr8/XwAAAABJRU5ErkJggg==" x="0px" y="0px" transform="matrix(1 0 0 1 1000 788 )" />
+    <path d="M 0 16  C 0 7.039999999999999  7.039999999999999 0  16 0  C 24.96 0  32 7.039999999999999  32 16  C 32 24.38386225043776  25.836251526008706 31.08670218978698  17.703236570906718 31.91403782516707  C 17.144337009652133 31.97089220526804  16.576137749562243 32  16 32  C 7.039999999999999 32  0 24.96  0 16  Z " stroke-width="2" stroke="#ff6441" fill="none" transform="matrix(1 0 0 1 1000 788 )" mask="url(#clip7)" />
+  </g>
+</svg>

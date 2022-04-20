@@ -90,6 +90,56 @@
   --arrow-right-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='12' viewBox='0 0 6 12'%3E%3Cpath d='M6 6 0 0v12z' fill='%23FFFFFF' fill-rule='evenodd'/%3E%3C/svg%3E%0A");
   --go: url("data:image/svg+xml,%3Csvg width='4' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8l4-4-4-4v1.403L2.585 4 0 6.58z' fill='%23ff6441' fill-rule='evenodd'/%3E%3C/svg%3E%0A");
   --go-fill: url("data:image/svg+xml,%3Csvg width='4' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8l4-4-4-4z' fill='%23ff6441' fill-rule='evenodd'/%3E%3C/svg%3E");
+
+  --unit-zero: 0;
+  --unit-zero-quarter: calc(100% / 12 * 0.25);
+  --unit-zero-half: calc(100% / 12 * 0.5);
+  --unit-zero-three-quarter: calc(100% / 12 * 0.75);
+  --unit-one: calc(100% / 12);
+  --unit-one-quarter: calc(100% / 12 * 1.25);
+  --unit-one-half: calc(100% / 12 * 1.5);
+  --unit-one-three-quarter: calc(100% / 12 * 1.75);
+  --unit-two: calc(100% / 12 * 2);
+  --unit-two-quarter: calc(100% / 12 * 2.25);
+  --unit-two-half: calc(100% / 12 * 2.5);
+  --unit-two-three-quarter: calc(100% / 12 * 2.75);
+  --unit-three: calc(100% / 12 * 3);
+  --unit-three-quarter: calc(100% / 12 * 3.25);
+  --unit-three-half: calc(100% / 12 * 3.5);
+  --unit-three-three-quarter: calc(100% / 12 * 3.75);
+  --unit-four: calc(100% / 12 * 4);
+  --unit-four-quarter: calc(100% / 12 * 4.25);
+  --unit-four-half: calc(100% / 12 * 4.5);
+  --unit-four-three-quarter: calc(100% / 12 * 4.75);
+  --unit-five: calc(100% / 12 * 5);
+  --unit-five-quarter: calc(100% / 12 * 5.25);
+  --unit-five-half: calc(100% / 12 * 5.5);
+  --unit-five-three-quarter: calc(100% / 12 * 5.75);
+  --unit-six: calc(100% / 12 * 6);
+  --unit-six-quarter: calc(100% / 12 * 6.25);
+  --unit-six-half: calc(100% / 12 * 6.5);
+  --unit-six-three-quarter: calc(100% / 12 * 6.75);
+  --unit-seven: calc(100% / 12 * 7);
+  --unit-seven-quarter: calc(100% / 12 * 7.25);
+  --unit-seven-half: calc(100% / 12 * 7.5);
+  --unit-seven-three-quarter: calc(100% / 12 * 7.75);
+  --unit-eight: calc(100% / 12 * 8);
+  --unit-eight-quarter: calc(100% / 12 * 8.25);
+  --unit-eight-half: calc(100% / 12 * 8.5);
+  --unit-eight-three-quarter: calc(100% / 12 * 8.75);
+  --unit-nine: calc(100% / 12 * 9);
+  --unit-nine-quarter: calc(100% / 12 * 9.25);
+  --unit-nine-half: calc(100% / 12 * 9.5);
+  --unit-nine-three-quarter: calc(100% / 12 * 9.75);
+  --unit-ten: calc(100% / 12 * 10);
+  --unit-ten-quarter: calc(100% / 12 * 10.25);
+  --unit-ten-half: calc(100% / 12 * 10.5);
+  --unit-ten-three-quarter: calc(100% / 12 * 10.75);
+  --unit-eleven: calc(100% / 12 * 11);
+  --unit-eleven-quarter: calc(100% / 12 * 11.25);
+  --unit-eleven-half: calc(100% / 12 * 11.5);
+  --unit-eleven-three-quarter: calc(100% / 12 * 11.75);
+  --unit-twelve: 100%;
 }
 
 html {
@@ -139,6 +189,7 @@ input[type="password"] {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 32px;
+  overflow: hidden;
 }
 
 main .wrapper {
@@ -412,7 +463,6 @@ img {
 
 .button:focus {
   border-width: 3px;
-  margin: 0;
   padding: 12px 38px 15px;
   background-color: #ffffff;
   color: var(--primary-two);

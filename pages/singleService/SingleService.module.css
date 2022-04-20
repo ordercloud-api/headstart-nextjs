@@ -1,6 +1,147 @@
+.single_service {
+    color: #3C3C46;
+}
+.hero__wrapper {
+    z-index: 1;
+    display: flex;
+    overflow: hidden;
+    max-height: 280px;
+    margin-bottom: 100px;
+}
+.hero {
+    height: auto;
+    align-self: center;
+}
+.title__striped {
+    position: relative;
+}
+.title__striped div {
+    pointer-events: none;
+    position: absolute;
+    left: 269px;
+}
+.title__striped svg {
+    transform: scale(3);
+}
+.content__wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+}
+.content {
+    width: var(--unit-eight);
+    margin: 0 var(--unit-zero-three-quarter) 30px 0;
+}
+.content p {
+    margin-bottom: 28px;
+}
+.content button {
+    margin: 40px 0;
+}
+.content__side {
+    width: var(--unit-three-quarter);
+    margin-right: calc(0 - var(--unit-zero-quarter));
+}
+.content__heading_break {
+    margin: 80px 0 40px 0;
+}
+.card {
+    padding: 21px 30px 30px;
+    margin: 0 0 40px;
+    background: #ffffff;
+    box-shadow: 0 0 15px 0 rgb(197 197 197 / 50%);
+}
+.card h4 {
+    margin-bottom: 15px;
+}
+.card p {
+    line-height: 25px;
+    font-size: 1.6rem;
+    margin-bottom: 30px;
+}
+.download__button_wrapper {
+    display: flex;
+    align-items: center;
+}
+.download__button {
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+}
+.download__button_text {
+    font-size: 1.3rem;
+    margin-left: 10px;
+}
+.download__button img:last-child {
+    display: none;
+}
+.download__button:hover img:last-child {
+    display: block;
+}
+.download__button:hover img:first-child {
+    display: none;
+}
+
+.request__container {
+    background-color:rgba(245, 247, 250, 1);
+}
 .request {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
     max-width: 650px;
     margin: 70px auto 0;
+}
+.request_title {
+    margin: 50px auto 30px auto;
+}
+.request_form {
+    width: 100%;
+}
+.request_select {
+    padding: 10px;
+}
+.request_form * {
+    margin-bottom: 20px;
+}
+.stepper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    box-shadow: 0 0 15px 0 rgb(197 197 197 / 50%);
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 18px;
+    padding: 5px;
+    margin-bottom: 50px;
+}
+.stepper * {
+    margin-right: 8px;
+}
+.stepper_rightarrow {
+    background-color: var(--soft-yellow);
+    width: 32px;
+    height: 32px;
+    transform: rotate(90deg);
+    border: 11px solid var(--soft-yellow);
+    border-radius: 50%;
+}
+.stepper_dot {
+    background-color: var(--soft-yellow);
+    width: 6px;
+    height: 6px;
+    border: 1px transparent;
+    border-radius: 50%;
+    margin: 0 20px;
+}
+.stepper_spacer {
+    height: 2px;
+    width: 40px;
+    background-color: lightgray;
+}
+.stepper_button_wrapper {
+    text-align: center;
+    margin-bottom: 0;
 }
 
 .row {
@@ -15,10 +156,9 @@
     width: 100%;
 }
 
-.submit {
-    margin-top: 30px;
+.quantityWrapper {
+    max-width: 50px;
 }
-
-.add {
-    margin-top: 10px;
+.quantityWrapper input {
+    width: 100%;
 }
