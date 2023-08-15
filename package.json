@@ -9,7 +9,7 @@
     "lint": "tsc --noEmit && eslint . --ext js,ts,tsx,json --fix"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^1.5.1",
+    "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.2.0",
     "lodash": "^4.17.21",
     "next": "12.2.0",

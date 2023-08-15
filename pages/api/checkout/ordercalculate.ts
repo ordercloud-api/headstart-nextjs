@@ -1,4 +1,4 @@
-import { NextApiHandler, NextApiRequest } from 'next'
+import { NextApiHandler } from 'next'
 import { OrderCalculateResponse, OrderWorksheet } from 'ordercloud-javascript-sdk'
 import withOcHashValidation from '../../../ordercloud/utils/withOcHashValidation'
 
