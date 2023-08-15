@@ -48,6 +48,7 @@ NEXT_PUBLIC_OC_CLIENT_ID=YOUR_BUYER_CLIENT_ID_HERE
 NEXT_PUBLIC_OC_SCOPE=Shopper,MeAddressAdmin
 NEXT_PUBLIC_OC_BASE_API_URL=https://sandboxapi.ordercloud.io
 NEXT_PUBLIC_OC_ALLOW_ANONYMOUS=false
+OC_WEBHOOK_HASH_KEY=HASH_KEY_FROM_CHECKOUT_INTEGRATION_EVENT
 ```
 
 The API client defined by `NEXT_PUBLIC_OC_CLIENT_ID` should:
@@ -56,6 +57,13 @@ The API client defined by `NEXT_PUBLIC_OC_CLIENT_ID` should:
 * Optionally be configured for anonymous shopping (if you want to allow anonymous by setting `NEXT_PUBLIC_OC_ALLOW_ANONYMOUS=true`)
     * `apiClient.IsAnonBuyer = true`
     * `apiClient.DefaultContextUserName` set to the username of a valid buyer user
+
+In order to submit an order you must do the following:
+1. Create a checkout integration event
+    * Set CustomImplementationUrl to `your_hosted_app_url/api/checkout`
+    * Set a Hashkey (this should be set to environment variable `OC_WEBHOOK_HASH_KEY`)
+2. Update Buyer ApiClient.IntegrationEventHashKey with the ID of the integration event from step 1.
+3. Deploy the application. Checkout won't work until the app is deployed because OrderCloud needs to call out to publicly accessible endpoints
 
 First, run the development server:
 

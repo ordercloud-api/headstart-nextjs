@@ -1,13 +1,14 @@
 import { NextApiHandler } from 'next'
 import { ShipEstimateResponse } from 'ordercloud-javascript-sdk'
-import withOcHashValidation from '../../../ordercloud/utils/withOcHashValidation'
 import { OrderCheckoutIntegrationEvent } from './ordercalculate'
+import { withOcWebhookAuth } from '@ordercloud/catalyst'
 
+// withOCWebhookAuth needs the raw body in order to validate the payload is coming from ordercloud
 export const config = {
   api: {
     bodyParser: false,
   },
-}
+};
 
 const ShippingRatesHandler: NextApiHandler<ShipEstimateResponse> = (req, res) => {
   /**
@@ -52,4 +53,4 @@ const ShippingRatesHandler: NextApiHandler<ShipEstimateResponse> = (req, res) =>
   })
 }
 
-export default withOcHashValidation(ShippingRatesHandler, process.env.NEXT_OC_HASH_KEY)
+export default withOcWebhookAuth(ShippingRatesHandler)
