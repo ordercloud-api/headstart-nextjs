@@ -12,18 +12,10 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['@typescript-eslint', 'react', 'prettier'],
+  root: true,
+  plugins: ['@typescript-eslint'],
   extends: [
-    'airbnb',
-    'airbnb/hooks',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
-    'plugin:import/errors',
-    'plugin:import/warnings',
-    'plugin:import/typescript',
-    'prettier',
-    'plugin:prettier/recommended',
-    'eslint-config-prettier',
+    'eslint:recommended', 'plugin:@typescript-eslint/recommended'
   ],
   rules: {
     // rules here override any rules defined by plugins in the "extends" array
